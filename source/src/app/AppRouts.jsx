@@ -29,6 +29,7 @@ import { useTheme } from '@mui/material';
 import SessionTimeout from 'AppComponents/SessionTimeout';
 import { usePortalMode, PORTAL_MODES } from './utils/PortalModeUtils';
 
+const SamplePage = lazy(() => import('AppComponents/SamplePage/SamplePage' /* webpackChunkName: "SamplePage" */));
 const Apis = lazy(() => import('AppComponents/Apis/Apis' /* webpackChunkName: "Apis" */));
 const MCPServers = lazy(() => import('AppComponents/MCPServers/MCPServers' /* webpackChunkName: "MCPServers" */));
 const Landing = lazy(() => import('AppComponents/LandingPage/Landing' /* webpackChunkName: "Landing" */));
@@ -75,6 +76,7 @@ function AppRouts(props) {
             {isAuthenticated && <SessionTimeout />}
             <Switch>
                 <Redirect exact from='/' to={getRedirectingPath(theme, portalMode)} />
+                <Route path='/sample' component={SamplePage} />
                 <Route path='/home' component={Landing} />
                 <Route path='/api-groups' component={TagCloudListing} />
                 <Route
