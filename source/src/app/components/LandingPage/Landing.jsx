@@ -1,13 +1,14 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { useTheme } from '@mui/material';
-import Carousel from './Carousel';
-import ApisWithTag from './ApisWithTag';
-import ParallaxScroll from './ParallaxScroll';
-import Contact from './Contact';
+// import PropTypes from 'prop-types';
+// import Typography from '@mui/material/Typography';
+// import Grid from '@mui/material/Grid';
+// import { useTheme } from '@mui/material';
+// import Carousel from './Carousel';
+// import ApisWithTag from './ApisWithTag';
+// import ParallaxScroll from './ParallaxScroll';
+// import Contact from './Contact';
+import HeroSection from './HeroSection';
 
 const PREFIX = 'Landing';
 
@@ -38,21 +39,13 @@ const Root = styled('div')(() => ({
  * @returns {JSX} renders landing view.
  */
 function Landing() {
-    const theme = useTheme();
-    const {
-        custom: {
-            landingPage:
-            {
-                carousel: { active: carouselActive },
-                listByTag: { active: listByTagActive, content: listByTagContent },
-                parallax: { active: parallaxActive },
-                contact: { active: contactActive },
-            },
-        },
-    } = theme;
+    // const theme = useTheme();
     return (
         <Root className={classes.superRoot}>
             <div className={classes.root}>
+                <HeroSection />
+            </div>
+            {/* <div className={classes.root}>
                 <Grid container spacing={3}>
                     {carouselActive && (
                         <Grid item xs={12}>
@@ -73,8 +66,8 @@ function Landing() {
                         </Grid>
                     )}
                 </Grid>
-            </div>
-            {parallaxActive && (
+            </div> */}
+            {/* {parallaxActive && (
                 <div className={classes.fullWidthBack}>
                     <ParallaxScroll index={0} />
                 </div>
@@ -106,15 +99,15 @@ function Landing() {
                     <Typography variant='h2' gutterBottom>Contact Us</Typography>
                     <Contact />
                 </div>
-            )}
+            )} */}
 
         </Root>
     );
 }
 
 Landing.propTypes = {
-    classes: PropTypes.shape({}).isRequired,
-    theme: PropTypes.shape({}).isRequired,
+    // classes: PropTypes.shape({}).isRequired,
+    // theme: PropTypes.shape({}).isRequired,
 };
 
 export default (Landing);
