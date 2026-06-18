@@ -32,7 +32,6 @@ import {
 } from '@mui/material';
 import Icon from '@mui/material/Icon';
 import PropTypes from 'prop-types';
-import Typography from '@mui/material/Typography';
 import Popper from '@mui/material/Popper';
 import Grow from '@mui/material/Grow';
 // import Paper from '@mui/material/Paper'; // LOOP Matrix: user dropdown no longer uses Paper
@@ -42,13 +41,13 @@ import Drawer from '@mui/material/Drawer';
 import HeaderSearch from 'AppComponents/Base/Header/Search/HeaderSearch'; // LOOP Matrix: shown when search icon is clicked
 import Settings, { useSettingsContext } from 'AppComponents/Shared/SettingsContext';
 import { app } from 'Settings';
-import HTMLRender from 'AppComponents/Shared/HTMLRender';
 import Box from '@mui/material/Box';
 import API from 'AppData/api';
 import AuthManager from '../../data/AuthManager';
 // import LanguageSelector from './Header/LanuageSelector'; // LOOP Matrix: language selector removed from header
 import GlobalNavBar from './Header/GlobalNavbar';
 import UserMenuDropdown from './Header/UserMenuDropdown';
+import LoopFooter from './Footer/LoopFooter';
 // import VerticalDivider from '../Shared/VerticalDivider'; // LOOP Matrix: dividers removed from header
 
 const PREFIX = 'index';
@@ -433,10 +432,6 @@ class LayoutLegacy extends React.Component {
                 appBar: {
                     showSearch,
                 },
-                footer: {
-                    active: footerActive, text: footerText, footerHTML, dangerMode,
-                },
-                // languageSwitch: { active: languageSwitchActive }, // LOOP Matrix: language selector removed from header
                 publicTenantStore,
             },
         } = theme;
@@ -709,7 +704,7 @@ class LayoutLegacy extends React.Component {
                                                 className={classes.userLink}
                                                 id='userToggleButton'
                                                 aria-label='user menu'
-                                                sx={{ backgroundColor: '#FFBF9921', borderRadius: '10px'}}
+                                                sx={{ backgroundColor: '#FFBF9921', borderRadius: '10px' }}
                                             >
                                                 {/* LOOP Matrix: avatar + name + role block (replaces plain person icon)
                                                 <Icon className={classes.icons}>person</Icon>
@@ -756,7 +751,7 @@ class LayoutLegacy extends React.Component {
                                                             textOverflow: 'ellipsis',
                                                             whiteSpace: 'nowrap',
                                                             maxWidth: '160px',
-                                                            color:"#FFFFFF"
+                                                            color: '#FFFFFF',
                                                         }}
                                                     >
                                                         {username}
@@ -843,27 +838,8 @@ class LayoutLegacy extends React.Component {
                         <main>
                             <div className={classes.contentWrapper}>{children}</div>
                         </main>
-                        {footerActive && <div className={classes.push} />}
                     </div>
-                    {footerActive && (
-                        <footer className={classes.footer} id='footer'>
-                            {footerHTML && footerHTML !== '' ? (
-                                <>
-                                    {!dangerMode && (<HTMLRender html={footerHTML} />)}
-                                    {dangerMode && (<div contentEditable='true' dangerouslySetInnerHTML={{ __html: footerHTML }} />)}
-                                </>
-                            ) : (
-                                <Typography noWrap>
-                                    {footerText && footerText !== '' ? <span>{footerText}</span> : (
-                                        <FormattedMessage
-                                            id='Base.index.copyright.text'
-                                            defaultMessage='WSO2 API-M v4.7.0 | © 2026 WSO2 LLC'
-                                        />
-                                    )}
-                                </Typography>
-                            )}
-                        </footer>
-                    )}
+                    <LoopFooter logoSrc={this.getLogoPath()} />
                 </div>
             </Root>
         );
