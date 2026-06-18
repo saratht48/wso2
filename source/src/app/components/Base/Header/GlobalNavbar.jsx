@@ -67,7 +67,7 @@ function GlobalNavBar(props) {
         letterSpacing: '0px',
         cursor: 'pointer',
         padding: drawerView ? '12px 16px' : '0 16px',
-        height: drawerView ? 'auto' : 100, // LOOP Matrix: match 100px header height
+        height: drawerView ? 'auto' : '100%', // LOOP Matrix: fill header height (no fixed px)
         whiteSpace: 'nowrap',
     });
 

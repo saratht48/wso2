@@ -28,26 +28,26 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Hidden from '@mui/material/Hidden';
 import {
-    MenuItem, MenuList, useTheme, Avatar, Badge,
+    useTheme, Avatar, Badge,
 } from '@mui/material';
 import Icon from '@mui/material/Icon';
 import PropTypes from 'prop-types';
-import Typography from '@mui/material/Typography';
 import Popper from '@mui/material/Popper';
 import Grow from '@mui/material/Grow';
-import Paper from '@mui/material/Paper';
+// import Paper from '@mui/material/Paper'; // LOOP Matrix: user dropdown no longer uses Paper
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 // import { Toaster } from 'react-hot-toast'; // LOOP Matrix: Toaster JSX commented out
 import Drawer from '@mui/material/Drawer';
 import HeaderSearch from 'AppComponents/Base/Header/Search/HeaderSearch'; // LOOP Matrix: shown when search icon is clicked
 import Settings, { useSettingsContext } from 'AppComponents/Shared/SettingsContext';
 import { app } from 'Settings';
-import HTMLRender from 'AppComponents/Shared/HTMLRender';
 import Box from '@mui/material/Box';
 import API from 'AppData/api';
 import AuthManager from '../../data/AuthManager';
 // import LanguageSelector from './Header/LanuageSelector'; // LOOP Matrix: language selector removed from header
 import GlobalNavBar from './Header/GlobalNavbar';
+import UserMenuDropdown from './Header/UserMenuDropdown';
+import LoopFooter from './Footer/LoopFooter';
 // import VerticalDivider from '../Shared/VerticalDivider'; // LOOP Matrix: dividers removed from header
 
 const PREFIX = 'index';
@@ -98,8 +98,9 @@ const Root = styled('div')((
             position: 'fixed',
             backgroundColor: '#141A21',
             boxSizing: 'border-box',
+            height: '100px', // explicit height so padding stays INSIDE (border-box), not added on top
             paddingInline: '80px',
-            paddingBlock: '24px',
+
         },
         [`& .${classes.icon}`]: {
             marginRight: theme.spacing(2),
@@ -150,14 +151,15 @@ const Root = styled('div')((
             display: 'flex',
         },
         [`& .${classes.toolbar}`]: {
-            // LOOP Matrix: header height 100px
-            minHeight: 100,
+            // LOOP Matrix: fill the fixed-height header; never force extra height via minHeight
+            minHeight: 0,
+            height: '100%',
             padding: '0px',
             [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-                minHeight: 100,
+                minHeight: 0,
             },
             [theme.breakpoints.up('sm')]: {
-                minHeight: 100,
+                minHeight: 0,
             },
         },
         [`& .${classes.list}`]: {
@@ -430,10 +432,6 @@ class LayoutLegacy extends React.Component {
                 appBar: {
                     showSearch,
                 },
-                footer: {
-                    active: footerActive, text: footerText, footerHTML, dangerMode,
-                },
-                // languageSwitch: { active: languageSwitchActive }, // LOOP Matrix: language selector removed from header
                 publicTenantStore,
             },
         } = theme;
@@ -444,7 +442,8 @@ class LayoutLegacy extends React.Component {
         const user = AuthManager.getUser();
         // TODO: Refer to fix: https://github.com/mui-org/material-ui/issues/10076#issuecomment-361232810 ~tmkb
         let username = null;
-        const userOrganization = sessionStorage.getItem('userOrganization');
+        // LOOP Matrix: organization label removed from the new user dropdown
+        // const userOrganization = sessionStorage.getItem('userOrganization');
 
         if (user) {
             username = user.name;
@@ -549,36 +548,34 @@ class LayoutLegacy extends React.Component {
                             style={{ top: active ? this.state.bannerHeight + 'px' : 0 }}
                         >
                             <Toolbar className={classes.toolbar} id='toolBar'>
-                                <Hidden mdUp>
+                                {/* <Hidden mdUp>
                                     <IconButton onClick={this.toggleGlobalNavBar} color='inherit' size='large'>
                                         <Icon className={classes.menuIcon}>menu</Icon>
                                     </IconButton>
-                                </Hidden>
-                                <Link to='/' id='logoLink' aria-label='Go to home page'>
-                                    <img
-                                        alt={(
-                                            <FormattedMessage
-                                                id='Base.index.logo.alt'
-                                                defaultMessage='Dev Portal'
-                                            />
-                                        )}
-                                        src={this.getLogoPath()}
-                                        style={{
-                                            height: theme.custom.appBar.logoHeight,
-                                            width: theme.custom.appBar.logoWidth,
-                                        }}
-                                    />
-                                </Link>
-                                {/* LOOP Matrix: removed leftover hot-reload test marker
-                                <Typography
-                                    variant='h6'
-                                    noWrap
-                                    style={{ color: '#ffeb3b', marginLeft: 12, fontWeight: 'bold' }}
+                                </Hidden> */}
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        height: '100%',
+                                        gap: '120px',
+                                    }}
                                 >
-                                    ✅ SECOND CHANGE — IT WORKS!
-                                </Typography> */}
-                                <Hidden mdDown>
-
+                                    <Link to='/' id='logoLink' aria-label='Go to home page'>
+                                        <img
+                                            alt={(
+                                                <FormattedMessage
+                                                    id='Base.index.logo.alt'
+                                                    defaultMessage='Dev Portal'
+                                                />
+                                            )}
+                                            src={this.getLogoPath()}
+                                            style={{
+                                                height: theme.custom.appBar.logoHeight,
+                                                width: theme.custom.appBar.logoWidth,
+                                            }}
+                                        />
+                                    </Link>
                                     <div className={classes.listInline}>
                                         <GlobalNavBar
                                             selected={selected}
@@ -589,7 +586,7 @@ class LayoutLegacy extends React.Component {
                                             classes={classes}
                                         />
                                     </div>
-                                </Hidden>
+                                </div>
                                 <Hidden mdUp>
                                     <Drawer
                                         className={classes.drawerStyles}
@@ -663,7 +660,11 @@ class LayoutLegacy extends React.Component {
                                             size='large'
                                             onClick={this.toggleSearch}
                                         >
-                                            <Icon>{this.state.searchOpen ? 'close' : 'search'}</Icon>
+                                            <img
+                                                src={`${app.context}/site/public/images/searchButton.svg`}
+                                                alt='Search'
+                                                style={{ height: 36, width: 36 }}
+                                            />
                                         </IconButton>
                                     </>
                                 )}
@@ -673,7 +674,11 @@ class LayoutLegacy extends React.Component {
                                     aria-label='toggle theme'
                                     size='large'
                                 >
-                                    <Icon>wb_sunny</Icon>
+                                    <img
+                                        src={`${app.context}/site/public/images/toggleTheme.svg`}
+                                        alt='Toggle theme'
+                                        style={{ height: 36, width: 36 }}
+                                    />
                                 </IconButton>
                                 <IconButton
                                     color='inherit'
@@ -682,7 +687,11 @@ class LayoutLegacy extends React.Component {
                                     size='large'
                                 >
                                     <Badge badgeContent={2} color='error'>
-                                        <Icon>notifications_none</Icon>
+                                        <img
+                                            src={`${app.context}/site/public/images/reminderButton.svg`}
+                                            alt='Reminders'
+                                            style={{ height: 36, width: 36 }}
+                                        />
                                     </Badge>
                                 </IconButton>
                                 {user ? (
@@ -695,6 +704,7 @@ class LayoutLegacy extends React.Component {
                                                 className={classes.userLink}
                                                 id='userToggleButton'
                                                 aria-label='user menu'
+                                                sx={{ backgroundColor: '#FFBF9921', borderRadius: '10px' }}
                                             >
                                                 {/* LOOP Matrix: avatar + name + role block (replaces plain person icon)
                                                 <Icon className={classes.icons}>person</Icon>
@@ -710,11 +720,14 @@ class LayoutLegacy extends React.Component {
                                                 </span>
                                                 */}
                                                 <Avatar
+                                                    variant='rounded'
                                                     sx={{
                                                         bgcolor: '#FF5F00',
-                                                        width: 32,
-                                                        height: 32,
-                                                        fontSize: 13,
+                                                        width: 36,
+                                                        height: 36,
+                                                        borderRadius: '10px',
+                                                        fontSize: 14,
+                                                        fontWeight: 700,
                                                         mr: 1,
                                                     }}
                                                 >
@@ -738,12 +751,13 @@ class LayoutLegacy extends React.Component {
                                                             textOverflow: 'ellipsis',
                                                             whiteSpace: 'nowrap',
                                                             maxWidth: '160px',
+                                                            color: '#FFFFFF',
                                                         }}
                                                     >
                                                         {username}
                                                     </span>
                                                     {/* TODO: replace hardcoded role with real user role when available */}
-                                                    <span style={{ fontSize: 11, opacity: 0.7 }}>Dev</span>
+                                                    <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>Dev</span>
                                                 </span>
                                                 <Icon className={classes.icons} style={{ marginLeft: 6 }}>
                                                     keyboard_arrow_down
@@ -774,67 +788,21 @@ class LayoutLegacy extends React.Component {
                                                                 placement === 'bottom' ? 'center top' : 'center bottom',
                                                         }}
                                                     >
-                                                        <Paper>
+                                                        <div>
                                                             <ClickAwayListener onClickAway={this.handleCloseUserMenu}>
-                                                                <MenuList>
-                                                                    {userOrganization && (
-                                                                        <MenuItem style={{ pointerEvents: 'none' }}>
-                                                                            <>
-                                                                                <Icon
-                                                                                    className={classes.icons}
-                                                                                    sx={{
-                                                                                        color: 'black',
-                                                                                    }}
-                                                                                >
-                                                                                    business
-                                                                                </Icon>
-                                                                                <Typography
-                                                                                    variant='body1'
-                                                                                    className={classes.organizationLabel}
-                                                                                    sx={{
-                                                                                        color: 'black',
-                                                                                        textTransform: 'uppercase',
-                                                                                        fontWeight: 'bold',
-                                                                                        fontSize: '12px',
-                                                                                        whiteSpace: 'nowrap',
-                                                                                        overflow: 'hidden',
-                                                                                        textOverflow: 'ellipsis',
-                                                                                        maxWidth: '200px',
-                                                                                    }}
-                                                                                >
-                                                                                    {userOrganization}
-                                                                                </Typography>
-                                                                            </>
-                                                                        </MenuItem>
-                                                                    )}
-                                                                    {this.getPasswordChangeEnabled()
-                                                                        ? (
-                                                                            <MenuItem className={classes.logoutLink}>
-                                                                                <Link
-                                                                                    to='/settings/change-password/'
-                                                                                    onClick={this.handleCloseUserMenu}
-                                                                                >
-                                                                                    <FormattedMessage
-                                                                                        id='Base.index.settingsMenu.changePassword'
-                                                                                        defaultMessage='Change Password'
-                                                                                    />
-                                                                                </Link>
-                                                                            </MenuItem>
-                                                                        )
-                                                                        : null}
-                                                                    <MenuItem
-                                                                        onClick={this.doOIDCLogout}
-                                                                        className={classes.logoutLink}
-                                                                        id='logout-link'
-                                                                    >
-                                                                        <FormattedMessage
-                                                                            id='Base.index.logout'
-                                                                            defaultMessage='Logout'
-                                                                        />
-                                                                    </MenuItem>
-                                                                </MenuList>
+                                                                <div>
+                                                                    <UserMenuDropdown
+                                                                        initials={userInitials}
+                                                                        name={username}
+                                                                        email={user && user.email ? user.email : ''}
+                                                                        plan='Growth'
+                                                                        onProfile={this.handleCloseUserMenu}
+                                                                        onSettings={this.handleCloseUserMenu}
+                                                                        onSignOut={this.doOIDCLogout}
+                                                                    />
+                                                                </div>
                                                             </ClickAwayListener>
-                                                        </Paper>
+                                                        </div>
                                                     </Grow>
                                                 )}
                                             </Popper>
@@ -844,13 +812,24 @@ class LayoutLegacy extends React.Component {
                                     <div className={classes.linkWrapper}>
                                         <Button
                                             id='itest-devportal-sign-in'
-                                            className={classes.userLink}
                                             component='a'
                                             href={app.context + '/services/configs'}
-                                            style={{ color: '#FF5F00' }} // LOOP Matrix: sign-in button accent color
+                                            disableElevation
+                                            style={{
+                                                height: '40px',
+                                                width: '90px',
+                                                minWidth: '90px',
+                                                backgroundColor: '#FF5F00',
+                                                borderRadius: '10px',
+                                                color: '#FFFFFF',
+                                                fontFamily: "'Poppins', 'Open Sans', 'Helvetica', 'Arial', sans-serif",
+                                                fontWeight: 500,
+                                                fontSize: '14px',
+                                                lineHeight: '20px',
+                                                textTransform: 'none',
+                                            }}
                                         >
-                                            <Icon>person</Icon>
-                                            <FormattedMessage id='Base.index.sign.in' defaultMessage=' Sign-in' />
+                                            <FormattedMessage id='Base.index.sign.in' defaultMessage='Sign In' />
                                         </Button>
                                     </div>
                                 )}
@@ -859,27 +838,8 @@ class LayoutLegacy extends React.Component {
                         <main>
                             <div className={classes.contentWrapper}>{children}</div>
                         </main>
-                        {footerActive && <div className={classes.push} />}
                     </div>
-                    {footerActive && (
-                        <footer className={classes.footer} id='footer'>
-                            {footerHTML && footerHTML !== '' ? (
-                                <>
-                                    {!dangerMode && (<HTMLRender html={footerHTML} />)}
-                                    {dangerMode && (<div contentEditable='true' dangerouslySetInnerHTML={{ __html: footerHTML }} />)}
-                                </>
-                            ) : (
-                                <Typography noWrap>
-                                    {footerText && footerText !== '' ? <span>{footerText}</span> : (
-                                        <FormattedMessage
-                                            id='Base.index.copyright.text'
-                                            defaultMessage='WSO2 API-M v4.7.0 | © 2026 WSO2 LLC'
-                                        />
-                                    )}
-                                </Typography>
-                            )}
-                        </footer>
-                    )}
+                    <LoopFooter logoSrc={this.getLogoPath()} />
                 </div>
             </Root>
         );

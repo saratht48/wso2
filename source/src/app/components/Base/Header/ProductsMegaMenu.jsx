@@ -81,7 +81,7 @@ const styles = {
         borderTop: 'none',
     },
     section: {
-        padding: '26px 48px 30px',
+        padding: '26px 48px 130px',
     },
     headerRow: {
         display: 'flex',
@@ -186,6 +186,17 @@ const styles = {
  */
 function ProductsMegaMenu(props) {
     const { open, onClose, top } = props;
+    // Measure the real header height so the dropdown opens flush BELOW it
+    // (the AppBar has vertical padding, so its height is not a fixed 100px).
+    const [topPx, setTopPx] = React.useState(top);
+
+    React.useEffect(() => {
+        if (!open) return;
+        const bar = document.getElementById('appBar');
+        if (bar) {
+            setTopPx(Math.round(bar.getBoundingClientRect().bottom));
+        }
+    }, [open, top]);
 
     return (
         <>
@@ -194,13 +205,13 @@ function ProductsMegaMenu(props) {
                 onClick={onClose}
                 sx={{
                     // dim everything below the header (header stays bright, matching Figma)
-                    top: `${top}px`,
+                    top: `${topPx}px`,
                     backgroundColor: 'rgba(0, 0, 0, 0.55)',
                     zIndex: 1200,
                 }}
             />
             <Fade in={open} unmountOnExit>
-                <div style={{ ...styles.panel, top }}>
+                <div style={{ ...styles.panel, top: topPx }}>
                     <div style={styles.section}>
                         <div style={styles.headerRow}>
                             <span>Our Products</span>

@@ -1,3 +1,10 @@
+/* LOOP Matrix global reset: padding & border never add to an element's width/height */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* Poppins font import (LOOP Matrix main font) */
 /* Place these .ttf files in site/public/fonts/Poppins/ (filenames must match exactly). */
 @font-face {
