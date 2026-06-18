@@ -13,11 +13,9 @@ import Fade from '@mui/material/Fade';
 const SECTION_BG = '#171E26';
 const FOOTER_BG = '#0F141A';
 const ORANGE = '#FF5F00';
-const DESC_COLOR = '#9AA4B2';
-const LABEL_COLOR = '#6B7785';
 const ICON_BG = '#F8E9D6';
 const BADGE_COLOR = '#34D399';
-const MONO = "'Roboto Mono', 'Courier New', monospace";
+const FONT = "'Poppins', 'Open Sans', 'Helvetica', 'Arial', sans-serif";
 
 // Product list shown in the dropdown (routes are placeholders until the pages exist)
 const PRODUCTS = [
@@ -89,11 +87,13 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        fontFamily: MONO,
-        fontSize: 12,
-        letterSpacing: '0.18em',
+        fontFamily: FONT,
+        fontWeight: 400,
+        fontSize: '10px',
+        lineHeight: '15px',
+        letterSpacing: '2.5px',
         textTransform: 'uppercase',
-        color: LABEL_COLOR,
+        color: '#9CA3AF',
         paddingBottom: 16,
         marginBottom: 24,
         borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -126,13 +126,15 @@ const styles = {
         gap: 8,
     },
     title: {
-        fontFamily: MONO,
-        fontSize: 15,
-        fontWeight: 600,
+        fontFamily: FONT,
+        fontSize: '16px',
+        fontWeight: 700,
+        lineHeight: '20.25px',
+        letterSpacing: '0px',
         color: ORANGE,
     },
     badge: {
-        fontFamily: MONO,
+        fontFamily: FONT,
         fontSize: 10,
         fontWeight: 700,
         letterSpacing: '0.06em',
@@ -142,9 +144,12 @@ const styles = {
         borderRadius: 4,
     },
     desc: {
-        color: DESC_COLOR,
-        fontSize: 13,
-        lineHeight: 1.5,
+        fontFamily: FONT,
+        color: '#F2F5F7',
+        fontSize: '14px',
+        fontWeight: 400,
+        lineHeight: '22px',
+        letterSpacing: '0px',
         marginTop: 6,
         maxWidth: 250,
     },
@@ -154,16 +159,23 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        fontFamily: MONO,
+        fontFamily: FONT,
         fontSize: 13,
     },
     footerLeft: {
-        color: DESC_COLOR,
+        color: '#9CA3AF',
+        fontWeight: 400,
+        fontSize: '12px',
+        lineHeight: '18px',
+        letterSpacing: '0px',
     },
     footerLink: {
         color: ORANGE,
         textDecoration: 'none',
-        fontWeight: 600,
+        fontWeight: 400,
+        fontSize: '11px',
+        lineHeight: '16.5px',
+        letterSpacing: '0px',
     },
 };
 
