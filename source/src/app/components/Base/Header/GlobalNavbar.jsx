@@ -54,13 +54,17 @@ function GlobalNavBar(props) {
         { key: 'faqs', label: 'FAQs', to: '/faqs' },
     ];
 
+    // LOOP Matrix: header menu typography spec (Poppins 400 / 14px / 18px line-height)
     const linkStyle = (active) => ({
         display: 'flex',
         alignItems: 'center',
         textDecoration: 'none',
+        fontFamily: "'Poppins', 'Open Sans', 'Helvetica', 'Arial', sans-serif",
         color: active ? ACTIVE_COLOR : INACTIVE_COLOR,
-        fontWeight: active ? 700 : 400,
-        fontSize: 14,
+        fontWeight: 400,
+        fontSize: '14px',
+        lineHeight: '18px',
+        letterSpacing: '0px',
         cursor: 'pointer',
         padding: drawerView ? '12px 16px' : '0 16px',
         height: drawerView ? 'auto' : 100, // LOOP Matrix: match 100px header height
