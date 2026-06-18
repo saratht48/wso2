@@ -3,5 +3,5 @@
 .mcp-playground *,
 [data-testid="mcp-playground"],
 [data-testid="mcp-playground"] * {
-    font-family: "Open Sans", "Helvetica", "Arial", sans-serif !important;
+    font-family: "Poppins", "Open Sans", "Helvetica", "Arial", sans-serif !important;
 }

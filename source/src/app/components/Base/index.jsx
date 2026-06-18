@@ -28,7 +28,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Hidden from '@mui/material/Hidden';
 import {
-    MenuItem, MenuList, useTheme,
+    MenuItem, MenuList, useTheme, Avatar, Badge,
 } from '@mui/material';
 import Icon from '@mui/material/Icon';
 import PropTypes from 'prop-types';
@@ -37,18 +37,18 @@ import Popper from '@mui/material/Popper';
 import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { Toaster } from 'react-hot-toast';
+// import { Toaster } from 'react-hot-toast'; // LOOP Matrix: Toaster JSX commented out
 import Drawer from '@mui/material/Drawer';
-import HeaderSearch from 'AppComponents/Base/Header/Search/HeaderSearch';
+import HeaderSearch from 'AppComponents/Base/Header/Search/HeaderSearch'; // LOOP Matrix: shown when search icon is clicked
 import Settings, { useSettingsContext } from 'AppComponents/Shared/SettingsContext';
 import { app } from 'Settings';
 import HTMLRender from 'AppComponents/Shared/HTMLRender';
 import Box from '@mui/material/Box';
 import API from 'AppData/api';
 import AuthManager from '../../data/AuthManager';
-import LanguageSelector from './Header/LanuageSelector';
+// import LanguageSelector from './Header/LanuageSelector'; // LOOP Matrix: language selector removed from header
 import GlobalNavBar from './Header/GlobalNavbar';
-import VerticalDivider from '../Shared/VerticalDivider';
+// import VerticalDivider from '../Shared/VerticalDivider'; // LOOP Matrix: dividers removed from header
 
 const PREFIX = 'index';
 
@@ -96,9 +96,10 @@ const Root = styled('div')((
     return {
         [`& .${classes.appBar}`]: {
             position: 'fixed',
-            backgroundColor: theme.custom.appBar.background,
-            backgroundImage: `url(${app.context}${theme.custom.appBar.backgroundImage})`,
-            backgroundRepeat: 'no-repeat',
+            backgroundColor: '#141A21',
+            boxSizing: 'border-box',
+            paddingInline: '80px',
+            paddingBlock: '24px',
         },
         [`& .${classes.icon}`]: {
             marginRight: theme.spacing(2),
@@ -120,7 +121,7 @@ const Root = styled('div')((
         },
         // Page layout styles
         [`& .${classes.drawer}`]: {
-            top: 64,
+            top: 100, // LOOP Matrix: header height 100px
         },
         [`& .${classes.wrapper}`]: {
             minHeight: '100%',
@@ -133,9 +134,9 @@ const Root = styled('div')((
             overflowY: 'auto',
             overflowX: 'hidden',
             position: 'relative',
-            minHeight: theme.custom.banner.active ? `calc(100vh - ${64 + footerHeight}px)` : `calc(100vh - ${footerHeight}px)`,
+            minHeight: theme.custom.banner.active ? `calc(100vh - ${100 + footerHeight}px)` : `calc(100vh - ${footerHeight}px)`,
             marginLeft: -4,
-            marginTop: theme.custom.banner.active ? 0 : '64px',
+            marginTop: theme.custom.banner.active ? 0 : '100px', // LOOP Matrix: header height 100px
         },
         [`& .${classes.push}`]: {
             height: 50,
@@ -149,12 +150,14 @@ const Root = styled('div')((
             display: 'flex',
         },
         [`& .${classes.toolbar}`]: {
-            minHeight: 56,
+            // LOOP Matrix: header height 100px
+            minHeight: 100,
+            padding: '0px',
             [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-                minHeight: 48,
+                minHeight: 100,
             },
             [theme.breakpoints.up('sm')]: {
-                minHeight: 64,
+                minHeight: 100,
             },
         },
         [`& .${classes.list}`]: {
@@ -276,6 +279,7 @@ class LayoutLegacy extends React.Component {
             selected: 'home',
             anchorEl: null,
             bannerHeight: 0,
+            searchOpen: false, // LOOP Matrix: collapsible header search
         };
         this.toggleGlobalNavBar = this.toggleGlobalNavBar.bind(this);
         const { history } = props;
@@ -405,6 +409,11 @@ class LayoutLegacy extends React.Component {
         this.setState((prevState) => ({ openNavBar: !prevState.openNavBar }));
     }
 
+    // LOOP Matrix: open/close the header search box
+    toggleSearch = () => {
+        this.setState((prevState) => ({ searchOpen: !prevState.searchOpen }));
+    };
+
     /**
      * Render callback.
      * @returns {JSX} returns the JSX
@@ -416,7 +425,7 @@ class LayoutLegacy extends React.Component {
         const {
             custom: {
                 banner: {
-                    style, text, image, active,
+                    active, // LOOP Matrix: banner JSX commented out; only `active` still referenced
                 },
                 appBar: {
                     showSearch,
@@ -424,7 +433,7 @@ class LayoutLegacy extends React.Component {
                 footer: {
                     active: footerActive, text: footerText, footerHTML, dangerMode,
                 },
-                languageSwitch: { active: languageSwitchActive },
+                // languageSwitch: { active: languageSwitchActive }, // LOOP Matrix: language selector removed from header
                 publicTenantStore,
             },
         } = theme;
@@ -444,12 +453,23 @@ class LayoutLegacy extends React.Component {
                 username = user.name.replace('@carbon.super', '');
             }
         }
+        // LOOP Matrix: initials for the user avatar (e.g. "Chris M" -> "CM")
+        let userInitials = '';
+        if (username) {
+            userInitials = username
+                .trim()
+                .split(/\s+/)
+                .map((part) => part[0])
+                .slice(0, 2)
+                .join('')
+                .toUpperCase();
+        }
         const commonStyle = {
-            style: { top: 64 },
+            style: { top: 100 }, // LOOP Matrix: header height 100px
         };
         const paperStyles = {
             style: {
-                top: 64,
+                top: 100, // LOOP Matrix: header height 100px
                 backgroundColor: theme.custom.appBar.background,
             },
         };
@@ -465,7 +485,7 @@ class LayoutLegacy extends React.Component {
         }
         return (
             <Root>
-                {active && (
+                {/* {active && (
                     <div className={classes.banner} id='bannerElement'>
                         {style === 'text' ? text
                             : (
@@ -480,8 +500,8 @@ class LayoutLegacy extends React.Component {
                                 />
                             )}
                     </div>
-                )}
-                <Toaster
+                )} */}
+                {/* <Toaster
                     position='bottom-right'
                     gutter={8}
                     toastOptions={{
@@ -519,9 +539,9 @@ class LayoutLegacy extends React.Component {
                             style: { backgroundColor: '#DDEFFF' },
                         },
                     }}
-                />
+                /> */}
                 <div className={classes.reactRoot} id='pageRoot'>
-                    <div className={classes.wrapper} style={{ marginTop: active ? (this.state.bannerHeight + 64) + 'px' : 0 }}>
+                    <div className={classes.wrapper} style={{ marginTop: active ? (this.state.bannerHeight + 100) + 'px' : 0 }}>
                         <AppBar
                             position='fixed'
                             className={classes.appBar}
@@ -549,15 +569,16 @@ class LayoutLegacy extends React.Component {
                                         }}
                                     />
                                 </Link>
+                                {/* LOOP Matrix: removed leftover hot-reload test marker
                                 <Typography
                                     variant='h6'
                                     noWrap
                                     style={{ color: '#ffeb3b', marginLeft: 12, fontWeight: 'bold' }}
                                 >
                                     ✅ SECOND CHANGE — IT WORKS!
-                                </Typography>
+                                </Typography> */}
                                 <Hidden mdDown>
-                                    <VerticalDivider height={32} />
+
                                     <div className={classes.listInline}>
                                         <GlobalNavBar
                                             selected={selected}
@@ -598,8 +619,10 @@ class LayoutLegacy extends React.Component {
                                         </div>
                                     </Drawer>
                                 </Hidden>
+                                {/* LOOP Matrix: full search box replaced by a search icon in the right cluster below
                                 <VerticalDivider height={32} />
                                 {showSearch && (<HeaderSearch id='headerSearch' />)}
+                                */}
                                 <Box sx={{ flexGrow: 1 }} />
                                 {tenantDomain && customUrlEnabledDomain === 'null' && tenantDomain !== 'INVALID'
                                     && publicTenantStoreVisible && (
@@ -623,8 +646,45 @@ class LayoutLegacy extends React.Component {
                                         </Button>
                                     </Link>
                                 )}
-                                <VerticalDivider height={64} />
+
+                                {/* LOOP Matrix: language selector not part of the new header design
                                 {languageSwitchActive && <LanguageSelector />}
+                                */}
+                                {/* LOOP Matrix: right-side control cluster (search / theme toggle / notifications).
+                                    NOTE: theme toggle and notifications are visual placeholders for now —
+                                    they are not wired to any behaviour yet. */}
+                                {showSearch && (
+                                    <>
+                                        {this.state.searchOpen && (<HeaderSearch id='headerSearch' />)}
+                                        <IconButton
+                                            color='inherit'
+                                            className={classes.userLink}
+                                            aria-label='search'
+                                            size='large'
+                                            onClick={this.toggleSearch}
+                                        >
+                                            <Icon>{this.state.searchOpen ? 'close' : 'search'}</Icon>
+                                        </IconButton>
+                                    </>
+                                )}
+                                <IconButton
+                                    color='inherit'
+                                    className={classes.userLink}
+                                    aria-label='toggle theme'
+                                    size='large'
+                                >
+                                    <Icon>wb_sunny</Icon>
+                                </IconButton>
+                                <IconButton
+                                    color='inherit'
+                                    className={classes.userLink}
+                                    aria-label='notifications'
+                                    size='large'
+                                >
+                                    <Badge badgeContent={2} color='error'>
+                                        <Icon>notifications_none</Icon>
+                                    </Badge>
+                                </IconButton>
                                 {user ? (
                                     <>
                                         <div className={classes.linkWrapper}>
@@ -636,6 +696,7 @@ class LayoutLegacy extends React.Component {
                                                 id='userToggleButton'
                                                 aria-label='user menu'
                                             >
+                                                {/* LOOP Matrix: avatar + name + role block (replaces plain person icon)
                                                 <Icon className={classes.icons}>person</Icon>
                                                 <span
                                                     style={{
@@ -647,6 +708,46 @@ class LayoutLegacy extends React.Component {
                                                 >
                                                     {username}
                                                 </span>
+                                                */}
+                                                <Avatar
+                                                    sx={{
+                                                        bgcolor: '#FF5F00',
+                                                        width: 32,
+                                                        height: 32,
+                                                        fontSize: 13,
+                                                        mr: 1,
+                                                    }}
+                                                >
+                                                    {userInitials}
+                                                </Avatar>
+                                                <span
+                                                    style={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        alignItems: 'flex-start',
+                                                        lineHeight: 1.15,
+                                                        textTransform: 'none',
+                                                        maxWidth: '200px',
+                                                    }}
+                                                >
+                                                    <span
+                                                        style={{
+                                                            fontSize: 13,
+                                                            fontWeight: 600,
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis',
+                                                            whiteSpace: 'nowrap',
+                                                            maxWidth: '160px',
+                                                        }}
+                                                    >
+                                                        {username}
+                                                    </span>
+                                                    {/* TODO: replace hardcoded role with real user role when available */}
+                                                    <span style={{ fontSize: 11, opacity: 0.7 }}>Dev</span>
+                                                </span>
+                                                <Icon className={classes.icons} style={{ marginLeft: 6 }}>
+                                                    keyboard_arrow_down
+                                                </Icon>
                                             </Button>
                                             <Popper
                                                 id='userPopup'
@@ -746,6 +847,7 @@ class LayoutLegacy extends React.Component {
                                             className={classes.userLink}
                                             component='a'
                                             href={app.context + '/services/configs'}
+                                            style={{ color: '#FF5F00' }} // LOOP Matrix: sign-in button accent color
                                         >
                                             <Icon>person</Icon>
                                             <FormattedMessage id='Base.index.sign.in' defaultMessage=' Sign-in' />

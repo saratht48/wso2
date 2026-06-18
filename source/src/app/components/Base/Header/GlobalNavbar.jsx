@@ -19,14 +19,20 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
-import classNames from 'classnames';
 import Icon from '@mui/material/Icon';
-import {
-    ListItemIcon, List, ListItem, ListItemText, useTheme,
-} from '@mui/material';
-import AuthManager from 'AppData/AuthManager';
-import { useAreApisAccessible, useAreMcpServersAccessible } from 'AppUtils/PortalModeUtils';
-import CustomIcon from '../../Shared/CustomIcon';
+import { List } from '@mui/material';
+import ProductsMegaMenu from './ProductsMegaMenu';
+
+// --- LOOP Matrix: imports no longer used after the nav was re-skinned ---
+// import classNames from 'classnames';
+// import { ListItemIcon, ListItem, ListItemText, useTheme } from '@mui/material';
+// import AuthManager from 'AppData/AuthManager';
+// import { useAreApisAccessible, useAreMcpServersAccessible } from 'AppUtils/PortalModeUtils';
+// import CustomIcon from '../../Shared/CustomIcon';
+
+// LOOP Matrix brand colors (active tab orange / inactive white on dark header)
+const ACTIVE_COLOR = '#FF5F00';
+const INACTIVE_COLOR = '#FFFFFF';
 
 /**
  * GlobalNavBar
@@ -34,6 +40,85 @@ import CustomIcon from '../../Shared/CustomIcon';
  * @returns {React.Component} Renders global navbar
  */
 function GlobalNavBar(props) {
+    const {
+        classes, drawerView, location,
+    } = props;
+    const [productsOpen, setProductsOpen] = React.useState(false);
+    const pathname = (location && location.pathname) || '';
+    const isActive = (to) => pathname === to || pathname.startsWith(`${to}/`);
+
+    // Top-level nav items (routes will be added later as the screens are built)
+    const navItems = [
+        { key: 'developers', label: 'Developers & Resources', to: '/developers' },
+        { key: 'app', label: 'App', to: '/applications' },
+        { key: 'faqs', label: 'FAQs', to: '/faqs' },
+    ];
+
+    const linkStyle = (active) => ({
+        display: 'flex',
+        alignItems: 'center',
+        textDecoration: 'none',
+        color: active ? ACTIVE_COLOR : INACTIVE_COLOR,
+        fontWeight: active ? 700 : 400,
+        fontSize: 14,
+        cursor: 'pointer',
+        padding: drawerView ? '12px 16px' : '0 16px',
+        height: drawerView ? 'auto' : 100, // LOOP Matrix: match 100px header height
+        whiteSpace: 'nowrap',
+    });
+
+    const productsActive = pathname.startsWith('/products');
+
+    return (
+        <List
+            className={classes.listRootInline}
+            component='nav'
+            aria-label='primary navigation'
+            role='navigation'
+            style={{ display: 'flex', flexDirection: drawerView ? 'column' : 'row', alignItems: 'center' }}
+        >
+            {/* Products dropdown (full-width mega-menu) */}
+            <div
+                role='button'
+                tabIndex={0}
+                aria-label='Products menu'
+                style={linkStyle(productsActive || productsOpen)}
+                onClick={() => setProductsOpen((openState) => !openState)}
+                onKeyDown={(e) => { if (e.key === 'Enter') setProductsOpen((openState) => !openState); }}
+            >
+                Products
+                <Icon
+                    style={{
+                        fontSize: 18,
+                        marginLeft: 4,
+                        transition: 'transform 0.2s',
+                        transform: productsOpen ? 'rotate(180deg)' : 'none',
+                    }}
+                >
+                    keyboard_arrow_down
+                </Icon>
+            </div>
+            {!drawerView && (
+                <ProductsMegaMenu
+                    open={productsOpen}
+                    onClose={() => setProductsOpen(false)}
+                    top={100}
+                />
+            )}
+
+            {/* Remaining top-level links */}
+            {navItems.map((item) => (
+                <Link key={item.key} to={item.to} style={linkStyle(isActive(item.to))}>
+                    {item.label}
+                </Link>
+            ))}
+        </List>
+    );
+
+    /* ======================================================================
+     * LOOP Matrix: original WSO2 navigation (Home / APIs / MCP Servers /
+     * Applications) kept here for reference. Commented out — not removed.
+     * ======================================================================
     const {
         classes, intl, drawerView, selected, iconWidth, strokeColorSelected, strokeColor,
     } = props;
@@ -51,7 +136,6 @@ function GlobalNavBar(props) {
                         to='/home'
                         className={classNames({
                             [classes.selected]: selected === 'home',
-                            // eslint-disable-next-line quote-props
                             'selected': selected === 'home',
                             [classes.links]: true,
                         }, 'header-link')}
@@ -96,7 +180,6 @@ function GlobalNavBar(props) {
                     to={(theme.custom.tagWise.active && theme.custom.tagWise.style === 'page') ? '/api-groups' : '/apis'}
                     className={classNames({
                         [classes.selected]: selected === 'apis',
-                        // eslint-disable-next-line quote-props
                         'selected': selected === 'apis',
                         [classes.links]: true,
                     }, 'header-link')}
@@ -138,7 +221,6 @@ function GlobalNavBar(props) {
                     to={(theme.custom.tagWise.active && theme.custom.tagWise.style === 'page') ? '/api-groups' : '/mcp-servers'}
                     className={classNames({
                         [classes.selected]: selected === 'mcp-servers',
-                        // eslint-disable-next-line quote-props
                         'selected': selected === 'mcp-servers',
                         [classes.links]: true,
                     }, 'header-link')}
@@ -179,7 +261,6 @@ function GlobalNavBar(props) {
                 to='/applications'
                 className={classNames({
                     [classes.selected]: selected === 'applications',
-                    // eslint-disable-next-line quote-props
                     'selected': selected === 'applications',
                     [classes.links]: true,
                 }, 'header-link')}
@@ -216,11 +297,17 @@ function GlobalNavBar(props) {
             </Link>
         </List>
     );
+    ====================================================================== */
 }
 
 GlobalNavBar.propTypes = {
-    intl: PropTypes.shape({}).isRequired,
-    theme: PropTypes.shape({}).isRequired,
+    classes: PropTypes.shape({}).isRequired,
+    drawerView: PropTypes.bool,
+    location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
+};
+
+GlobalNavBar.defaultProps = {
+    drawerView: false,
 };
 
 export default withRouter((injectIntl(GlobalNavBar)));

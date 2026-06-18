@@ -52,9 +52,9 @@ const DefaultConfigurations = {
             border: 'none', // It can be something like 'solid 1px #cccccc' for fixed layouts
         },
         appBar: {
-            logo: '/site/public/images/logo.svg', // You can set the url to an external image also ( ex: https://dummyimage.com/208x19/66aad1/ffffff&text=testlogo)
-            logoHeight: 34,
-            logoWidth: 'auto',
+            logo: '/site/public/images/LoopLogo.svg', // You can set the url to an external image also ( ex: https://dummyimage.com/208x19/66aad1/ffffff&text=testlogo)
+            logoHeight: '50px',
+            logoWidth: '99px',
             background: '#0fa2db',
             backgroundImage: '/site/public/images/appbarBack.png',
             searchInputBackground: '#fff',

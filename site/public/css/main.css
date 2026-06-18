@@ -1,3 +1,41 @@
+/* Poppins font import (LOOP Matrix main font) */
+/* Place these .ttf files in site/public/fonts/Poppins/ (filenames must match exactly). */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: local('Poppins Light'), url(../fonts/Poppins/Poppins-Light.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Poppins Regular'), url(../fonts/Poppins/Poppins-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local('Poppins Medium'), url(../fonts/Poppins/Poppins-Medium.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Poppins SemiBold'), url(../fonts/Poppins/Poppins-SemiBold.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Poppins Bold'), url(../fonts/Poppins/Poppins-Bold.ttf) format('truetype');
+}
+
 /* Open Sans font import */
 
 /* cyrillic-ext */
