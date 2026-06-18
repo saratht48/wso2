@@ -7,8 +7,9 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
+import { app } from 'Settings';
 
-// import HeroImage from '../../../../site/public/images/landing/LandingHeroSection.png';
+const HeroImage = `${app.context}/site/public/images/landing/LandingHeroSection.png`;
 
 /**
  * HeroSection component.
@@ -115,8 +116,8 @@ export default function HeroSection() {
                 <Grid item xs={12} md={6}>
                     <Box
                         component='img'
-                        // src={HeroImage}
-                        src=''
+                        src={HeroImage}
+                       
                         alt='Hero'
                         sx={{
                             width: '100%',
