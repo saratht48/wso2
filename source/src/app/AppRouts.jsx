@@ -33,6 +33,7 @@ const SamplePage = lazy(() => import('AppComponents/SamplePage/SamplePage' /* we
 const Apis = lazy(() => import('AppComponents/Apis/Apis' /* webpackChunkName: "Apis" */));
 const MCPServers = lazy(() => import('AppComponents/MCPServers/MCPServers' /* webpackChunkName: "MCPServers" */));
 const Landing = lazy(() => import('AppComponents/LandingPage/Landing' /* webpackChunkName: "Landing" */));
+const PaymentsLanding = lazy(() => import('AppComponents/Products/Payments/PaymentsLanding' /* webpackChunkName: "PaymentsLanding" */));
 const TagCloudListing = lazy(() => import('AppComponents/Apis/Listing/TagCloudListing' /* webpackChunkName: "TagCloudListing" */));
 const ChangePassword = lazy(() => import('AppComponents/Settings/ChangePassword/ChangePassword'));
 const Listing = lazy(() => import('AppComponents/Applications/Listing/Listing' /* webpackChunkName: "ApiListing" */));
@@ -78,6 +79,7 @@ function AppRouts(props) {
                 <Redirect exact from='/' to={getRedirectingPath(theme, portalMode)} />
                 <Route path='/sample' component={SamplePage} />
                 <Route path='/home' component={Landing} />
+                <Route path='/products/payments' component={PaymentsLanding} />
                 <Route path='/api-groups' component={TagCloudListing} />
                 <Route
                     path='/(apis|api-products)'
