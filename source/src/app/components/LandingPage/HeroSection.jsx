@@ -2,7 +2,6 @@ import React from 'react';
 import {
     Box,
     Button,
-    Chip,
     Grid,
     Stack,
     Typography,
@@ -20,42 +19,62 @@ export default function HeroSection() {
     return (
         <Box
             sx={{
-                height: '100vh',
-                width: '100%',
-                bgcolor: '#07111D',
+                width: '100vw',
+                minHeight: '750px',
+                bgcolor: '#141A21',
                 color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
-                px: { xs: 3, md: 10 },
+                justifyContent: 'center',
                 overflow: 'hidden',
-            }}
-        >
+            }}>
             <Grid
                 container
+                sx={{
+                    width: '100%',
+                    // maxWidth: '1440px',
+                    // px: { md: 8 },
+                    paddingLeft: '112px',
+                    paddingRight: '112px',
+                }}
                 alignItems='center'
-                justifyContent='space-between'
-                spacing={4}
             >
                 {/* LEFT SECTION */}
                 <Grid item xs={12} md={6}>
-                    <Chip
-                        label='DEVELOPER-FIRST API'
-                        sx={{
-                            mb: 3,
-                            bgcolor: '#141c28',
-                            color: '#ff6b00',
-                            border: '1px solid #ff6b00',
-                        }}
-                    />
+                    <Box sx={{ marginTop: '21px', marginBottom: '32px' }}>
+                        <Typography
+                            component="span"
+                            sx={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                 px: 1.5,
+                                 py: 0.75,
+                                bgcolor: '#141c28',
+                                fontSize: '12px',
+                                //   fontFamily: 'JetBrains Mono',
+                                fontWeight: 600,
+                                letterSpacing: '0.05em',
+                                color: '#ff5500',
+                                border: '1px solid #ff5500',
+                                borderRadius: '20px',
+                                '&::before': {
+                                    content: '">"',
+                                    fontSize: '12px',
+                                    color: '#ff5500',
+                                },
+                            }}
+                        >
+                            DEVELOPER_FIRST_API
+                        </Typography>
+                    </Box>
+
 
                     <Typography
                         sx={{
-                            fontSize: {
-                                xs: '2.5rem',
-                                md: '4.5rem',
-                            },
+                            fontSize: '60px',
                             fontWeight: 700,
-                            lineHeight: 1.1,
+                            lineHeight: '75px',
                             mb: 3,
                         }}
                     >
@@ -63,16 +82,17 @@ export default function HeroSection() {
                         <br />
                         Infrastructure.
                         <br />
-                        <Box component='span' sx={{ color: '#ff6b00' }}>
+                        <Box component='span' sx={{ color: '#FF5F00' }}>
                             Ship Faster.
                         </Box>
                     </Typography>
 
                     <Typography
                         sx={{
-                            color: '#94A3B8',
-                            fontSize: '1.1rem',
-                            maxWidth: '520px',
+                            color: '#9CA3AF',
+                            fontSize: '16px',
+                            maxWidth: '584px',
+                            height: '48px',
                             mb: 4,
                         }}
                     >
@@ -85,10 +105,13 @@ export default function HeroSection() {
                         <Button
                             variant='contained'
                             sx={{
-                                bgcolor: '#ff6b00',
+                                bgcolor: '#FF5F00',
                                 px: 4,
                                 py: 1.5,
                                 borderRadius: '10px',
+                                '&:hover': {
+                                    bgcolor: '#ff5500',
+                                },
                             }}
                         >
                             Start Building Free →
@@ -117,11 +140,11 @@ export default function HeroSection() {
                     <Box
                         component='img'
                         src={HeroImage}
-                       
                         alt='Hero'
                         sx={{
                             width: '100%',
-                            maxWidth: '700px',
+                            maxWidth: '585px',
+                            height: 'auto',
                             display: 'block',
                             mx: 'auto',
                         }}
