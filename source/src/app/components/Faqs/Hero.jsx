@@ -18,7 +18,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { SearchIcon } from './Icons';
-import { ORANGE, DARK_1 } from './tokens';
+import { ORANGE } from './tokens';
 
 const PREFIX = 'FaqHero';
 
@@ -38,7 +38,7 @@ const classes = {
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    background: `linear-gradient(180deg, #1A222C 0%, ${DARK_1} 100%)`,
+    background: 'linear-gradient(180deg, var(--loop-hero-top) 0%, var(--loop-page-bg) 100%)',
     padding: '96px 40px 80px',
     textAlign: 'center',
     [theme.breakpoints.down('sm')]: {
@@ -72,7 +72,7 @@ const Root = styled('section')(({ theme }) => ({
         backgroundColor: ORANGE,
     },
     [`& .${classes.title}`]: {
-        color: '#FFFFFF',
+        color: 'var(--loop-text-primary)',
         fontWeight: 700,
         fontSize: 56,
         lineHeight: '64px',
@@ -91,7 +91,7 @@ const Root = styled('section')(({ theme }) => ({
         color: ORANGE,
     },
     [`& .${classes.subtitle}`]: {
-        color: '#94A3B8',
+        color: 'var(--loop-text-subtitle)',
         fontWeight: 400,
         fontSize: 19,
         lineHeight: '30px',
@@ -114,8 +114,8 @@ const Root = styled('section')(({ theme }) => ({
         gap: 12,
         maxWidth: 800,
         margin: '0 auto',
-        backgroundColor: 'rgba(8,8,8,0.6)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        backgroundColor: 'var(--loop-search-bg)',
+        border: '1px solid var(--loop-search-border)',
         borderRadius: 16,
         padding: '18px 20px',
         transition: 'border-color 0.2s ease',
@@ -127,18 +127,18 @@ const Root = styled('section')(({ theme }) => ({
         background: 'none',
         border: 'none',
         outline: 'none',
-        color: '#FFFFFF',
+        color: 'var(--loop-text-primary)',
         fontFamily: 'inherit',
         fontSize: 16,
         lineHeight: '24px',
-        '&::placeholder': { color: '#6B7280' },
+        '&::placeholder': { color: 'var(--loop-text-muted)' },
     },
     [`& .${classes.kbd}`]: {
         flexShrink: 0,
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
         fontSize: 12,
-        color: '#6B7280',
-        border: '1px solid rgba(255,255,255,0.12)',
+        color: 'var(--loop-text-muted)',
+        border: '1px solid var(--loop-border-strong)',
         borderRadius: 6,
         padding: '3px 8px',
         [theme.breakpoints.down('sm')]: { display: 'none' },

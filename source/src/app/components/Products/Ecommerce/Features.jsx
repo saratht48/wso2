@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { ORANGE, DARK_1, DARK_2 } from './tokens';
+import { ORANGE } from './tokens';
 
 const PREFIX = 'EcommerceFeatures';
 
@@ -34,7 +34,7 @@ const classes = {
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: DARK_2,
+    backgroundColor: 'var(--loop-bg-deep)',
     padding: '96px 40px',
     [theme.breakpoints.down('md')]: {
         padding: '64px 24px',
@@ -49,7 +49,7 @@ const Root = styled('section')(({ theme }) => ({
     },
     [`& .${classes.sectionTitle}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-        color: '#FFFFFF',
+        color: 'var(--loop-text-primary)',
         fontWeight: 700,
         fontSize: 40,
         lineHeight: '60px',
@@ -86,8 +86,8 @@ const Root = styled('section')(({ theme }) => ({
         },
     },
     [`& .${classes.card}`]: {
-        backgroundColor: DARK_1,
-        border: '1px solid rgba(255,255,255,0.08)',
+        backgroundColor: 'var(--loop-card-soft)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 16,
         padding: '40px 30px',
         display: 'flex',
@@ -110,7 +110,7 @@ const Root = styled('section')(({ theme }) => ({
     },
     [`& .${classes.cardTitle}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-        color: '#FFFFFF',
+        color: 'var(--loop-text-primary)',
         fontWeight: 500,
         fontSize: 20,
         lineHeight: '24.75px',
@@ -126,6 +126,7 @@ const Root = styled('section')(({ theme }) => ({
 }));
 
 /* Feature card icons (orange stroke, 28px) matching the Figma glyphs. */
+/* eslint-disable max-len -- inline SVG path data */
 const featureIcons = {
     inventory: (
         <svg width='28' height='28' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
@@ -185,6 +186,7 @@ const featureIcons = {
         </svg>
     ),
 };
+/* eslint-enable max-len */
 
 const FEATURES = [
     {

@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { DARK_1, DARK_2, ORANGE } from './tokens';
+import { DARK_1, ORANGE } from './tokens';
 
 const PREFIX = 'EcommerceCta';
 
@@ -32,7 +32,7 @@ const classes = {
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: DARK_2,
+    backgroundColor: 'var(--loop-bg-deep)',
     textAlign: 'center',
     padding: '96px 40px',
     [theme.breakpoints.down('md')]: {
@@ -48,7 +48,7 @@ const Root = styled('section')(({ theme }) => ({
     },
     [`& .${classes.ctaTitle}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-        color: '#FFFFFF',
+        color: 'var(--loop-text-strong)',
         fontWeight: 700,
         fontSize: 40,
         lineHeight: '60px',
@@ -59,7 +59,7 @@ const Root = styled('section')(({ theme }) => ({
         },
     },
     [`& .${classes.ctaDesc}`]: {
-        color: '#D1D5DC',
+        color: 'var(--loop-cta-desc)',
         fontWeight: 400,
         fontSize: 18,
         lineHeight: '30px',
@@ -102,7 +102,7 @@ const Root = styled('section')(({ theme }) => ({
         lineHeight: '24px',
         borderRadius: 10,
         padding: '16px 34px',
-        border: '2px solid rgba(255,255,255,0.2)',
+        border: '2px solid var(--loop-cta-outline)',
         transition: 'background 0.2s ease',
         '&:hover': { backgroundColor: '#F3F3F3' },
     },

@@ -44,7 +44,7 @@ const classes = {
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: DARK_1,
+    backgroundColor: 'var(--loop-header-bg)',
     position: 'relative',
     overflow: 'hidden',
     padding: '96px 40px',
@@ -109,7 +109,7 @@ const Root = styled('section')(({ theme }) => ({
     },
     [`& .${classes.title}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-        color: '#FFFFFF',
+        color: 'var(--loop-text-strong)',
         fontWeight: 700,
         fontSize: 60,
         lineHeight: '75px',
@@ -129,7 +129,7 @@ const Root = styled('section')(({ theme }) => ({
         fontWeight: 800,
     },
     [`& .${classes.desc}`]: {
-        color: '#FFFFFF',
+        color: 'var(--loop-hero-desc)',
         fontWeight: 400,
         fontSize: 20,
         lineHeight: '32.5px',

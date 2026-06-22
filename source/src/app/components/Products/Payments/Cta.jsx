@@ -17,7 +17,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { ArrowIcon } from './Icons';
-import { DARK_1, DARK_2 } from './tokens';
+import { DARK_1 } from './tokens';
 
 const PREFIX = 'PaymentsCta';
 
@@ -33,7 +33,7 @@ const classes = {
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: DARK_2,
+    backgroundColor: 'var(--loop-bg-deep)',
     textAlign: 'center',
     padding: '96px 40px',
     [theme.breakpoints.down('md')]: {
@@ -48,7 +48,7 @@ const Root = styled('section')(({ theme }) => ({
         width: '100%',
     },
     [`& .${classes.ctaTitle}`]: {
-        color: '#FFFFFF',
+        color: 'var(--loop-text-strong)',
         fontWeight: 700,
         fontSize: 38,
         lineHeight: '45.6px',
@@ -59,7 +59,7 @@ const Root = styled('section')(({ theme }) => ({
         },
     },
     [`& .${classes.ctaDesc}`]: {
-        color: '#D1D5DC',
+        color: 'var(--loop-cta-desc)',
         fontWeight: 400,
         fontSize: 18,
         lineHeight: '30px',
@@ -76,7 +76,7 @@ const Root = styled('section')(({ theme }) => ({
         display: 'inline-flex',
         alignItems: 'center',
         gap: 8,
-        border: 'none',
+        border: '1px solid var(--loop-cta-outline)',
         cursor: 'pointer',
         backgroundColor: '#FFFFFF',
         color: DARK_1,
@@ -95,14 +95,14 @@ const Root = styled('section')(({ theme }) => ({
         gap: 8,
         cursor: 'pointer',
         backgroundColor: 'transparent',
-        color: '#FFFFFF',
+        color: 'var(--loop-text-strong)',
         fontFamily: 'inherit',
         fontWeight: 700,
         fontSize: 16,
         lineHeight: '24px',
         borderRadius: 14,
         padding: '16px 32px',
-        border: '2px solid #FFFFFF',
+        border: '2px solid var(--loop-text-strong)',
         transition: 'background 0.2s ease',
         '&:hover': { backgroundColor: 'rgba(255,255,255,0.08)' },
     },

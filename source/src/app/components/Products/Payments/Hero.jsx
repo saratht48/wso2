@@ -45,7 +45,7 @@ const classes = {
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: DARK_1,
+    backgroundColor: 'var(--loop-header-bg)',
     position: 'relative',
     overflow: 'hidden',
     padding: '96px 40px',
@@ -85,7 +85,7 @@ const Root = styled('section')(({ theme }) => ({
         marginBottom: 28,
     },
     [`& .${classes.heroTitle}`]: {
-        color: '#FFFFFF',
+        color: 'var(--loop-text-strong)',
         fontWeight: 700,
         fontSize: 60,
         lineHeight: '75px',
@@ -104,7 +104,7 @@ const Root = styled('section')(({ theme }) => ({
         color: ORANGE,
     },
     [`& .${classes.heroDesc}`]: {
-        color: '#94A3B8',
+        color: 'var(--loop-text-subtitle)',
         fontWeight: 400,
         fontSize: 18,
         lineHeight: '29.25px',
