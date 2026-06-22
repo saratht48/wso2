@@ -9,6 +9,14 @@ import { styled } from '@mui/material/styles';
 // import ParallaxScroll from './ParallaxScroll';
 // import Contact from './Contact';
 import HeroSection from './HeroSection';
+import TrustedCompanies from './TrustedCompanies';
+import OurProducts from './ourproducts';
+import ProductSuite from './ProductSuite';
+import ShipFast from './ShipFast';
+import TechSection from './TechItem';
+import GetStarted from './GetStarted';
+
+// import { Container } from '@mui/material';
 
 const PREFIX = 'Landing';
 
@@ -42,9 +50,14 @@ function Landing() {
     // const theme = useTheme();
     return (
         <Root className={classes.superRoot}>
-            <div className={classes.root}>
-                <HeroSection />
-            </div>
+
+            <HeroSection />
+            <TrustedCompanies />
+            <OurProducts />
+            <ProductSuite/>
+            <ShipFast />
+            <TechSection/>
+            <GetStarted />
             {/* <div className={classes.root}>
                 <Grid container spacing={3}>
                     {carouselActive && (

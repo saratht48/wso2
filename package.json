@@ -19,6 +19,7 @@
         "extract-i18n": "formatjs extract",
         "i18n:en": "npm run extract-i18n -- 'source/src/app/**/*.{jsx,tsx}' --ignore='**/*.d.{js,ts,tsx,jsx}' --out-file site/public/locales/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format=simple",
         "check-unused": "webpack --mode production --env.unused true --display errors-only",
+        "lint:fix": "eslint --ignore-pattern '*.test.js' --ignore-pattern '*.test.jsx' -c .eslintrc.js --ext .jsx,.js --fix source",
         "start": "npm run i18n:en && webpack serve --compress --port 8084 --mode development --watch"
     },
     "repository": {
