@@ -100,7 +100,13 @@ const Root = styled('div')((
             boxSizing: 'border-box',
             height: '100px', // explicit height so padding stays INSIDE (border-box), not added on top
             paddingInline: '80px',
-
+            // LOOP Matrix: tighten side padding on smaller viewports
+            [theme.breakpoints.down('md')]: {
+                paddingInline: '40px',
+            },
+            [theme.breakpoints.down('sm')]: {
+                paddingInline: '20px',
+            },
         },
         [`& .${classes.icon}`]: {
             marginRight: theme.spacing(2),
@@ -126,7 +132,9 @@ const Root = styled('div')((
         },
         [`& .${classes.wrapper}`]: {
             minHeight: '100%',
-            marginBottom: -50,
+            // LOOP Matrix: removed the -50 sticky-footer hack (no matching push spacer is
+            // rendered, so it pulled the footer up and overlapped the page content).
+            marginBottom: 0,
             background: theme.palette.background.default + ' url(' + app.context + theme.custom.backgroundImage + ') repeat left top',
         },
         [`& .${classes.contentWrapper}`]: {
@@ -548,11 +556,24 @@ class LayoutLegacy extends React.Component {
                             style={{ top: active ? this.state.bannerHeight + 'px' : 0 }}
                         >
                             <Toolbar className={classes.toolbar} id='toolBar'>
-                                {/* <Hidden mdUp>
-                                    <IconButton onClick={this.toggleGlobalNavBar} color='inherit' size='large'>
-                                        <Icon className={classes.menuIcon}>menu</Icon>
+                                {/* LOOP Matrix: hamburger opens the nav drawer on mobile (< md) */}
+                                <Hidden mdUp>
+                                    <IconButton
+                                        onClick={this.toggleGlobalNavBar}
+                                        aria-label='open navigation menu'
+                                        size='large'
+                                        sx={{
+                                            mr: 1.5,
+                                            width: 44,
+                                            height: 44,
+                                            borderRadius: '10px',
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            color: '#FFFFFF',
+                                        }}
+                                    >
+                                        <Icon>menu</Icon>
                                     </IconButton>
-                                </Hidden> */}
+                                </Hidden>
                                 <div
                                     style={{
                                         display: 'flex',
@@ -576,16 +597,18 @@ class LayoutLegacy extends React.Component {
                                             }}
                                         />
                                     </Link>
-                                    <div className={classes.listInline}>
-                                        <GlobalNavBar
-                                            selected={selected}
-                                            drawerView={false}
-                                            iconWidth={16}
-                                            strokeColor={strokeColor}
-                                            strokeColorSelected={strokeColorSelected}
-                                            classes={classes}
-                                        />
-                                    </div>
+                                    <Hidden smDown>
+                                        <div className={classes.listInline}>
+                                            <GlobalNavBar
+                                                selected={selected}
+                                                drawerView={false}
+                                                iconWidth={16}
+                                                strokeColor={strokeColor}
+                                                strokeColorSelected={strokeColorSelected}
+                                                classes={classes}
+                                            />
+                                        </div>
+                                    </Hidden>
                                 </div>
                                 <Hidden mdUp>
                                     <Drawer
@@ -680,33 +703,34 @@ class LayoutLegacy extends React.Component {
                                         style={{ height: 36, width: 36 }}
                                     />
                                 </IconButton>
-                                <IconButton
-                                    color='inherit'
-                                    className={classes.userLink}
-                                    aria-label='notifications'
-                                    size='large'
-                                >
-                                    <Badge badgeContent={2} color='error'>
-                                        <img
-                                            src={`${app.context}/site/public/images/reminderButton.svg`}
-                                            alt='Reminders'
-                                            style={{ height: 36, width: 36 }}
-                                        />
-                                    </Badge>
-                                </IconButton>
-                                {user ? (
-                                    <>
-                                        <div className={classes.linkWrapper}>
-                                            <Button
-                                                aria-owns={this.openUserMenu ? 'menu-list-grow' : null}
-                                                aria-haspopup='true'
-                                                onClick={this.handleToggleUserMenu}
-                                                className={classes.userLink}
-                                                id='userToggleButton'
-                                                aria-label='user menu'
-                                                sx={{ backgroundColor: '#FFBF9921', borderRadius: '10px' }}
-                                            >
-                                                {/* LOOP Matrix: avatar + name + role block (replaces plain person icon)
+                                <Hidden smDown>
+                                    <IconButton
+                                        color='inherit'
+                                        className={classes.userLink}
+                                        aria-label='notifications'
+                                        size='large'
+                                    >
+                                        <Badge badgeContent={2} color='error'>
+                                            <img
+                                                src={`${app.context}/site/public/images/reminderButton.svg`}
+                                                alt='Reminders'
+                                                style={{ height: 36, width: 36 }}
+                                            />
+                                        </Badge>
+                                    </IconButton>
+                                    {user ? (
+                                        <>
+                                            <div className={classes.linkWrapper}>
+                                                <Button
+                                                    aria-owns={this.openUserMenu ? 'menu-list-grow' : null}
+                                                    aria-haspopup='true'
+                                                    onClick={this.handleToggleUserMenu}
+                                                    className={classes.userLink}
+                                                    id='userToggleButton'
+                                                    aria-label='user menu'
+                                                    sx={{ backgroundColor: '#FFBF9921', borderRadius: '10px' }}
+                                                >
+                                                    {/* LOOP Matrix: avatar + name + role block (replaces plain person icon)
                                                 <Icon className={classes.icons}>person</Icon>
                                                 <span
                                                     style={{
@@ -719,120 +743,121 @@ class LayoutLegacy extends React.Component {
                                                     {username}
                                                 </span>
                                                 */}
-                                                <Avatar
-                                                    variant='rounded'
-                                                    sx={{
-                                                        bgcolor: '#FF5F00',
-                                                        width: 36,
-                                                        height: 36,
-                                                        borderRadius: '10px',
-                                                        fontSize: 14,
-                                                        fontWeight: 700,
-                                                        mr: 1,
-                                                    }}
-                                                >
-                                                    {userInitials}
-                                                </Avatar>
-                                                <span
-                                                    style={{
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                        alignItems: 'flex-start',
-                                                        lineHeight: 1.15,
-                                                        textTransform: 'none',
-                                                        maxWidth: '200px',
-                                                    }}
-                                                >
+                                                    <Avatar
+                                                        variant='rounded'
+                                                        sx={{
+                                                            bgcolor: '#FF5F00',
+                                                            width: 36,
+                                                            height: 36,
+                                                            borderRadius: '10px',
+                                                            fontSize: 14,
+                                                            fontWeight: 700,
+                                                            mr: 1,
+                                                        }}
+                                                    >
+                                                        {userInitials}
+                                                    </Avatar>
                                                     <span
                                                         style={{
-                                                            fontSize: 13,
-                                                            fontWeight: 600,
-                                                            overflow: 'hidden',
-                                                            textOverflow: 'ellipsis',
-                                                            whiteSpace: 'nowrap',
-                                                            maxWidth: '160px',
-                                                            color: '#FFFFFF',
+                                                            display: 'flex',
+                                                            flexDirection: 'column',
+                                                            alignItems: 'flex-start',
+                                                            lineHeight: 1.15,
+                                                            textTransform: 'none',
+                                                            maxWidth: '200px',
                                                         }}
                                                     >
-                                                        {username}
+                                                        <span
+                                                            style={{
+                                                                fontSize: 13,
+                                                                fontWeight: 600,
+                                                                overflow: 'hidden',
+                                                                textOverflow: 'ellipsis',
+                                                                whiteSpace: 'nowrap',
+                                                                maxWidth: '160px',
+                                                                color: '#FFFFFF',
+                                                            }}
+                                                        >
+                                                            {username}
+                                                        </span>
+                                                        {/* TODO: replace hardcoded role with real user role when available */}
+                                                        <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>Dev</span>
                                                     </span>
-                                                    {/* TODO: replace hardcoded role with real user role when available */}
-                                                    <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>Dev</span>
-                                                </span>
-                                                <Icon className={classes.icons} style={{ marginLeft: 6 }}>
-                                                    keyboard_arrow_down
-                                                </Icon>
-                                            </Button>
-                                            <Popper
-                                                id='userPopup'
-                                                open={this.state.openUserMenu}
-                                                anchorEl={this.state.anchorEl}
-                                                transition
-                                                disablePortal
-                                                anchorOrigin={{
-                                                    vertical: 'bottom',
-                                                    horizontal: 'center',
-                                                }}
-                                                transformOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'center',
-                                                }}
-                                                placement='bottom-start'
-                                            >
-                                                {({ TransitionProps, placement }) => (
-                                                    <Grow
-                                                        {...TransitionProps}
-                                                        id='menu-list-grow'
-                                                        style={{
-                                                            transformOrigin:
+                                                    <Icon className={classes.icons} style={{ marginLeft: 6 }}>
+                                                        keyboard_arrow_down
+                                                    </Icon>
+                                                </Button>
+                                                <Popper
+                                                    id='userPopup'
+                                                    open={this.state.openUserMenu}
+                                                    anchorEl={this.state.anchorEl}
+                                                    transition
+                                                    disablePortal
+                                                    anchorOrigin={{
+                                                        vertical: 'bottom',
+                                                        horizontal: 'center',
+                                                    }}
+                                                    transformOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'center',
+                                                    }}
+                                                    placement='bottom-start'
+                                                >
+                                                    {({ TransitionProps, placement }) => (
+                                                        <Grow
+                                                            {...TransitionProps}
+                                                            id='menu-list-grow'
+                                                            style={{
+                                                                transformOrigin:
                                                                 placement === 'bottom' ? 'center top' : 'center bottom',
-                                                        }}
-                                                    >
-                                                        <div>
-                                                            <ClickAwayListener onClickAway={this.handleCloseUserMenu}>
-                                                                <div>
-                                                                    <UserMenuDropdown
-                                                                        initials={userInitials}
-                                                                        name={username}
-                                                                        email={user && user.email ? user.email : ''}
-                                                                        plan='Growth'
-                                                                        onProfile={this.handleCloseUserMenu}
-                                                                        onSettings={this.handleCloseUserMenu}
-                                                                        onSignOut={this.doOIDCLogout}
-                                                                    />
-                                                                </div>
-                                                            </ClickAwayListener>
-                                                        </div>
-                                                    </Grow>
-                                                )}
-                                            </Popper>
+                                                            }}
+                                                        >
+                                                            <div>
+                                                                <ClickAwayListener onClickAway={this.handleCloseUserMenu}>
+                                                                    <div>
+                                                                        <UserMenuDropdown
+                                                                            initials={userInitials}
+                                                                            name={username}
+                                                                            email={user && user.email ? user.email : ''}
+                                                                            plan='Growth'
+                                                                            onProfile={this.handleCloseUserMenu}
+                                                                            onSettings={this.handleCloseUserMenu}
+                                                                            onSignOut={this.doOIDCLogout}
+                                                                        />
+                                                                    </div>
+                                                                </ClickAwayListener>
+                                                            </div>
+                                                        </Grow>
+                                                    )}
+                                                </Popper>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className={classes.linkWrapper}>
+                                            <Button
+                                                id='itest-devportal-sign-in'
+                                                component='a'
+                                                href={app.context + '/services/configs'}
+                                                disableElevation
+                                                style={{
+                                                    height: '40px',
+                                                    width: '90px',
+                                                    minWidth: '90px',
+                                                    backgroundColor: '#FF5F00',
+                                                    borderRadius: '10px',
+                                                    color: '#FFFFFF',
+                                                    fontFamily: "'Poppins', 'Open Sans', 'Helvetica', 'Arial', sans-serif",
+                                                    fontWeight: 500,
+                                                    fontSize: '14px',
+                                                    lineHeight: '20px',
+                                                    textTransform: 'none',
+                                                }}
+                                            >
+                                                <FormattedMessage id='Base.index.sign.in' defaultMessage='Sign In' />
+                                            </Button>
                                         </div>
-                                    </>
-                                ) : (
-                                    <div className={classes.linkWrapper}>
-                                        <Button
-                                            id='itest-devportal-sign-in'
-                                            component='a'
-                                            href={app.context + '/services/configs'}
-                                            disableElevation
-                                            style={{
-                                                height: '40px',
-                                                width: '90px',
-                                                minWidth: '90px',
-                                                backgroundColor: '#FF5F00',
-                                                borderRadius: '10px',
-                                                color: '#FFFFFF',
-                                                fontFamily: "'Poppins', 'Open Sans', 'Helvetica', 'Arial', sans-serif",
-                                                fontWeight: 500,
-                                                fontSize: '14px',
-                                                lineHeight: '20px',
-                                                textTransform: 'none',
-                                            }}
-                                        >
-                                            <FormattedMessage id='Base.index.sign.in' defaultMessage='Sign In' />
-                                        </Button>
-                                    </div>
-                                )}
+                                    )}
+                                </Hidden>
                             </Toolbar>
                         </AppBar>
                         <main>
