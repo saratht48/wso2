@@ -18,7 +18,6 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import { app } from 'Settings';
 import { StarIcon } from './Icons';
-import { DARK_1, DARK_2 } from './tokens';
 
 const PREFIX = 'EcommerceTestimonials';
 
@@ -41,7 +40,7 @@ const classes = {
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: DARK_1,
+    backgroundColor: 'var(--loop-header-bg)',
     padding: '96px 40px',
     [theme.breakpoints.down('md')]: {
         padding: '64px 24px',
@@ -56,7 +55,7 @@ const Root = styled('section')(({ theme }) => ({
     },
     [`& .${classes.sectionTitle}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-        color: '#FFFFFF',
+        color: 'var(--loop-text-strong)',
         fontWeight: 700,
         fontSize: 40,
         lineHeight: '60px',
@@ -91,7 +90,7 @@ const Root = styled('section')(({ theme }) => ({
         },
     },
     [`& .${classes.card}`]: {
-        backgroundColor: DARK_2,
+        backgroundColor: 'var(--loop-bg-deep)',
         borderRadius: 16,
         padding: 33,
         display: 'flex',
@@ -105,7 +104,7 @@ const Root = styled('section')(({ theme }) => ({
         gap: 4,
     },
     [`& .${classes.quote}`]: {
-        color: '#ADB3BE',
+        color: 'var(--loop-quote)',
         fontStyle: 'italic',
         fontWeight: 400,
         fontSize: 16,
@@ -125,7 +124,7 @@ const Root = styled('section')(({ theme }) => ({
         flexShrink: 0,
     },
     [`& .${classes.name}`]: {
-        color: '#FFFFFF',
+        color: 'var(--loop-text-strong)',
         fontWeight: 600,
         fontSize: 16,
         lineHeight: '24px',

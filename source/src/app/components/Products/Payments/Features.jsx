@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { ORANGE, DARK_1, DARK_2 } from './tokens';
+import { ORANGE } from './tokens';
 
 const PREFIX = 'PaymentsFeatures';
 
@@ -36,7 +36,7 @@ const classes = {
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: DARK_2,
+    backgroundColor: 'var(--loop-bg-deep)',
     padding: '96px 40px',
     [theme.breakpoints.down('md')]: {
         padding: '64px 24px',
@@ -50,7 +50,7 @@ const Root = styled('section')(({ theme }) => ({
         width: '100%',
     },
     [`& .${classes.sectionTitle}`]: {
-        color: '#FFFFFF',
+        color: 'var(--loop-text-primary)',
         fontWeight: 700,
         fontSize: 40,
         lineHeight: '60px',
@@ -62,7 +62,7 @@ const Root = styled('section')(({ theme }) => ({
         },
     },
     [`& .${classes.sectionSub}`]: {
-        color: '#6B7280',
+        color: '#4A5565',
         fontWeight: 400,
         fontSize: 18,
         lineHeight: '30px',
@@ -79,8 +79,8 @@ const Root = styled('section')(({ theme }) => ({
         },
     },
     [`& .${classes.card}`]: {
-        backgroundColor: DARK_1,
-        border: '1px solid rgba(255,255,255,0.08)',
+        backgroundColor: 'var(--loop-card-soft)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 16,
         padding: 40,
     },
@@ -107,7 +107,7 @@ const Root = styled('section')(({ theme }) => ({
         marginBottom: 24,
     },
     [`& .${classes.cardTitle}`]: {
-        color: '#FFFFFF',
+        color: 'var(--loop-text-primary)',
         fontWeight: 500,
         fontSize: 20,
         lineHeight: '24.75px',

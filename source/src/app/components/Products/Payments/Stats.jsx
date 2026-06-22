@@ -16,7 +16,7 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { ORANGE, ORANGE_LIGHT, DARK_1 } from './tokens';
+import { ORANGE, ORANGE_LIGHT } from './tokens';
 
 const PREFIX = 'PaymentsStats';
 
@@ -32,7 +32,7 @@ const classes = {
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: DARK_1,
+    backgroundColor: 'var(--loop-header-bg)',
     padding: '96px 40px',
     [theme.breakpoints.down('md')]: {
         padding: '64px 24px',
@@ -67,7 +67,7 @@ const Root = styled('section')(({ theme }) => ({
         fontWeight: 700,
         fontSize: 60,
         lineHeight: '60px',
-        color: '#FFFFFF',
+        color: 'var(--loop-text-strong)',
         margin: 0,
         [theme.breakpoints.down('sm')]: {
             fontSize: 40,

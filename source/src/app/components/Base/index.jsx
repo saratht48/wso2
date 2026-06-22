@@ -43,6 +43,7 @@ import Settings, { useSettingsContext } from 'AppComponents/Shared/SettingsConte
 import { app } from 'Settings';
 import Box from '@mui/material/Box';
 import API from 'AppData/api';
+import LoopThemeStyles, { initLoopThemeMode, toggleLoopThemeMode } from 'AppComponents/Shared/LoopTheme';
 import AuthManager from '../../data/AuthManager';
 // import LanguageSelector from './Header/LanuageSelector'; // LOOP Matrix: language selector removed from header
 import GlobalNavBar from './Header/GlobalNavbar';
@@ -96,7 +97,9 @@ const Root = styled('div')((
     return {
         [`& .${classes.appBar}`]: {
             position: 'fixed',
-            backgroundColor: '#141A21',
+            // LOOP Matrix: header colour follows the light/dark theme variable
+            backgroundColor: 'var(--loop-header-bg, #141A21)',
+            borderBottom: '1px solid var(--loop-header-border, transparent)',
             boxSizing: 'border-box',
             height: '100px', // explicit height so padding stays INSIDE (border-box), not added on top
             paddingInline: '80px',
@@ -283,6 +286,8 @@ class LayoutLegacy extends React.Component {
      */
     constructor(props) {
         super(props);
+        // LOOP Matrix: apply the persisted light/dark theme before first paint.
+        initLoopThemeMode();
         this.state = {
             openNavBar: false,
             openUserMenu: false,
@@ -492,6 +497,7 @@ class LayoutLegacy extends React.Component {
         }
         return (
             <Root>
+                <LoopThemeStyles />
                 {/* {active && (
                     <div className={classes.banner} id='bannerElement'>
                         {style === 'text' ? text
@@ -583,7 +589,9 @@ class LayoutLegacy extends React.Component {
                                     }}
                                 >
                                     <Link to='/' id='logoLink' aria-label='Go to home page'>
+                                        {/* LOOP Matrix: dark/light logo swapped by theme via CSS */}
                                         <img
+                                            className='loop-logo-dark'
                                             alt={(
                                                 <FormattedMessage
                                                     id='Base.index.logo.alt'
@@ -591,6 +599,15 @@ class LayoutLegacy extends React.Component {
                                                 />
                                             )}
                                             src={this.getLogoPath()}
+                                            style={{
+                                                height: theme.custom.appBar.logoHeight,
+                                                width: theme.custom.appBar.logoWidth,
+                                            }}
+                                        />
+                                        <img
+                                            className='loop-logo-light'
+                                            alt='LOOP Matrix'
+                                            src={`${app.context}/site/public/images/lighlogo.svg`}
                                             style={{
                                                 height: theme.custom.appBar.logoHeight,
                                                 width: theme.custom.appBar.logoWidth,
@@ -696,10 +713,19 @@ class LayoutLegacy extends React.Component {
                                     className={classes.userLink}
                                     aria-label='toggle theme'
                                     size='large'
+                                    onClick={() => toggleLoopThemeMode()}
                                 >
+                                    {/* LOOP Matrix: sun in dark mode, moon in light mode (CSS-swapped) */}
                                     <img
+                                        className='loop-themeicon-dark'
                                         src={`${app.context}/site/public/images/toggleTheme.svg`}
-                                        alt='Toggle theme'
+                                        alt='Switch to light mode'
+                                        style={{ height: 36, width: 36 }}
+                                    />
+                                    <img
+                                        className='loop-themeicon-light'
+                                        src={`${app.context}/site/public/images/darkmode.svg`}
+                                        alt='Switch to dark mode'
                                         style={{ height: 36, width: 36 }}
                                     />
                                 </IconButton>

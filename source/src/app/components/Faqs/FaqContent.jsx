@@ -22,7 +22,7 @@ import {
     PlusIcon, CloseIcon, ArrowRightIcon,
 } from './Icons';
 import FAQ_CATEGORIES from './faqData';
-import { ORANGE, DARK_2 } from './tokens';
+import { ORANGE } from './tokens';
 
 const PREFIX = 'FaqContent';
 
@@ -83,7 +83,7 @@ const PRODUCTS_COVERED = FAQ_CATEGORIES.filter((c) => c.id !== 'general').length
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: DARK_2,
+    backgroundColor: 'var(--loop-section-bg)',
     padding: '64px 40px 96px',
     [theme.breakpoints.down('md')]: {
         padding: '48px 24px 72px',
@@ -138,7 +138,7 @@ const Root = styled('section')(({ theme }) => ({
     },
     [`& .${classes.eyebrow}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-        color: '#5A6B7B',
+        color: 'var(--loop-eyebrow)',
         fontSize: 12,
         fontWeight: 500,
         letterSpacing: 1.5,
@@ -160,19 +160,19 @@ const Root = styled('section')(({ theme }) => ({
         border: '1px solid transparent',
         borderRadius: 10,
         padding: '11px 14px',
-        color: '#9CA3AF',
+        color: 'var(--loop-text-leftrail)',
         fontFamily: 'inherit',
         fontSize: 15,
         fontWeight: 500,
         textAlign: 'left',
         transition: 'all 0.15s ease',
-        '&:hover': { backgroundColor: 'rgba(255,255,255,0.03)', color: '#FFFFFF' },
+        '&:hover': { backgroundColor: 'var(--loop-toggle-bg)', color: 'var(--loop-text-primary)' },
     },
     [`& .${classes.catBtnActive}`]: {
-        backgroundColor: 'rgba(255,95,0,0.1)',
+        backgroundColor: 'var(--loop-active-bg)',
         border: '1px solid rgba(255,95,0,0.35)',
         color: ORANGE,
-        '&:hover': { backgroundColor: 'rgba(255,95,0,0.12)', color: ORANGE },
+        '&:hover': { backgroundColor: 'var(--loop-active-bg)', color: ORANGE },
     },
     [`& .${classes.catLabel}`]: {
         flex: 1,
@@ -182,8 +182,8 @@ const Root = styled('section')(({ theme }) => ({
         whiteSpace: 'nowrap',
     },
     [`& .${classes.card}`]: {
-        backgroundColor: 'rgba(255,255,255,0.02)',
-        border: '1px solid rgba(255,255,255,0.06)',
+        backgroundColor: 'var(--loop-surface-2)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 14,
         padding: 20,
     },
@@ -194,7 +194,7 @@ const Root = styled('section')(({ theme }) => ({
         padding: '6px 0',
     },
     [`& .${classes.overviewLabel}`]: {
-        color: '#9CA3AF',
+        color: 'var(--loop-text-secondary)',
         fontSize: 14,
     },
     [`& .${classes.overviewNum}`]: {
@@ -204,19 +204,19 @@ const Root = styled('section')(({ theme }) => ({
         fontWeight: 700,
     },
     [`& .${classes.helpCard}`]: {
-        backgroundColor: 'rgba(255,95,0,0.05)',
-        border: '1px solid rgba(255,95,0,0.3)',
+        backgroundColor: 'var(--loop-help-bg)',
+        border: '1px solid var(--loop-help-border)',
         borderRadius: 14,
         padding: 20,
     },
     [`& .${classes.helpTitle}`]: {
-        color: '#FFFFFF',
+        color: 'var(--loop-text-primary)',
         fontSize: 16,
         fontWeight: 700,
         margin: '0 0 8px',
     },
     [`& .${classes.helpText}`]: {
-        color: '#9CA3AF',
+        color: 'var(--loop-text-secondary)',
         fontSize: 14,
         lineHeight: '21px',
         margin: '0 0 14px',
@@ -255,7 +255,7 @@ const Root = styled('section')(({ theme }) => ({
     [`& .${classes.groupTitle}`]: {
         flex: 1,
         minWidth: 0,
-        color: '#FFFFFF',
+        color: 'var(--loop-text-primary)',
         fontSize: 24,
         fontWeight: 700,
         margin: 0,
@@ -263,9 +263,9 @@ const Root = styled('section')(({ theme }) => ({
     },
     [`& .${classes.groupCount}`]: {
         flexShrink: 0,
-        color: '#6B7280',
+        color: 'var(--loop-text-muted)',
         fontSize: 12,
-        border: '1px solid rgba(255,255,255,0.1)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 999,
         padding: '4px 12px',
         whiteSpace: 'nowrap',
@@ -276,8 +276,8 @@ const Root = styled('section')(({ theme }) => ({
         gap: 14,
     },
     [`& .${classes.qCard}`]: {
-        backgroundColor: '#0E141B',
-        border: '1px solid rgba(255,255,255,0.06)',
+        backgroundColor: 'var(--loop-surface)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 14,
         overflow: 'hidden',
         transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
@@ -300,7 +300,7 @@ const Root = styled('section')(({ theme }) => ({
         fontFamily: 'inherit',
     },
     [`& .${classes.qText}`]: {
-        color: '#E5E7EB',
+        color: 'var(--loop-text-question)',
         fontSize: 16,
         fontWeight: 500,
         lineHeight: '24px',
@@ -317,8 +317,8 @@ const Root = styled('section')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(255,255,255,0.06)',
-        color: '#9CA3AF',
+        backgroundColor: 'var(--loop-toggle-bg)',
+        color: 'var(--loop-text-secondary)',
         transition: 'all 0.2s ease',
     },
     [`& .${classes.qToggleOpen}`]: {
@@ -326,12 +326,12 @@ const Root = styled('section')(({ theme }) => ({
         color: '#FFFFFF',
     },
     [`& .${classes.qAnswer}`]: {
-        color: '#9CA3AF',
+        color: 'var(--loop-text-secondary)',
         fontSize: 15,
         lineHeight: '25px',
         padding: '0 24px 24px',
         margin: 0,
-        borderTop: '1px solid rgba(255,255,255,0.06)',
+        borderTop: '1px solid var(--loop-border)',
         paddingTop: 18,
     },
     [`& .${classes.anchorLink}`]: {
@@ -343,12 +343,12 @@ const Root = styled('section')(({ theme }) => ({
         border: 'none',
         cursor: 'pointer',
         padding: '6px 0',
-        color: '#6B7280',
+        color: 'var(--loop-text-rightrail)',
         fontFamily: 'inherit',
         fontSize: 14,
         textAlign: 'left',
         transition: 'color 0.15s ease',
-        '&:hover': { color: '#FFFFFF' },
+        '&:hover': { color: 'var(--loop-text-primary)' },
     },
     [`& .${classes.anchorLinkActive}`]: {
         color: ORANGE,
@@ -365,7 +365,7 @@ const Root = styled('section')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
         gap: 8,
-        color: '#9CA3AF',
+        color: 'var(--loop-text-secondary)',
         fontSize: 14,
         textDecoration: 'none',
         cursor: 'pointer',
@@ -373,7 +373,7 @@ const Root = styled('section')(({ theme }) => ({
         '&:hover': { color: ORANGE },
     },
     [`& .${classes.empty}`]: {
-        color: '#6B7280',
+        color: 'var(--loop-text-muted)',
         fontSize: 16,
         textAlign: 'center',
         padding: '40px 0',
@@ -385,7 +385,9 @@ const Root = styled('section')(({ theme }) => ({
  * @param {object} props component props
  * @returns {JSX.Element} the card
  */
-function QuestionCard({ question, answer, isOpen, onToggle }) {
+function QuestionCard({
+    question, answer, isOpen, onToggle,
+}) {
     return (
         <div className={`${classes.qCard} ${isOpen ? classes.qCardOpen : ''}`}>
             <button type='button' className={classes.qHeader} onClick={onToggle} aria-expanded={isOpen}>

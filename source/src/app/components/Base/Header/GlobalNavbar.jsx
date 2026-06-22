@@ -30,9 +30,9 @@ import ProductsMegaMenu from './ProductsMegaMenu';
 // import { useAreApisAccessible, useAreMcpServersAccessible } from 'AppUtils/PortalModeUtils';
 // import CustomIcon from '../../Shared/CustomIcon';
 
-// LOOP Matrix brand colors (active tab orange / inactive white on dark header)
+// LOOP Matrix brand colors (active tab orange / inactive follows light-dark theme)
 const ACTIVE_COLOR = '#FF5F00';
-const INACTIVE_COLOR = '#FFFFFF';
+const INACTIVE_COLOR = 'var(--loop-nav-text, #FFFFFF)';
 
 /**
  * GlobalNavBar
