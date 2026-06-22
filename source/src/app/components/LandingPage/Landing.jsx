@@ -15,6 +15,7 @@ import ProductSuite from './ProductSuite';
 import ShipFast from './ShipFast';
 import TechSection from './TechItem';
 import GetStarted from './GetStarted';
+import QuickStart from './QuickStart';
 
 // import { Container } from '@mui/material';
 
@@ -55,6 +56,7 @@ function Landing() {
             <TrustedCompanies />
             <OurProducts />
             <ProductSuite/>
+            <QuickStart/>
             <ShipFast />
             <TechSection/>
             <GetStarted />
