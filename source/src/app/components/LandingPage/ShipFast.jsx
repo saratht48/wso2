@@ -71,7 +71,7 @@ const Root = styled('div')(({ theme }) => ({
     fontSize: '26px',
     fontWeight: 700,
     lineHeight: 1.25,
-    fontFamily: 'JetBrains Mono, Courier New, monospace',
+    fontFamily: 'JetBrains Mono',
     marginBottom: '14px',
     [theme.breakpoints.up('sm')]: { fontSize: '32px' },
     [theme.breakpoints.up('md')]: { fontSize: '40px' },
@@ -81,9 +81,10 @@ const Root = styled('div')(({ theme }) => ({
 
   '& .sf-subtitle': {
     color: MUTED,
-    fontSize: '13px',
+    fontSize: '18px',
+    fontFamily:'Poppins',
     lineHeight: 1.7,
-    [theme.breakpoints.up('md')]: { fontSize: '15px' },
+    [theme.breakpoints.up('md')]: { fontSize: '13px' },
   },
 
   // ── grid ──
@@ -141,7 +142,7 @@ const Root = styled('div')(({ theme }) => ({
   '& .sf-icon-fallback': {
     color: ORANGE,
     fontSize: '15px',
-    fontFamily: 'JetBrains Mono, Courier New, monospace',
+    fontFamily: 'JetBrains Mono',
     lineHeight: 1,
     fontWeight: 700,
   },
@@ -153,16 +154,18 @@ const Root = styled('div')(({ theme }) => ({
     fontWeight: 700,
     letterSpacing: '1.5px',
     textTransform: 'uppercase',
-    fontFamily: 'JetBrains Mono, Courier New, monospace',
+    fontFamily: 'JetBrains Mono',
+    [theme.breakpoints.up('md')]: { fontSize: '11px' },
   },
 
   '& .sf-card-title': {
     color: WHITE,
     fontSize: '15px',
     fontWeight: 700,
+    fontFamily:'Poppins',
     lineHeight: 1.35,
-    fontFamily: 'JetBrains Mono, Courier New, monospace',
-    [theme.breakpoints.up('md')]: { fontSize: '16px' },
+    fontFamily: 'JetBrains Mono',
+    [theme.breakpoints.up('md')]: { fontSize: '17px' },
   },
 
   '& .sf-card-desc': {
@@ -171,7 +174,7 @@ const Root = styled('div')(({ theme }) => ({
     lineHeight: 1.7,
     fontFamily: 'Poppins, sans-serif',
     flexGrow: 1,
-    [theme.breakpoints.up('md')]: { fontSize: '13px' },
+    [theme.breakpoints.up('md')]: { fontSize: '14px' },
   },
 
   // link at bottom — monospace orange with arrow
@@ -180,8 +183,8 @@ const Root = styled('div')(({ theme }) => ({
     alignItems: 'center',
     gap: '6px',
     color: ORANGE,
-    fontSize: '12px',
-    fontFamily: 'JetBrains Mono, Courier New, monospace',
+    fontSize: '13px',
+    fontFamily: 'JetBrains Mono',
     fontWeight: 500,
     textDecoration: 'none',
     marginTop: '4px',

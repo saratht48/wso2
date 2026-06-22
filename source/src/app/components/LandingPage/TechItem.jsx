@@ -40,11 +40,10 @@ const Root = styled('div')(({ theme }) => ({
   background: BG,
   width: '100%',
   boxSizing: 'border-box',
-  padding: '56px 16px',
+  padding: '64px 25px',
 
-  [theme.breakpoints.up('sm')]: { padding: '64px 32px' },
+  [theme.breakpoints.up('sm')]: { padding: '64px 35px' },
   [theme.breakpoints.up('md')]: { padding: '80px 64px' },
-  [theme.breakpoints.up('lg')]: { padding: '80px 112px' },
 
   // ── grid — 1 col mobile, 3 col desktop ──
   '& .ts-grid': {

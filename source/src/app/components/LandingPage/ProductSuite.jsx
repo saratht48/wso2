@@ -90,7 +90,7 @@ const Root = styled('div')(({ theme }) => ({
         fontSize: '12px',
         letterSpacing: '2.5px',
         textTransform: 'uppercase',
-        fontFamily: 'JetBrains Mono, Courier New, monospace',
+        fontFamily: 'JetBrains Mono',
         marginBottom: '16px',
         display: 'block',
     },
@@ -100,7 +100,7 @@ const Root = styled('div')(({ theme }) => ({
         fontSize: '40px',
         fontWeight: 700,
         lineHeight: 1.2,
-        fontFamily: 'JetBrains Mono, Courier New, monospace',
+        fontFamily: 'JetBrains Mono',
         marginBottom: '12px',
         [theme.breakpoints.up('sm')]: { fontSize: '34px' },
         [theme.breakpoints.up('md')]: { fontSize: '40px' },
@@ -185,7 +185,7 @@ const Root = styled('div')(({ theme }) => ({
     '& .ps-icon-fallback': {
         color: ORANGE,
         fontSize: '16px',
-        fontFamily: 'JetBrains Mono, Courier New, monospace',
+        fontFamily: 'JetBrains Mono',
         lineHeight: 1,
     },
 

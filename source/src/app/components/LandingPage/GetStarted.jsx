@@ -14,15 +14,15 @@ const Root = styled('div')(({ theme }) => ({
   background: BG,
   width: '100%',
   boxSizing: 'border-box',
-  padding: '72px 16px',
   textAlign: 'center',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  padding:'64px 25px',
 
-  [theme.breakpoints.up('sm')]: { padding: '88px 32px' },
-  [theme.breakpoints.up('md')]: { padding: '272px 73px' },
-  [theme.breakpoints.up('lg')]: { padding: '272px 73px' },
+  [theme.breakpoints.up('sm')]: { padding: '64px 25px' },
+  [theme.breakpoints.up('md')]: { padding: '272px 72px' },
+  [theme.breakpoints.up('lg')]: { padding: '272px 72px' },
 
   // ── eyebrow ──
   '& .gs-eyebrow': {
@@ -30,7 +30,7 @@ const Root = styled('div')(({ theme }) => ({
     fontSize: '14px',
     letterSpacing: '2.5px',
     textTransform: 'uppercase',
-    fontFamily: 'JetBrains Mono, Courier New, monospace',
+    fontFamily: 'JetBrains Mono',
     marginBottom: '24px',
     display: 'block',
     [theme.breakpoints.up('md')]: { fontSize: '14px', marginBottom: '24px' },
@@ -39,12 +39,12 @@ const Root = styled('div')(({ theme }) => ({
   // ── title block ──
   '& .gs-title': {
     color: WHITE,
-    fontSize: '56px',
+    fontSize: '32px',
     fontWeight: 700,
     lineHeight: 1.15,
-    fontFamily: 'JetBrains Mono, Courier New, monospace',
+    fontFamily: 'JetBrains Mono',
     marginBottom: '24px',
-    [theme.breakpoints.up('sm')]: { fontSize: '52px' },
+    [theme.breakpoints.up('sm')]: { fontSize: '32px' },
     [theme.breakpoints.up('md')]: { fontSize: '56px', marginBottom: '32px' },
     [theme.breakpoints.up('lg')]: { fontSize: '76px' },
   },
@@ -66,12 +66,12 @@ const Root = styled('div')(({ theme }) => ({
   // ── subtitle ──
   '& .gs-subtitle': {
     color: MUTED,
-    fontSize: '18px',
+    fontSize: '16px',
     lineHeight: 1.75,
     fontFamily: 'Poppins, sans-serif',
     maxWidth: '512px',
     margin: '0 auto 40px',
-    [theme.breakpoints.up('sm')]: { fontSize: '15px', maxWidth: '450px' },
+    [theme.breakpoints.up('sm')]: { fontSize: '16px', maxWidth: '450px' },
     [theme.breakpoints.up('md')]: { fontSize: '18px', maxWidth: '512px', marginBottom: '48px' },
   },
 
