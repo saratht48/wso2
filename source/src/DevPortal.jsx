@@ -40,6 +40,7 @@ import API from './app/data/api';
 import BrowserRouter from './app/components/Base/CustomRouter/BrowserRouter';
 import AuthManager from './app/data/AuthManager';
 import CONSTS from './app/data/Constants';
+import AskAI from './AskAi';
 
 const protectedApp = lazy(() => import('./app/ProtectedApp' /* webpackChunkName: "ProtectedApp" */));
 
@@ -343,6 +344,7 @@ class DevPortal extends React.Component {
                                             <Route path='/logout' render={() => (<Logout theme={theme} />)} />
                                             <Route component={protectedApp} />
                                         </Switch>
+                                        <AskAI />
                                     </IntlProvider>
                                 </Suspense>
                             </BrowserRouter>
