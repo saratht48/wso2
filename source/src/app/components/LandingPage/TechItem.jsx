@@ -10,8 +10,8 @@ const iconLightning = `${app.context}/site/public/images/landing/fightingfast.pn
 const iconSecurity  = `${app.context}/site/public/images/landing/bank.png`;
 
 const ORANGE = '#ff5500';
-const BG = '#141A21'; 
-const MUTED = '#9CA3AF'; 
+const BG = 'var(--loop-page-bg)';
+const MUTED = 'var(--loop-text-muted)';
 
 // ── Feature data ─────────────────────────────────────
 const features = [

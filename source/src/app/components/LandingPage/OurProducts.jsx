@@ -11,11 +11,11 @@ const ecommerceImage = `${app.context}/site/public/images/landing/payment_tab.pn
 const paymentImage   = `${app.context}/site/public/images/landing/payment_tab.png`;
 
 const ORANGE = '#ff5500';
-const BG     = '#0A0A0A';
-const PANEL  = '#141A21';
-const BORDER = '#1e2030';
-const MUTED  = '#8b8fa8';
-const DIM    = '#4a4f6a';
+const BG     = 'var(--loop-section-bg)';
+const PANEL  = 'var(--loop-card-soft)';
+const BORDER = 'var(--loop-border)';
+const MUTED  = 'var(--loop-text-muted)';
+const DIM    = 'var(--loop-text-muted)';
 const WHITE  = '#ffffff';
 
 const tabData = [
@@ -66,7 +66,7 @@ const Root = styled('div')(({ theme }) => ({
     },
 
     '& .op-main-title': {
-        color: WHITE,
+        color: 'var(--loop-text-primary)',
         fontWeight: 700,
         lineHeight: 1.3,
         marginBottom: theme.spacing(1.25),
@@ -105,7 +105,7 @@ const Root = styled('div')(({ theme }) => ({
             [theme.breakpoints.up('md')]: { fontSize: '11px', marginRight: theme.spacing(3) },
         },
 
-        '& .Mui-selected': { color: `${WHITE} !important` },
+        '& .Mui-selected': { color: 'var(--loop-text-primary) !important' },
         '& .MuiTabs-indicator': { background: ORANGE, height: 2 },
     },
 
@@ -143,7 +143,7 @@ const Root = styled('div')(({ theme }) => ({
     },
 
     '& .op-heading': {
-        color: WHITE,
+        color: 'var(--loop-text-primary)',
         fontWeight: 700,
         marginBottom: theme.spacing(1.5),
         fontFamily: 'JetBrains Mono',
@@ -154,7 +154,7 @@ const Root = styled('div')(({ theme }) => ({
     },
 
     '& .op-desc': {
-        color: '#9CA3AF',
+        color: 'var(--loop-text-muted)',
         fontFamily: 'Poppins',
         lineHeight: 1.7,
         marginBottom: theme.spacing(3),
@@ -175,7 +175,7 @@ const Root = styled('div')(({ theme }) => ({
     },
 
     '& .op-btn-primary': {
-        background: '#444444',
+        background: ORANGE,
         color: WHITE,
         borderRadius: '12px',
         fontFamily: 'Poppins',
@@ -193,8 +193,9 @@ const Root = styled('div')(({ theme }) => ({
     },
 
     '& .op-btn-secondary': {
-        background: WHITE,
-        color: '#444444',
+        background: 'var(--loop-surface)',
+        color: 'var(--loop-text-primary)',
+        border: '1px solid var(--loop-border)',
         borderRadius: '12px',
         fontFamily: 'Poppins',
         fontWeight: 700,
@@ -219,7 +220,7 @@ const Root = styled('div')(({ theme }) => ({
     '& .op-dot': {
         height: '3px',
         width: '8px',
-        background: '#2e3145',
+        background: 'var(--loop-border-strong)',
         transition: 'width 0.25s ease, background 0.25s ease',
     },
 

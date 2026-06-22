@@ -5,8 +5,8 @@ import { Button } from '@mui/material';
 
 // ── Brand tokens ─────────────────────────────────────
 const ORANGE = '#ff5500';
-const BG = '#080808'; 
-const MUTED = '#9CA3AF'; 
+const BG = 'var(--loop-section-bg)';
+const MUTED = 'var(--loop-text-muted)';
 const WHITE  = '#ffffff';
 
 // ── Styled root ───────────────────────────────────────
@@ -38,7 +38,7 @@ const Root = styled('div')(({ theme }) => ({
 
   // ── title block ──
   '& .gs-title': {
-    color: WHITE,
+    color: 'var(--loop-text-primary)',
     fontSize: '32px',
     fontWeight: 700,
     lineHeight: 1.15,
@@ -60,7 +60,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 
   '& .gs-title-white': {
-    color: WHITE,
+    color: 'var(--loop-text-primary)',
   },
 
   // ── subtitle ──

@@ -7,13 +7,13 @@ import { app } from 'Settings';
 const HeroImage = `${app.context}/site/public/images/landing/LandingHeroSection.png`;
 
 const ORANGE = '#ff5500';
-const MUTED = '#9CA3AF';
+const MUTED = 'var(--loop-text-muted)';
 
 // eslint-disable-next-line require-jsdoc
 export default function HeroSection() {
     return (
         <Box sx={{
-            bgcolor: '#141A21',
+            bgcolor: 'var(--loop-page-bg)',
             width: '100%',
             boxSizing: 'border-box',
             textAlign: 'left',
@@ -48,7 +48,7 @@ export default function HeroSection() {
                                 alignItems: 'center',
                                 gap: '6px',
                                 px: 1.5, py: 0.75,
-                                bgcolor: '#141c28',
+                                bgcolor: 'rgba(255,85,0,0.08)',
                                 fontSize: '14px',
                                 fontWeight: 600,
                                 letterSpacing: '0.05em',
@@ -79,10 +79,10 @@ export default function HeroSection() {
                         fontFamily: 'JetBrains Mono',
                         mb: { xs: 2.5, md: 3 },
                     }}>
-                        <Box component="span" sx={{ color: '#fff', display: 'block' }}>
+                        <Box component="span" sx={{ color: 'var(--loop-text-primary)', display: 'block' }}>
                             Build Financial
                         </Box>
-                        <Box component="span" sx={{ color: '#fff', display: 'block' }}>
+                        <Box component="span" sx={{ color: 'var(--loop-text-primary)', display: 'block' }}>
                             Infrastructure.
                         </Box>
                         <Box component="span" sx={{ color: ORANGE, display: 'block' }}>
@@ -126,7 +126,8 @@ export default function HeroSection() {
                             Start Building Free →
                         </Button>
                         <Button variant="contained" sx={{
-                            bgcolor: '#fff', color: '#000',
+                            bgcolor: 'var(--loop-surface)', color: 'var(--loop-text-primary)',
+                            border: '1px solid var(--loop-border)',
                             borderRadius: '10px',
                             fontFamily: 'Poppins, sans-serif', fontWeight: 700,
                             fontSize: { xs: '16px', md: '14px' },
