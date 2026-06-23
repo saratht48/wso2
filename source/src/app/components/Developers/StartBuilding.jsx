@@ -16,9 +16,11 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
+import { app } from 'Settings';
 import CodeWindow from './CodeWindow';
 import { CheckCircleIcon, CodeIcon, ZapIcon } from './Icons';
 import { DARK_1, DARK_2 } from './tokens';
+
 
 const PREFIX = 'DevStartBuilding';
 
@@ -57,6 +59,10 @@ const MINIAPP_CODE = [
     '// 4. Deploy to LOOP',
 ];
 
+
+const FullApi = `${app.context}/site/public/images/developerResource/fullapiaccess.png`;
+const InstantDeploye = `${app.context}/site/public/images/developerResource/deploye.png`;
+const setup = `${app.context}/site/public/images/developerResource/setup.png`;
 const Root = styled('section')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
@@ -193,14 +199,16 @@ function StartBuilding() {
                         <div className={classes.cardRow}>
                             <div className={classes.card}>
                                 <span className={classes.cardIcon}>
-                                    <CheckCircleIcon color={DARK_1} size={22} />
+                                    {/* <CheckCircleIcon color={DARK_1} size={22} />
+                                     */}
+                                     <img src={setup} alt="setup" style={{width:'24px', height:'24px'}}/>
                                 </span>
                                 <h3 className={classes.cardTitle}>5-Minute Setup</h3>
                                 <p className={classes.cardDesc}>Get started quickly with our SDK</p>
                             </div>
                             <div className={classes.card}>
                                 <span className={classes.cardIcon}>
-                                    <CodeIcon color={DARK_1} size={22} />
+                                    <img src={FullApi} alt="FullApi" style={{width:'24px', height:'24px'}}/>
                                 </span>
                                 <h3 className={classes.cardTitle}>Full API Access</h3>
                                 <p className={classes.cardDesc}>Access all LOOP platform features</p>
@@ -208,7 +216,8 @@ function StartBuilding() {
                         </div>
                         <div className={classes.card}>
                             <span className={classes.cardIcon}>
-                                <ZapIcon color={DARK_1} size={22} />
+                                {/* <ZapIcon color={DARK_1} size={22} /> */}
+                                <img src={InstantDeploye} alt="InstantDeploye" style={{width:'24px', height:'24px'}}/>
                             </span>
                             <h3 className={classes.cardTitle}>Instant Deploy</h3>
                             <p className={classes.cardDesc}>Push updates without app reviews</p>

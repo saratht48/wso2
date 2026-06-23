@@ -16,11 +16,17 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
+// import { app } from 'Settings';
 import { ArrowIcon, CheckIcon } from './Icons';
 import {
     ORANGE, ORANGE_LIGHT, DARK_1,
 } from './tokens';
 
+
+// ── Icon image paths (same pattern as paymentImage) ──
+// const HeroImg = `${app.context}/source/src/app/components/Products/images/payment_light_icon.png`;
+
+const HeroImg= '../images/payment_light_icon.png';
 const PREFIX = 'PaymentsHero';
 
 const classes = {
@@ -255,7 +261,8 @@ function Hero() {
                 </div>
 
                 <div className={classes.heroCard}>
-                    <div className={classes.heroCardInner}>
+                    <img src={HeroImg} alt="Hero" width="100px" height="100px" />
+                    {/* <div className={classes.heroCardInner}>
                         <div className={classes.heroIcon}>
                             <svg width='36' height='36' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
                                 <rect x='2' y='5' width='20' height='14' rx='2' stroke='#FFFFFF' strokeWidth='2' />
@@ -273,7 +280,7 @@ function Hero() {
                             <strong style={{ display: 'block', color: DARK_1, fontSize: 15 }}>Verified</strong>
                             <span style={{ color: '#6A7282', fontSize: 13 }}>Secure transactions</span>
                         </span>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </Root>
