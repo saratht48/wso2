@@ -149,8 +149,10 @@ const Root = styled('div')((
         [`& .${classes.contentWrapper}`]: {
             display: 'flex',
             flexDirection: 'row',
-            overflowY: 'auto',
-            overflowX: 'hidden',
+            // LOOP Matrix: `clip`+`visible` prevents horizontal scroll WITHOUT making this a
+            // scroll container, so `position: sticky` in page content anchors to the window.
+            overflowY: 'visible',
+            overflowX: 'clip',
             position: 'relative',
             minHeight: theme.custom.banner.active ? `calc(100vh - ${100 + footerHeight}px)` : `calc(100vh - ${footerHeight}px)`,
             marginLeft: -4,

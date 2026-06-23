@@ -10,12 +10,12 @@ const iconSandbox    = `${app.context}/site/public/images/landing/sandbox.png`;
 const iconCommunity  = `${app.context}/site/public/images/landing/community.png`;
 
 const ORANGE = '#ff5500';
-const BG = '#080808';
-const CARD_BG = '#0F0F0F';
-const BORDER = '#1e2532';
-const MUTED = '#9CA3AF';
-const DUSTYGRAY = '#6B7280';
-const WHITE = '#ffffff';
+const BG = 'var(--loop-section-bg)';
+const CARD_BG = 'var(--loop-surface)';
+const BORDER = 'var(--loop-border)';
+const MUTED = 'var(--loop-text-muted)';
+const DUSTYGRAY = 'var(--loop-text-muted)';
+const WHITE = 'var(--loop-text-primary)';
 
 // ── Card data ─────────────────────────────────────────
 const cards = [
@@ -114,7 +114,7 @@ const Root = styled('div')(({ theme }) => ({
     flexDirection: 'column',
     gap: '14px',
     transition: 'border-color 0.2s ease',
-    '&:hover': { borderColor: '#2e3a4a' },
+    '&:hover': { borderColor: 'var(--loop-border-strong)' },
     [theme.breakpoints.up('md')]: { padding: '28px' },
   },
 

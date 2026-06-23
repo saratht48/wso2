@@ -31,39 +31,6 @@ const PRODUCTS = [
         to: '/products/ecommerce',
         desc: 'Build powerful online stores with our full e-commerce API suite.',
     },
-    {
-        title: 'Miniapps',
-        icon: 'grid_view',
-        to: '/products/miniapps',
-        desc: 'Deploy lightweight, embeddable app modules into any platform.',
-    },
-    {
-        title: 'E-KYC',
-        icon: 'verified_user',
-        to: '/products/e-kyc',
-        desc: 'Verify customer identities instantly with automated KYC workflows.',
-        badge: 'NEW',
-    },
-    {
-        title: 'Vouchers',
-        icon: 'sell',
-        to: '/products/vouchers',
-        desc: 'Issue, track and redeem digital vouchers and gift cards at scale.',
-    },
-    {
-        title: 'Credit-as-a-Service',
-        icon: 'attach_money',
-        to: '/products/credit',
-        desc: 'Embed lending and credit scoring directly into your product.',
-        badge: 'NEW',
-    },
-    {
-        title: 'Wallets-as-a-Service',
-        icon: 'account_balance_wallet',
-        to: '/products/wallets',
-        desc: 'Spin up multi-currency digital wallets with transfers and analytics.',
-        badge: 'NEW',
-    },
 ];
 
 const styles = {

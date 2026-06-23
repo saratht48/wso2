@@ -13,12 +13,12 @@ const image03 = `${app.context}/site/public/images/landing/quick-start-img1.png`
 
 // ── Brand tokens ──────────────────────────────────────
 const ORANGE = '#ff5500';
-const BG = '#0A0A0A';
+const BG = 'var(--loop-section-bg)';
 const PANEL  = '#141A21';
-const BORDER = '#1e2532';
-const MUTED  = '#6b7280';
+const BORDER = 'var(--loop-border)';
+const MUTED  = 'var(--loop-text-muted)';
 const WHITE  = '#ffffff';
-const DIM    = '#4a4f6a';
+const DIM    = 'var(--loop-text-muted)';
 
 // ── Step data ─────────────────────────────────────────
 const steps = [
@@ -72,7 +72,7 @@ const Root = styled('div')(({ theme }) => ({
     },
 
     '& .qs-title': {
-        color: WHITE,
+        color: 'var(--loop-text-primary)',
         fontSize: '22px',
         fontWeight: 700,
         lineHeight: 1.2,
@@ -171,7 +171,7 @@ const Root = styled('div')(({ theme }) => ({
         [theme.breakpoints.up('md')]: { fontSize: '18px' },
     },
 
-    '& .qs-step-title-active': { color: WHITE },
+    '& .qs-step-title-active': { color: 'var(--loop-text-primary)' },
 
     '& .qs-step-desc': {
         fontSize: '13.5px',
@@ -186,7 +186,7 @@ const Root = styled('div')(({ theme }) => ({
     '& .qs-panel': {
         flex: 1,
         background: PANEL,
-        border: `1px solid ${BORDER}`,
+        border: '1px solid rgba(255,255,255,0.08)',
         borderRadius: '12px',
         overflow: 'hidden',
         width: '100%',
@@ -198,7 +198,7 @@ const Root = styled('div')(({ theme }) => ({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '10px 16px',
-        borderBottom: `1px solid ${BORDER}`,
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
     },
 
     '& .qs-panel-dots': {

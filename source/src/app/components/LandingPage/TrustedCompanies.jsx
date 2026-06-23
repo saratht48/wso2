@@ -29,13 +29,13 @@ export default function TrustedCompanies() {
   return (
     <Box
       sx={{
-        background: '#0A0A0A',
+        background: 'var(--loop-section-bg)',
         py: '28px',
         width: '100vw',
         // display: 'flex',
         // justifyContent: 'center',
-        borderTop: '1px solid rgba(255,255,255,0.08)',
-        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        borderTop: '1px solid var(--loop-border)',
+        borderBottom: '1px solid var(--loop-border)',
         overflow: 'hidden',
         '@keyframes marquee': {
           '0%': { transform: 'translateX(0)' },

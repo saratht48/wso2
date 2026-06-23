@@ -6,12 +6,12 @@ import { app } from 'Settings';
 
 // ── Brand tokens ─────────────────────────────────────
 const ORANGE = '#ff5500';
-const BG = '#151A21';
-const CARD_BG = '#0F0F0F';
-const BORDER = '#1e2532';
-const MUTED = '#9CA3AF';
-const DUSTYGRAY = '#6B7280';
-const WHITE = '#ffffff';
+const BG = 'var(--loop-section-bg)';
+const CARD_BG = 'var(--loop-surface)';
+const BORDER = 'var(--loop-border)';
+const MUTED = 'var(--loop-text-muted)';
+const DUSTYGRAY = 'var(--loop-text-muted)';
+const WHITE = 'var(--loop-text-primary)';
 
 // ── Icon image paths (same pattern as paymentImage) ──
 const iconTerminal = `${app.context}/site/public/images/landing/onboarding_icon.png`;
@@ -134,7 +134,7 @@ const Root = styled('div')(({ theme }) => ({
     // ── card ──
     '& .ps-card': {
         background: CARD_BG,
-        border: `1px solid #FFFFFF14`,
+        border: `1px solid ${BORDER}`,
         borderRadius: '16px',
         padding: '25px',
         boxSizing: 'border-box',
@@ -159,7 +159,7 @@ const Root = styled('div')(({ theme }) => ({
         width: '8px',
         height: '8px',
         borderRadius: '50%',
-        background: '#222222',
+        background: 'var(--loop-border-strong)',
     },
 
     // icon box
@@ -167,7 +167,7 @@ const Root = styled('div')(({ theme }) => ({
         width: '40px',
         height: '40px',
         borderRadius: '14px',
-        background: '#1f2937',
+        background: 'rgba(255,85,0,0.08)',
         border: `1px solid #ff55007d`,
         display: 'flex',
         alignItems: 'center',

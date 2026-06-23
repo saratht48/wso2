@@ -37,6 +37,8 @@ const PaymentsLanding = lazy(() => import('AppComponents/Products/Payments/Payme
 const EcommerceLanding = lazy(() => import('AppComponents/Products/Ecommerce/EcommerceLanding' /* webpackChunkName: "EcommerceLanding" */));
 const DevelopersLanding = lazy(() => import('AppComponents/Developers/DevelopersLanding' /* webpackChunkName: "DevelopersLanding" */));
 const FaqLanding = lazy(() => import('AppComponents/Faqs/FaqLanding' /* webpackChunkName: "FaqLanding" */));
+const DocsOverview = lazy(() => import('AppComponents/Docs/DocsOverview' /* webpackChunkName: "DocsOverview" */));
+const DocsAuthorization = lazy(() => import('AppComponents/Docs/DocsAuthorization' /* webpackChunkName: "DocsAuthorization" */));
 const TagCloudListing = lazy(() => import('AppComponents/Apis/Listing/TagCloudListing' /* webpackChunkName: "TagCloudListing" */));
 const ChangePassword = lazy(() => import('AppComponents/Settings/ChangePassword/ChangePassword'));
 const Listing = lazy(() => import('AppComponents/Applications/Listing/Listing' /* webpackChunkName: "ApiListing" */));
@@ -86,6 +88,8 @@ function AppRouts(props) {
                 <Route path='/products/ecommerce' component={EcommerceLanding} />
                 <Route path='/developers' component={DevelopersLanding} />
                 <Route path='/faqs' component={FaqLanding} />
+                <Route path='/docs/loop-api/overview' component={DocsOverview} />
+                <Route path='/docs/loop-api/authorization' component={DocsAuthorization} />
                 <Route path='/api-groups' component={TagCloudListing} />
                 <Route
                     path='/(apis|api-products)'
