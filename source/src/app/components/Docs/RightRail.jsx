@@ -34,7 +34,7 @@ const Root = styled('aside')(() => ({
     flexDirection: 'column',
     [`& .${classes.eyebrow}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-        color: '#5A6B7B',
+        color: 'var(--loop-eyebrow)',
         fontSize: 11,
         fontWeight: 500,
         letterSpacing: 1.2,
@@ -45,12 +45,12 @@ const Root = styled('aside')(() => ({
         display: 'flex',
         alignItems: 'center',
         gap: 8,
-        color: '#D1D5DC',
+        color: 'var(--loop-text-primary)',
         fontSize: 13.5,
         textDecoration: 'none',
         padding: '5px 0',
         transition: 'color 0.15s ease',
-        '&:hover': { color: '#FFFFFF' },
+        '&:hover': { color: 'var(--loop-text-primary)' },
     },
     [`& .${classes.linkActive}`]: {
         color: ORANGE,
@@ -71,7 +71,7 @@ const Root = styled('aside')(() => ({
         textDecoration: 'none',
         padding: '5px 0 5px 16px',
         transition: 'color 0.15s ease',
-        '&:hover': { color: '#D1D5DC' },
+        '&:hover': { color: 'var(--loop-text-primary)' },
     },
 }));
 

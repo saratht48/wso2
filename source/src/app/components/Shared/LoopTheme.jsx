@@ -67,6 +67,10 @@ const DARK_VARS = {
     '--loop-hero-desc': '#FFFFFF',
     '--loop-cta-desc': '#D1D5DC',
     '--loop-cta-outline': 'rgba(255,255,255,0.2)',
+    // Docs
+    '--loop-docs-nav': '#F2F1F5',
+    '--loop-code-bg': '#0B0F14',
+    '--loop-code-text': '#D6E2EE',
 };
 
 const LIGHT_VARS = {
@@ -104,6 +108,10 @@ const LIGHT_VARS = {
     '--loop-hero-desc': '#4A5565',
     '--loop-cta-desc': '#4A5565',
     '--loop-cta-outline': '#141A21',
+    // Docs
+    '--loop-docs-nav': '#6B7280',
+    '--loop-code-bg': '#F4F6F8',
+    '--loop-code-text': '#475569',
 };
 
 /**

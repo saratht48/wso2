@@ -41,7 +41,7 @@ const classes = {
 const Root = styled('div')(({ theme }) => ({
     width: '100%',
     boxSizing: 'border-box',
-    backgroundColor: '#080808',
+    backgroundColor: 'var(--loop-section-bg)',
     fontFamily: "'Poppins', 'Helvetica Neue', Arial, sans-serif",
     padding: '28px 24px 32px 0',
     [theme.breakpoints.down('md')]: {
@@ -59,8 +59,8 @@ const Root = styled('div')(({ theme }) => ({
         overflowY: 'auto',
         boxSizing: 'border-box',
         zIndex: 5,
-        backgroundColor: '#0E1520',
-        borderRight: '1px solid rgba(255,255,255,0.06)',
+        backgroundColor: 'var(--loop-surface)',
+        borderRight: '1px solid var(--loop-border)',
         padding: '18px 18px 18px 16px',
         [theme.breakpoints.down('lg')]: {
             width: SIDEBAR_LG,

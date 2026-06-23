@@ -59,8 +59,8 @@ const Root = styled('aside')(() => ({
         display: 'flex',
         flexDirection: 'column',
         gap: 8,
-        backgroundColor: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.08)',
+        backgroundColor: 'var(--loop-surface-2)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 12,
         padding: 16,
     },
@@ -87,7 +87,7 @@ const Root = styled('aside')(() => ({
         margin: 0,
     },
     [`& .${classes.guideSub}`]: {
-        color: '#9CA3AF',
+        color: 'var(--loop-text-muted)',
         fontSize: 13.5,
         margin: 0,
     },
@@ -109,8 +109,8 @@ const Root = styled('aside')(() => ({
         display: 'flex',
         alignItems: 'center',
         gap: 8,
-        backgroundColor: '#0A0F16',
-        border: '1px solid rgba(255,255,255,0.08)',
+        backgroundColor: 'var(--loop-search-bg)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 10,
         padding: '10px 12px',
     },
@@ -120,7 +120,7 @@ const Root = styled('aside')(() => ({
         background: 'none',
         border: 'none',
         outline: 'none',
-        color: '#FFFFFF',
+        color: 'var(--loop-text-primary)',
         fontFamily: 'inherit',
         fontSize: 13,
         '&::placeholder': { color: '#6B7280' },
@@ -129,7 +129,7 @@ const Root = styled('aside')(() => ({
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
         fontSize: 11,
         color: '#6B7280',
-        border: '1px solid rgba(255,255,255,0.12)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 5,
         padding: '2px 6px',
     },
@@ -149,7 +149,7 @@ const Root = styled('aside')(() => ({
         cursor: 'pointer',
         borderRadius: 8,
         padding: '11px 12px',
-        color: '#F2F1F5',
+        color: 'var(--loop-docs-nav)',
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
         fontSize: 14,
         fontWeight: 500,
@@ -157,7 +157,7 @@ const Root = styled('aside')(() => ({
         textAlign: 'center',
         textDecoration: 'none',
         transition: 'background 0.15s ease, color 0.15s ease',
-        '&:hover': { backgroundColor: 'rgba(255,255,255,0.04)', color: '#FFFFFF' },
+        '&:hover': { backgroundColor: 'var(--loop-toggle-bg)', color: 'var(--loop-text-primary)' },
     },
     [`& .${classes.itemLabel}`]: {
         flex: 1,
@@ -186,7 +186,7 @@ const Root = styled('aside')(() => ({
         cursor: 'pointer',
         borderRadius: 8,
         padding: '9px 12px',
-        color: '#E8EDF273',
+        color: 'var(--loop-docs-nav)',
         fontFamily: "'Outfit', 'Poppins', sans-serif",
         fontSize: 14,
         fontWeight: 400,
@@ -194,17 +194,17 @@ const Root = styled('aside')(() => ({
         textAlign: 'left',
         textDecoration: 'none',
         transition: 'background 0.15s ease, color 0.15s ease',
-        '&:hover': { color: '#FFFFFF' },
+        '&:hover': { color: 'var(--loop-text-primary)' },
     },
     [`& .${classes.subItemActive}`]: {
-        backgroundColor: 'rgba(255,95,0,0.1)',
+        backgroundColor: 'var(--loop-active-bg)',
         color: ORANGE,
         fontWeight: 600,
         '&:hover': { color: ORANGE },
     },
     [`& .${classes.eyebrow}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-        color: '#5A6B7B',
+        color: 'var(--loop-eyebrow)',
         fontSize: 11,
         fontWeight: 500,
         letterSpacing: 1.4,
@@ -215,11 +215,11 @@ const Root = styled('aside')(() => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.08)',
+        backgroundColor: 'var(--loop-surface-2)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 10,
         padding: '11px 14px',
-        color: '#E5E7EB',
+        color: 'var(--loop-text-primary)',
         fontSize: 13.5,
     },
     [`& .${classes.envBadge}`]: {
@@ -233,8 +233,8 @@ const Root = styled('aside')(() => ({
         padding: '3px 10px',
     },
     [`& .${classes.urlBox}`]: {
-        backgroundColor: 'rgba(255,255,255,0.03)',
-        border: '1px solid rgba(255,255,255,0.08)',
+        backgroundColor: 'var(--loop-surface-2)',
+        border: '1px solid var(--loop-border)',
         borderRadius: 10,
         padding: '11px 14px',
     },
@@ -310,10 +310,10 @@ function LeftNav({ active }) {
                 })}
 
                 <a href='#loop-api' className={classes.item}>
-                    <CodeIcon color='#E5E7EB' size={18} />
+                    <CodeIcon color='#9CA3AF' size={18} />
                     <span className={classes.itemLabel}>LOOP API</span>
                     <span style={{ transform: 'rotate(180deg)', display: 'flex' }}>
-                        <ChevronDownIcon color='#E5E7EB' size={16} />
+                        <ChevronDownIcon color='#9CA3AF' size={16} />
                     </span>
                 </a>
                 <div className={classes.subWrap}>
