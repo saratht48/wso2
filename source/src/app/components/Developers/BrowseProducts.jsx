@@ -16,13 +16,16 @@
 
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
+import { app } from 'Settings';
 import {
     ZapIcon, GlobeIcon, ShieldIcon, GridIcon, TerminalIcon, LayersIcon, CodeIcon,
     CheckCircleIcon, BagIcon, TrendingIcon, WalletIcon,
 } from './Icons';
 import { ORANGE, DARK_1, DARK_2 } from './tokens';
+import { Box } from '@mui/material';
 
 const PREFIX = 'DevBrowse';
+
 
 const classes = {
     container: `${PREFIX}-container`,
@@ -166,24 +169,37 @@ const ICONS = {
     trending: TrendingIcon,
     wallet: WalletIcon,
 };
+const TabPayment = `${app.context}/site/public/images/developerResource/sendmoney.png`;
+const Tabcommerce = `${app.context}/site/public/images/developerResource/tab-ecommerce.png`;
+const Tabcredit = `${app.context}/site/public/images/developerResource/tab-credit.png`;
+const Tabwallet = `${app.context}/site/public/images/developerResource/tab-wallet.png`;
+
 
 const TABS = [
-    { id: 'payments', label: 'Payments', icon: 'zap' },
-    { id: 'ecommerce', label: 'E-Commerce', icon: 'bag' },
-    { id: 'credit', label: 'Credit & Investment', icon: 'trending' },
-    { id: 'wallets', label: 'Wallets', icon: 'wallet' },
+    { id: 'payments', label: 'Payments', icon: TabPayment },
+    { id: 'ecommerce', label: 'E-Commerce', icon: Tabcommerce},
+    { id: 'credit', label: 'Credit & Investment', icon: Tabcredit },
+    { id: 'wallets', label: 'Wallets', icon: Tabwallet },
 ];
+
+const PaymentGateway = `${app.context}/site/public/images/developerResource/payment.png`;
+const FraudDetection = `${app.context}/site/public/images/developerResource/fraud.png`;
+const Financial = `${app.context}/site/public/images/developerResource/finance.png`;
+const InPerson = `${app.context}/site/public/images/developerResource/Inperson.png`;
+const Crypto = `${app.context}/site/public/images/developerResource/crypto.png`;
+const PlatformPayments = `${app.context}/site/public/images/developerResource/paltform_pay.png`;
+const Identity = `${app.context}/site/public/images/developerResource/identify.png`;
 
 const CARDS = {
     payments: [
-        { id: 'send', icon: 'zap', title: 'Send Money API', desc: 'Process online payments & transfers with lightning speed' },
-        { id: 'gateway', icon: 'globe', title: 'Payment Gateway', desc: 'Accept payments from multiple channels securely' },
-        { id: 'fraud', icon: 'shield', title: 'Fraud Detection', desc: 'Advanced fraud and risk management systems' },
-        { id: 'accounts', icon: 'grid', title: 'Financial Accounts', desc: "Connect users' financial accounts seamlessly" },
-        { id: 'inperson', icon: 'terminal', title: 'In-Person Payments', desc: 'Omnichannel payment solutions for retail' },
-        { id: 'crypto', icon: 'layers', title: 'Crypto Payments', desc: 'Accept, on-ramp, or pay out in cryptocurrency' },
-        { id: 'platform', icon: 'code', title: 'Platform Payments', desc: 'Payment infrastructure for platforms and marketplaces' },
-        { id: 'identity', icon: 'check', title: 'Identity Verification', desc: 'Online KYC and identity verification APIs' },
+        { id: 'send', icon: TabPayment, title: 'Send Money API', desc: 'Process online payments & transfers with lightning speed' },
+        { id: 'gateway', icon: PaymentGateway, title: 'Payment Gateway', desc: 'Accept payments from multiple channels securely' },
+        { id: 'fraud', icon: FraudDetection, title: 'Fraud Detection', desc: 'Advanced fraud and risk management systems' },
+        { id: 'accounts', icon: Financial, title: 'Financial Accounts', desc: "Connect users' financial accounts seamlessly" },
+        { id: 'inperson', icon: InPerson, title: 'In-Person Payments', desc: 'Omnichannel payment solutions for retail' },
+        { id: 'crypto', icon: Crypto, title: 'Crypto Payments', desc: 'Accept, on-ramp, or pay out in cryptocurrency' },
+        { id: 'platform', icon: PlatformPayments, title: 'Platform Payments', desc: 'Payment infrastructure for platforms and marketplaces' },
+        { id: 'identity', icon: Identity, title: 'Identity Verification', desc: 'Online KYC and identity verification APIs' },
     ],
     ecommerce: [
         { id: 'checkout', icon: 'bag', title: 'Hosted Checkout', desc: 'Drop-in checkout that converts across every device' },
@@ -230,7 +246,21 @@ function BrowseProducts() {
                                 className={`${classes.tab} ${isActive ? classes.tabActive : ''}`}
                                 onClick={() => setActive(tab.id)}
                             >
-                                <TabIcon color={isActive ? '#FFFFFF' : '#9CA3AF'} size={16} />
+                                {/* <TabIcon color={isActive ? '#FFFFFF' : '#9CA3AF'} size={16} /> */}
+                                
+                                    {/* <img src={tab.icon} alt={tab.label} style={{width:'16px', height:'16px'}}/> */}
+                               <img
+    src={tab.icon}
+    alt={tab.label}
+    style={{
+        width: '16px',
+        height: '16px',
+        transition: '0.3s',
+        filter: isActive
+            ? 'brightness(0) invert(1)' // white
+            : 'brightness(0) saturate(100%) invert(24%) sepia(11%) saturate(646%) hue-rotate(178deg) brightness(93%) contrast(89%)', // #364153
+    }}
+/>
                                 {tab.label}
                             </button>
                         );
@@ -243,7 +273,8 @@ function BrowseProducts() {
                         return (
                             <div key={card.id} className={classes.card}>
                                 <div className={classes.cardIcon}>
-                                    <CardIcon color={ORANGE} size={22} />
+                                    {/* <CardIcon color={ORANGE} size={22} /> */}
+                                    <img src={card.icon} alt={card.title} style={{width:'24px', height:'24px'}} />
                                 </div>
                                 <h3 className={classes.cardTitle}>{card.title}</h3>
                                 <p className={classes.cardDesc}>{card.desc}</p>

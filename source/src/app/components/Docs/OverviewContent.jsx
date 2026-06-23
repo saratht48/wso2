@@ -16,12 +16,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { app } from 'Settings';
 import { styled } from '@mui/material/styles';
 import {
     BagIcon, TransferIcon, StarIcon, TicketIcon, KycIcon, WalletIcon,
     BookIcon, CompassIcon, CodeIcon, ArrowUpRightIcon, ArrowRightIcon,
 } from './Icons';
 import { ORANGE, GREEN } from './tokens';
+import { Box } from '@mui/material';
 
 const PREFIX = 'DocsContent';
 
@@ -151,8 +153,8 @@ const Root = styled('div')(({ theme }) => ({
     },
     [`& .${classes.cardArrow}`]: {
         position: 'absolute',
-        top: 20,
-        right: 20,
+        bottom: 20,
+        right: 80,
     },
     [`& .${classes.cardTitle}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
@@ -166,6 +168,7 @@ const Root = styled('div')(({ theme }) => ({
         fontSize: 13.5,
         lineHeight: '21px',
         margin: 0,
+        maxWidth:'330px',
     },
     [`& .${classes.diagram}`]: {
         display: 'flex',
@@ -287,6 +290,11 @@ const Root = styled('div')(({ theme }) => ({
         fontWeight: 600,
         margin: '0 0 6px',
     },
+     [`& .${classes.stepdesc}`]: {
+        color: '#E8EDF273',
+        fontSize: 14,
+        margin: '0 0 6px',
+    },
     [`& .${classes.stepText}`]: {
         color: '#6B7280',
         fontSize: 13.5,
@@ -348,28 +356,62 @@ const Root = styled('div')(({ theme }) => ({
     },
 }));
 
+const ecommerceIcon=`${app.context}/site/public/images/overview/ecommerce.png`;
+const paymentIcon=`${app.context}/site/public/images/overview/payments.png`; 
+const creditIcon=`${app.context}/site/public/images/overview/credit.png`;
+const vouchersIcon=`${app.context}/site/public/images/overview/Vouchers.png`;
+const kycIcon=`${app.context}/site/public/images/overview/kyc.png`; 
+const serviceIcon=`${app.context}/site/public/images/overview/service.png`;
+
+const apiIcon=`${app.context}/site/public/images/overview/apirefernce.png`;
+
+const sdkIcon=`${app.context}/site/public/images/overview/sdk.png`;
+
+const getStartedIcon=`${app.context}/site/public/images/overview/credit.png`;
+
+const request_to_light=`${app.context}/site/public/images/overview/request_to_access_light.png`;
+
+const request_to_dark=`${app.context}/site/public/images/overview/request_to_access_dark.png`;
 /* eslint-disable max-len -- data table copy */
 const PRODUCTS = [
     {
-        id: 'sp-ecommerce', icon: BagIcon, title: 'E-Commerce', desc: 'Accept payments online — cards, LOOP, M-Pesa, BNPL. Full acquiring stack with 3D Secure.',
+        id: 'sp-ecommerce',
+        // eslint-disable-next-line no-undef
+        icon: ecommerceIcon,
+        title: 'E-Commerce',
+        desc: 'Accept payments online — cards, LOOP, M-Pesa, BNPL. Full acquiring stack with 3D Secure.',
     },
     {
-        id: 'sp-payments', icon: TransferIcon, title: 'Payments', desc: 'Initiate and track bank-to-bank, mobile money and wallet transfers programmatically.',
+        id: 'sp-payments',
+        icon: paymentIcon,
+        title: 'Payments',
+        desc: 'Initiate and track bank-to-bank, mobile money and wallet transfers programmatically.',
     },
     {
-        id: 'sp-credit', icon: StarIcon, title: 'Credit', desc: 'Embed loan origination, overdraft, and BNPL flows directly in your product experience.',
+        id: 'sp-credit',
+        icon: creditIcon,
+        title: 'Credit',
+        desc: 'Embed loan origination, overdraft, and BNPL flows directly in your product experience.',
     },
     {
-        id: 'sp-vouchers', icon: TicketIcon, title: 'Vouchers', desc: 'Issue, redeem and manage branded digital vouchers with real-time validation.',
+        id: 'sp-vouchers',
+        icon: vouchersIcon,
+        title: 'Vouchers',
+        desc: 'Issue, redeem and manage branded digital vouchers with real-time validation.',
     },
     {
-        id: 'sp-ekyc', icon: KycIcon, title: 'E-KYC', desc: 'Identity verification, document checks, and liveness detection — regulatory-grade.',
+        id: 'sp-ekyc',
+        icon: kycIcon,
+        title: 'E-KYC',
+        desc: 'Identity verification, document checks, and liveness detection — regulatory-grade.',
     },
     {
-        id: 'sp-wallet', icon: WalletIcon, title: 'Wallet-as-a-Service', desc: 'Spin up multi-currency wallets, manage balances, and automate sweeps for your users.',
+        id: 'sp-wallet',
+        icon: serviceIcon,
+        title: 'Wallet-as-a-Service',
+        desc: 'Spin up multi-currency wallets, manage balances, and automate sweeps for your users.',
     },
 ];
-
 const TOKEN_CODE = [
     'POST /v1/auth/token   Content-Type: application/json',
     '{',
@@ -385,21 +427,37 @@ const BEARER_CODE = [
 ];
 
 const GO_LIVE = [
-    'Complete sandbox testing',
-    'Request production access',
-    'Complete compliance & KYC review',
-    'Switch to production endpoint',
+  {
+    title: 'Complete sandbox testing',
+    description:
+      'Verify your integration works correctly in the sandbox environment. Ensure all API calls return expected responses, error handling is in place, and your target transaction flows work end-to-end.',
+  },
+  {
+    title: 'Request production access',
+    description:
+      'Create a business account on the LOOP Merchant Portal and submit your business details along with the required supporting documents to request production access.',
+  },
+  {
+    title: 'Complete compliance & KYC review',
+    description:
+      'The LOOP team will review your submitted documentation. Ensure all information is accurate and complete to avoid delays during the approval process.',
+  },
+  {
+    title: 'Switch to production endpoint',
+    description:
+      'Once approved, update your integration to use the production base URL. Replace sandbox credentials with production credentials and perform a low-value transaction to verify connectivity.',
+  },
 ];
 
 const NEXT = [
     {
-        id: 'n1', icon: CompassIcon, title: 'Get Started', desc: 'Environment setup, key generation, and your first API call.',
+        id: 'n1', icon: getStartedIcon, title: 'Get Started', desc: 'Environment setup, key generation, and your first API call.',
     },
     {
-        id: 'n2', icon: BookIcon, title: 'API Reference', desc: 'Full endpoint docs with request/response schemas.',
+        id: 'n2', icon: apiIcon, title: 'API Reference', desc: 'Full endpoint docs with request/response schemas.',
     },
     {
-        id: 'n3', icon: CodeIcon, title: 'SDKs & Libraries', desc: 'Node.js, Python, and PHP SDKs with code samples.',
+        id: 'n3', icon: sdkIcon, title: 'SDKs & Libraries', desc: 'Node.js, Python, and PHP SDKs with code samples.',
     },
 ];
 /* eslint-enable max-len */
@@ -446,14 +504,24 @@ function OverviewContent() {
                         const Icon = p.icon;
                         return (
                             <div key={p.id} id={p.id} className={classes.card}>
+                                {/* <span className={classes.cardArrow}>
+                                    <ArrowUpRightIcon color='#6B7280' size={16} />
+                                </span> */}
+                                <Box sx={{border:'1px solid #ff5500', width:'32px',height:'32px', borderRadius:'8px', display:'flex', justifyContent:'center', alignItems:'center', marginBottom:'16px'}}>
+                                   <img src={p.icon}
+    alt={p.title}
+    style={{
+        width: '16px',
+        height: '16px',
+        objectFit: 'contain',
+    }}
+/>
+</Box>
+                                <h3 className={classes.cardTitle}>{p.title}</h3>
+                                <p className={classes.cardDesc}>{p.desc}</p>
                                 <span className={classes.cardArrow}>
                                     <ArrowUpRightIcon color='#6B7280' size={16} />
                                 </span>
-                                <span className={classes.cardIcon}>
-                                    <Icon color={ORANGE} size={20} />
-                                </span>
-                                <h3 className={classes.cardTitle}>{p.title}</h3>
-                                <p className={classes.cardDesc}>{p.desc}</p>
                             </div>
                         );
                     })}
@@ -500,7 +568,8 @@ function OverviewContent() {
                     LOOP provides two isolated environments. Use Sandbox for all development and
                     testing — it mirrors production behaviour without moving real funds.
                 </p>
-                <div className={classes.tableWrap}>
+                
+             <div className={classes.tableWrap}>
                     <table className={classes.table}>
                         <thead>
                             <tr>
@@ -522,7 +591,7 @@ function OverviewContent() {
                             </tr>
                         </tbody>
                     </table>
-                </div>
+            </div>
             </section>
 
             {/* Authentication */}
@@ -557,7 +626,23 @@ function OverviewContent() {
                                 POST your signed assertion to the token endpoint. Tokens are
                                 short-lived (15 minutes) and scoped to your registered application.
                             </p>
-                            <CodeBlock lines={TOKEN_CODE} />
+                            {/* <CodeBlock lines={TOKEN_CODE} /> */}
+                           
+                         <Box
+    component="img"
+    src={request_to_dark}
+    alt="Request to"
+    sx={{
+        width: {
+            xs: '100%',
+            sm: '100%',
+            md: '100%',
+        },
+        width:'100%',
+        height: 'auto',
+        display: 'block',
+    }}
+/>
                         </div>
                     </div>
                     <div className={classes.step} id='auth-bearer'>
@@ -591,8 +676,12 @@ function OverviewContent() {
                         <div key={label} className={classes.step}>
                             <span className={classes.stepNum}>{`0${i + 1}`}</span>
                             <div className={classes.stepBody}>
-                                <p className={classes.stepTitle}>{label}</p>
+                                <p className={classes.stepTitle}>{label.title}</p>
+                                 <p className={classes.stepdesc}>{label.description}</p>
                             </div>
+                             {/* <div className={classes.stepdesc}>
+                                <p>{label.description}</p>
+                            </div> */}
                         </div>
                     ))}
                 </div>
@@ -607,9 +696,12 @@ function OverviewContent() {
                         const Icon = n.icon;
                         return (
                             <div key={n.id} className={classes.nextCard}>
-                                <span className={classes.nextIcon}>
+                                {/* <span className={classes.nextIcon}>
                                     <Icon color={ORANGE} size={18} />
-                                </span>
+                                </span> */}
+                                <Box>
+                                    <img src={n.icon} alt='n.title' style={{width:"20px", height:"20px"}}/>
+                                </Box>
                                 <h3 className={classes.nextTitle}>{n.title}</h3>
                                 <p className={classes.nextDesc}>{n.desc}</p>
                             </div>

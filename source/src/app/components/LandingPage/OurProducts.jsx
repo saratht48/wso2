@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 
 
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -7,8 +8,11 @@ import { styled } from '@mui/material/styles';
 import { Box, Button, Tabs, Tab } from '@mui/material';
 import { app } from 'Settings';
 
-const ecommerceImage = `${app.context}/site/public/images/landing/payment_tab.png`;
-const paymentImage   = `${app.context}/site/public/images/landing/payment_tab.png`;
+const paymentImageDark = `${app.context}/site/public/images/landing/payment_tab.png`;
+const paymentImageLight = `${app.context}/site/public/images/landing/payment_tab_dark.png`;
+
+const ecommerceImageDark = `${app.context}/site/public/images/landing/payment_tab_dark.png`;
+const ecommerceImageLight = `${app.context}/site/public/images/landing/payment_tab.png`;
 
 const ORANGE = '#ff5500';
 const BG     = 'var(--loop-section-bg)';
@@ -20,18 +24,24 @@ const WHITE  = '#ffffff';
 
 const tabData = [
     {
-        num: '01', label: 'PAYMENTS', sectionLabel: '01 → PAYMENTS',
+        num: '01',
+        label: 'PAYMENTS',
+        sectionLabel: '01 → PAYMENTS',
         heading: 'Payments',
         desc: 'Accept and send money, enable card processing, and manage bulk disbursements with our real-time payment rails. Connect to 150+ financial institutions instantly.',
         btnText: 'Explore Payments',
-        image: paymentImage,
+        darkImage: paymentImageDark,
+        lightImage: paymentImageLight,
     },
     {
-        num: '02', label: 'E-COMMERCE', sectionLabel: '02 → E-COMMERCE',
+        num: '02',
+        label: 'E-COMMERCE',
+        sectionLabel: '02 → E-COMMERCE',
         heading: 'E-Commerce',
         desc: 'Power online storefronts with seamless checkout flows, fraud detection, and multi-currency support. Integrate with leading platforms in minutes.',
         btnText: 'Explore E-Commerce',
-        image: ecommerceImage,
+        darkImage: ecommerceImageDark,
+        lightImage: ecommerceImageLight,
     },
 ];
 
@@ -230,29 +240,54 @@ const Root = styled('div')(({ theme }) => ({
     },
 
     // ── right panel ──
+    // '& .op-panel': {
+    //     background: PANEL,
+    //     border: '0.3px solid #ff550079',
+    //     borderRadius: '16px',
+    //     padding: theme.spacing(2),
+    //     width: '100%',
+    //     boxSizing: 'border-box',
+    //     position: 'relative',
+    //     display: 'flex',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     [theme.breakpoints.up('md')]: { padding: theme.spacing(2.5) },
+    // },
     '& .op-panel': {
-        background: PANEL,
-        border: '0.3px solid #ff550079',
-        borderRadius: '16px',
-        padding: theme.spacing(2),
-        width: '100%',
-        boxSizing: 'border-box',
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        [theme.breakpoints.up('md')]: { padding: theme.spacing(2.5) },
-    },
+    background: PANEL,
+    border: '0.3px solid #ff550079',
+    borderRadius: '16px',
+    padding: theme.spacing(2),
+    width: '100%',
+    boxSizing: 'border-box',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
 
-    '& .op-panel-image-wrap': {
-        width: '100%',
-        borderRadius: 6,
-        overflow: 'hidden',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: '20px',
+    [theme.breakpoints.up('md')]: {
+        padding: theme.spacing(2.5),
     },
+},
+
+    // '& .op-panel-image-wrap': {
+    //     width: '100%',
+    //     borderRadius: 6,
+    //     overflow: 'hidden',
+    //     display: 'flex',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     marginTop: '20px',
+    // },
+    '& .op-panel-image-wrap': {
+    width: '100%',
+    borderRadius: 6,
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '20px',
+    position: 'relative',
+},
 
     '& .op-panel-image': {
         display: 'block',
@@ -264,6 +299,29 @@ const Root = styled('div')(({ theme }) => ({
             height: '290px !important',
         },
     },
+    // eslint-disable-next-line no-dupe-keys
+    '& .op-panel-image-wrap': {
+    width: '100%',
+    borderRadius: 6,
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '20px',
+    position: 'relative',
+},
+
+'& .op-panel-image': {
+    display: 'block',
+    objectFit: 'contain',
+    width: '100%',
+    height: 'auto',
+
+    [theme.breakpoints.up('md')]: {
+        width: '500px',
+        height: '290px',
+    },
+},
 }));
 
 function TabLabel({ num, label, isActive }) {
@@ -275,28 +333,44 @@ function TabLabel({ num, label, isActive }) {
     );
 }
 
+// function ImagePanel({ tab }) {
+//     return (
+//         <div className='op-panel'>
+//             <div className='op-panel-image-wrap' style={{ marginTop: 20 }}>
+//                 <img
+//                     src={tab.image}
+//                     alt={tab.heading}
+//                     className='op-panel-image'
+//                     onError={(e) => {
+//                         e.currentTarget.style.display = 'none';
+//                         e.currentTarget.nextSibling.style.display = 'flex';
+//                     }}
+//                 />
+//                 {/* Fallback */}
+//                 <div style={{
+//                     display: 'none', width: '100%', minHeight: 200,
+//                     alignItems: 'center', justifyContent: 'center',
+//                     background: '#12141f', color: DIM,
+//                     fontFamily: 'JetBrains Mono', fontSize: 12, borderRadius: 4,
+//                 }}>
+//                     [ {tab.heading} Image ]
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
 function ImagePanel({ tab }) {
+    const isLightTheme =
+        document.documentElement.getAttribute('data-loop-theme') === 'light';
+
     return (
         <div className='op-panel'>
-            <div className='op-panel-image-wrap' style={{ marginTop: 20 }}>
+            <div className='op-panel-image-wrap'>
                 <img
-                    src={tab.image}
+                    src={isLightTheme ? tab.lightImage : tab.darkImage}
                     alt={tab.heading}
                     className='op-panel-image'
-                    onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        e.currentTarget.nextSibling.style.display = 'flex';
-                    }}
                 />
-                {/* Fallback */}
-                <div style={{
-                    display: 'none', width: '100%', minHeight: 200,
-                    alignItems: 'center', justifyContent: 'center',
-                    background: '#12141f', color: DIM,
-                    fontFamily: 'JetBrains Mono', fontSize: 12, borderRadius: 4,
-                }}>
-                    [ {tab.heading} Image ]
-                </div>
             </div>
         </div>
     );

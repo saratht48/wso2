@@ -50,6 +50,10 @@ import GlobalNavBar from './Header/GlobalNavbar';
 import UserMenuDropdown from './Header/UserMenuDropdown';
 import LoopFooter from './Footer/LoopFooter';
 // import VerticalDivider from '../Shared/VerticalDivider'; // LOOP Matrix: dividers removed from header
+import SearchModal from '../../../SearchModal'
+
+
+// Add state
 
 const PREFIX = 'index';
 
@@ -86,6 +90,8 @@ const classes = {
     listItemRoot: `${PREFIX}-listItemRoot`,
     logoutLink: `${PREFIX}-logoutLink`,
 };
+
+
 
 const Root = styled('div')((
     {
@@ -297,13 +303,19 @@ class LayoutLegacy extends React.Component {
             anchorEl: null,
             bannerHeight: 0,
             searchOpen: false, // LOOP Matrix: collapsible header search
+            
         };
+        
         this.toggleGlobalNavBar = this.toggleGlobalNavBar.bind(this);
         const { history } = props;
         history.listen((location) => {
             this.detectCurrentMenu(location);
         });
     }
+
+    toggleSearchModal = () => {
+    this.setState((prev) => ({ searchOpen: !prev.searchOpen }));
+};
 
     /**
      * Component did mount callback.
@@ -732,7 +744,7 @@ class LayoutLegacy extends React.Component {
                                     />
                                 </IconButton>
                                 <Hidden smDown>
-                                    <IconButton
+                                    {/* <IconButton
                                         color='inherit'
                                         className={classes.userLink}
                                         aria-label='notifications'
@@ -745,7 +757,47 @@ class LayoutLegacy extends React.Component {
                                                 style={{ height: 36, width: 36 }}
                                             />
                                         </Badge>
-                                    </IconButton>
+                                    </IconButton> */}
+{/* {showSearch && (
+    <>
+        {this.state.searchOpen && <SearchModal id='headerSearch' />}
+        <IconButton
+            color='inherit'
+            className={classes.userLink}
+            aria-label='search'
+            size='large'
+            onClick={this.toggleSearchModal}
+        >
+            <img
+                src={`${app.context}/site/public/images/reminderButton.svg`}
+                alt='Search'
+                style={{ height: 36, width: 36 }}
+            />
+        </IconButton>
+    </>
+)} */}
+
+{/* Bell icon */}
+<IconButton
+    color='inherit'
+    className={classes.userLink}
+    aria-label='notifications'
+    size='large'
+    onClick={this.toggleSearchModal}
+>
+    <Badge  color='error'>
+        <img
+            src={`${app.context}/site/public/images/reminderButton.svg`}
+            alt='Reminders'
+            style={{ height: 36, width: 36 }}
+        />
+    </Badge>
+</IconButton>
+
+{/* Just before </Root> */}
+{this.state.searchOpen && (
+    <SearchModal onClose={() => this.setState({ searchOpen: false })} />
+)}
                                     {user ? (
                                         <>
                                             <div className={classes.linkWrapper}>
