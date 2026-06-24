@@ -44,21 +44,20 @@ const Root = styled('div')(({ theme }) => ({
     backgroundColor: 'var(--loop-section-bg)',
     fontFamily: "'Poppins', 'Helvetica Neue', Arial, sans-serif",
     padding: '28px 24px 32px 0',
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: 40,
     [theme.breakpoints.down('md')]: {
+        display: 'block',
         padding: '24px 20px 32px',
     },
     [theme.breakpoints.down('sm')]: {
         padding: '12px 16px 28px',
     },
     [`& .${classes.leftFixed}`]: {
-        position: 'fixed',
-        top: 100,
-        left: 0,
         width: SIDEBAR,
-        height: 'calc(100vh - 100px)',
-        overflowY: 'auto',
+        flexShrink: 0,
         boxSizing: 'border-box',
-        zIndex: 5,
         backgroundColor: 'var(--loop-surface)',
         borderRight: '1px solid var(--loop-border)',
         padding: '18px 18px 18px 16px',
@@ -70,18 +69,17 @@ const Root = styled('div')(({ theme }) => ({
         },
     },
     [`& .${classes.grid}`]: {
+        flex: 1,
+        minWidth: 0,
         display: 'grid',
         gridTemplateColumns: 'minmax(0, 1fr) 220px',
         gap: 40,
         alignItems: 'start',
-        marginLeft: SIDEBAR + 40,
         [theme.breakpoints.down('lg')]: {
             gridTemplateColumns: 'minmax(0, 1fr)',
-            marginLeft: SIDEBAR_LG + 32,
         },
         [theme.breakpoints.down('md')]: {
             gridTemplateColumns: 'minmax(0, 1fr)',
-            marginLeft: 0,
         },
     },
     [`& .${classes.rightCol}`]: {
