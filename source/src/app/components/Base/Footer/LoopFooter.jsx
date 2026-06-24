@@ -22,6 +22,8 @@ const classes = {
     copyright: `${PREFIX}-copyright`,
     socials: `${PREFIX}-socials`,
     social: `${PREFIX}-social`,
+    email:`${PREFIX}-email`,
+    btn:`${PREFIX}-btn`,
 };
 
 /* eslint-disable max-len -- inline SVG path data */
@@ -57,11 +59,6 @@ SocialIcon.propTypes = {
     variant: PropTypes.string.isRequired,
 };
 
-const SOCIALS = [
-    { id: 'x', label: 'X (Twitter)' },
-    { id: 'linkedin', label: 'LinkedIn' },
-    { id: 'github', label: 'GitHub' },
-];
 
 const COLUMNS = [
     {
@@ -174,6 +171,21 @@ const Root = styled('footer')(({ theme }) => ({
         transition: 'border-color 0.2s ease',
         '&:hover': { borderColor: ORANGE },
     },
+    [`& .${classes.email}`]: {
+    padding:'8px 12px',
+    background:'red',
+    border:' 1px solid #FFFFFF1A',
+    borderRadius: '8px',
+    background: '#0F0F0F',
+
+    },
+    [`& .${classes.btn}`]: {
+    background:'#FF5F00',
+    borderRadius: '10px',
+    color:"#ffffff",
+    width:'138px',
+    border:'1px solid #ff5500'
+    },
 }));
 
 /**
@@ -207,11 +219,13 @@ function LoopFooter(props) {
             <div className={classes.bottom}>
                 <span className={classes.copyright}>© 2025 LOOP Matrix. All rights reserved.</span>
                 <div className={classes.socials}>
-                    {SOCIALS.map((s) => (
+                    {/* {SOCIALS.map((s) => (
                         <button key={s.id} type='button' aria-label={s.label} className={classes.social}>
                             <SocialIcon variant={s.id} />
                         </button>
-                    ))}
+                    ))} */}
+                    <input type='text' placeholder='your@email.com' className={classes.email} />
+                    <button type='button' className={classes.btn}>Join Newsletter</button>
                 </div>
             </div>
         </Root>

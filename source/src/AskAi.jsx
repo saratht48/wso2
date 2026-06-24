@@ -340,8 +340,8 @@ export default function AskAI() {
             {/* ── FAB — outer dark pill container + inner white pill button ── */}
             <Box sx={{
                 position: 'fixed',
-                bottom: '12px',
-                right: '40px',
+                bottom: '100px',
+                right: '30px',
                 zIndex: 1200,
                 // Outer dark rounded container (the grey pill in the image)
                 bgcolor: '#1a1d2653',

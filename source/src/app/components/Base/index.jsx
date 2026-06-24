@@ -1,23 +1,6 @@
+
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
-/*
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
- *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Link, withRouter } from 'react-router-dom';
@@ -27,33 +10,25 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Hidden from '@mui/material/Hidden';
-import {
-    useTheme, Avatar, Badge,
-} from '@mui/material';
+import { useTheme, Avatar, Badge } from '@mui/material';
 import Icon from '@mui/material/Icon';
 import PropTypes from 'prop-types';
 import Popper from '@mui/material/Popper';
 import Grow from '@mui/material/Grow';
-// import Paper from '@mui/material/Paper'; // LOOP Matrix: user dropdown no longer uses Paper
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-// import { Toaster } from 'react-hot-toast'; // LOOP Matrix: Toaster JSX commented out
 import Drawer from '@mui/material/Drawer';
-import HeaderSearch from 'AppComponents/Base/Header/Search/HeaderSearch'; // LOOP Matrix: shown when search icon is clicked
-import Settings, { useSettingsContext } from 'AppComponents/Shared/SettingsContext';
+import HeaderSearch from 'AppComponents/Base/Header/Search/HeaderSearch';
+import Settings from 'AppComponents/Shared/SettingsContext';
 import { app } from 'Settings';
 import Box from '@mui/material/Box';
 import API from 'AppData/api';
 import LoopThemeStyles, { initLoopThemeMode, toggleLoopThemeMode } from 'AppComponents/Shared/LoopTheme';
 import AuthManager from '../../data/AuthManager';
-// import LanguageSelector from './Header/LanuageSelector'; // LOOP Matrix: language selector removed from header
 import GlobalNavBar from './Header/GlobalNavbar';
 import UserMenuDropdown from './Header/UserMenuDropdown';
 import LoopFooter from './Footer/LoopFooter';
-// import VerticalDivider from '../Shared/VerticalDivider'; // LOOP Matrix: dividers removed from header
 import SearchModal from '../../../SearchModal'
 
-
-// Add state
 
 const PREFIX = 'index';
 
@@ -91,35 +66,21 @@ const classes = {
     logoutLink: `${PREFIX}-logoutLink`,
 };
 
-
-
-const Root = styled('div')((
-    {
-        theme,
-    },
-) => {
+const Root = styled('div')(({ theme }) => {
     const pageMaxWidth = theme.custom.page.style === 'fluid' ? 'none' : theme.custom.page.width;
     const footerHeight = theme.custom.footer.active ? theme.custom.footer.height : 0;
     return {
         [`& .${classes.appBar}`]: {
             position: 'fixed',
-            // LOOP Matrix: header colour follows the light/dark theme variable
             backgroundColor: 'var(--loop-header-bg, #141A21)',
             borderBottom: '1px solid var(--loop-header-border, transparent)',
             boxSizing: 'border-box',
-            height: '100px', // explicit height so padding stays INSIDE (border-box), not added on top
+            height: '100px',
             paddingInline: '80px',
-            // LOOP Matrix: tighten side padding on smaller viewports
-            [theme.breakpoints.down('md')]: {
-                paddingInline: '40px',
-            },
-            [theme.breakpoints.down('sm')]: {
-                paddingInline: '20px',
-            },
+            [theme.breakpoints.down('md')]: { paddingInline: '40px' },
+            [theme.breakpoints.down('sm')]: { paddingInline: '20px' },
         },
-        [`& .${classes.icon}`]: {
-            marginRight: theme.spacing(2),
-        },
+        [`& .${classes.icon}`]: { marginRight: theme.spacing(2) },
         [`& .${classes.menuIcon}`]: {
             color: theme.palette.getContrastText(theme.custom.appBar.background),
             fontSize: 35,
@@ -131,36 +92,26 @@ const Root = styled('div')((
             color: theme.palette.getContrastText(theme.custom.appBar.background),
             minWidth: 'auto',
         },
-        [`& .${classes.linkWrapper}`]: {
-            display: 'flex',
-            marginLeft: 'auto',
-        },
-        // Page layout styles
-        [`& .${classes.drawer}`]: {
-            top: 100, // LOOP Matrix: header height 100px
-        },
+        [`& .${classes.linkWrapper}`]: { display: 'flex', marginLeft: 'auto' },
+        [`& .${classes.drawer}`]: { top: 100 },
         [`& .${classes.wrapper}`]: {
             minHeight: '100%',
-            // LOOP Matrix: removed the -50 sticky-footer hack (no matching push spacer is
-            // rendered, so it pulled the footer up and overlapped the page content).
             marginBottom: 0,
             background: theme.palette.background.default + ' url(' + app.context + theme.custom.backgroundImage + ') repeat left top',
         },
         [`& .${classes.contentWrapper}`]: {
             display: 'flex',
             flexDirection: 'row',
-            // LOOP Matrix: `clip`+`visible` prevents horizontal scroll WITHOUT making this a
-            // scroll container, so `position: sticky` in page content anchors to the window.
-            overflowY: 'visible',
-            overflowX: 'clip',
+            overflowY: 'auto',
+            overflowX: 'hidden',
             position: 'relative',
-            minHeight: theme.custom.banner.active ? `calc(100vh - ${100 + footerHeight}px)` : `calc(100vh - ${footerHeight}px)`,
+            minHeight: theme.custom.banner.active
+                ? `calc(100vh - ${100 + footerHeight}px)`
+                : `calc(100vh - ${footerHeight}px)`,
             marginLeft: -4,
-            marginTop: theme.custom.banner.active ? 0 : '100px', // LOOP Matrix: header height 100px
+            marginTop: theme.custom.banner.active ? 0 : '100px',
         },
-        [`& .${classes.push}`]: {
-            height: 50,
-        },
+        [`& .${classes.push}`]: { height: 50 },
         [`& .${classes.footer}`]: {
             background: theme.custom.footer.background,
             color: theme.custom.footer.color,
@@ -170,29 +121,17 @@ const Root = styled('div')((
             display: 'flex',
         },
         [`& .${classes.toolbar}`]: {
-            // LOOP Matrix: fill the fixed-height header; never force extra height via minHeight
             minHeight: 0,
             height: '100%',
             padding: '0px',
-            [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-                minHeight: 0,
-            },
-            [theme.breakpoints.up('sm')]: {
-                minHeight: 0,
-            },
+            [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: { minHeight: 0 },
+            [theme.breakpoints.up('sm')]: { minHeight: 0 },
         },
-        [`& .${classes.list}`]: {
-            width: theme.custom.appBar.drawerWidth,
-        },
+        [`& .${classes.list}`]: { width: theme.custom.appBar.drawerWidth },
         [`& .${classes.drawerStyles}`]: {
             top: theme.mixins.toolbar['@media (min-width:600px)'].minHeight,
         },
-        [`& .${classes.listInline}`]: {
-            '& ul': {
-                display: 'flex',
-                flexDirection: 'row',
-            },
-        },
+        [`& .${classes.listInline}`]: { '& ul': { display: 'flex', flexDirection: 'row' } },
         [`& .${classes.reactRoot}`]: {
             maxWidth: pageMaxWidth,
             margin: 'auto',
@@ -201,9 +140,7 @@ const Root = styled('div')((
         },
         [`& .${classes.icons}`]: {
             marginRight: theme.spacing(),
-            '&.material-icons': {
-                fontSize: theme.spacing(2),
-            },
+            '&.material-icons': { fontSize: theme.spacing(2) },
         },
         [`& .${classes.banner}`]: {
             color: theme.custom.banner.color,
@@ -212,7 +149,6 @@ const Root = styled('div')((
             margin: theme.custom.banner.margin,
             fontSize: theme.custom.banner.fontSize,
             display: 'flex',
-            distributeContent: theme.custom.banner.textAlign,
             justifyContent: theme.custom.banner.textAlign,
             top: 0,
             position: 'fixed',
@@ -220,34 +156,21 @@ const Root = styled('div')((
             boxSizing: 'border-box',
             zIndex: 1000,
         },
-        [`& .${classes.listRoot}`]: {
-            padding: 0,
-        },
+        [`& .${classes.listRoot}`]: { padding: 0 },
         [`& .${classes.listRootInline}`]: {
             padding: 0,
             display: 'flex',
-            [theme.breakpoints.down('md')]: {
-                flexDirection: 'column',
-            },
+            [theme.breakpoints.down('md')]: { flexDirection: 'column' },
         },
-        [`& .${classes.listItemTextRoot}`]: {
-            padding: 0,
-        },
+        [`& .${classes.listItemTextRoot}`]: { padding: 0 },
         [`& .${classes.listText}`]: {
             color: theme.palette.getContrastText(theme.custom.appBar.background),
         },
         [`& .${classes.listTextSmall}`]: {
             color: theme.palette.getContrastText(theme.custom.appBar.background),
         },
-        [`& .${classes.smallIcon}`]: {
-            marginRight: 5,
-            minWidth: 'auto',
-        },
-        [`& .${classes.links}`]: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
+        [`& .${classes.smallIcon}`]: { marginRight: 5, minWidth: 'auto' },
+        [`& .${classes.links}`]: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
         [`& .${classes.selected}`]: {
             background: theme.custom.appBar.activeBackground,
             alignItems: 'center',
@@ -258,21 +181,16 @@ const Root = styled('div')((
             color: theme.palette.getContrastText(theme.custom.appBar.activeBackground),
         },
         [`& .${classes.triangleDown}`]: {
-            width: 0,
-            height: 0,
+            width: 0, height: 0,
             borderLeft: '6px solid transparent',
             borderRight: '6px solid transparent',
             borderTop: `6px solid ${theme.custom.appBar.activeBackground}`,
-            fontSize: 0,
-            lineHeight: 0,
-            position: 'absolute',
-            bottom: -5,
+            fontSize: 0, lineHeight: 0,
+            position: 'absolute', bottom: -5,
         },
-        [`& .${classes.listIconRoot}`]: {
-            minWidth: 'auto',
-        },
+        [`& .${classes.listIconRoot}`]: { minWidth: 'auto' },
         [`& .${classes.listItemRoot}`]: {
-            padding: `0 ${theme.spacing(1)} 0 ${theme.spacing(1)} `,
+            padding: `0 ${theme.spacing(1)} 0 ${theme.spacing(1)}`,
             height: 30,
         },
         [`& .${classes.logoutLink}`]: {
@@ -281,20 +199,9 @@ const Root = styled('div')((
     };
 });
 
-/**
- *
- * @class LayoutLegacy
- * @extends {React.Component}
- */
 class LayoutLegacy extends React.Component {
-    /**
-     * @inheritdoc
-     * @param {*} props
-     * @memberof LayoutLegacy
-     */
     constructor(props) {
         super(props);
-        // LOOP Matrix: apply the persisted light/dark theme before first paint.
         initLoopThemeMode();
         this.state = {
             openNavBar: false,
@@ -302,25 +209,14 @@ class LayoutLegacy extends React.Component {
             selected: 'home',
             anchorEl: null,
             bannerHeight: 0,
-            searchOpen: false, // LOOP Matrix: collapsible header search
-            
+            searchOpen: false,      // ✅ controls HeaderSearch (search icon)
+            modalOpen: false,       // ✅ controls SearchModal (bell icon)
         };
-        
         this.toggleGlobalNavBar = this.toggleGlobalNavBar.bind(this);
         const { history } = props;
-        history.listen((location) => {
-            this.detectCurrentMenu(location);
-        });
+        history.listen((location) => { this.detectCurrentMenu(location); });
     }
 
-    toggleSearchModal = () => {
-    this.setState((prev) => ({ searchOpen: !prev.searchOpen }));
-};
-
-    /**
-     * Component did mount callback.
-     * @returns {void}
-     */
     componentDidMount() {
         const { history: { location }, theme } = this.props;
         document.body.style.backgroundColor = theme.custom.page.emptyAreadBackground || '#ffffff';
@@ -344,9 +240,7 @@ class LayoutLegacy extends React.Component {
                     .then((res) => {
                         if (res.body.name) sessionStorage.setItem('userOrganization', res.body.name);
                     })
-                    .catch((error) => {
-                        throw error;
-                    });
+                    .catch((error) => { throw error; });
             }
         } else {
             sessionStorage.removeItem('userOrganization');
@@ -356,7 +250,6 @@ class LayoutLegacy extends React.Component {
     detectCurrentMenu = (location) => {
         const { pathname } = location;
         if (/\/search$/g.test(pathname) || /\/search\//g.test(pathname)) {
-            // For search results, don't select any tab to show it's a separate search view
             this.setState({ selected: null });
         } else if (/\/apis$/g.test(pathname) || /\/apis\//g.test(pathname)) {
             this.setState({ selected: 'apis' });
@@ -371,30 +264,15 @@ class LayoutLegacy extends React.Component {
         }
     };
 
-    handleRequestCloseUserMenu = () => {
-        this.setState({ openUserMenu: false });
-    };
+    handleRequestCloseUserMenu = () => { this.setState({ openUserMenu: false }); };
 
-    /**
-     * Do OIDC logout redirection
-     * @param {React.SyntheticEvent} e Click event of the submit button
-     */
     doOIDCLogout = (e) => {
         e.preventDefault();
         window.location = app.context + '/services/logout';
     };
 
-    handleClickButton = (key) => {
-        this.setState({
-            [key]: true,
-        });
-    };
-
-    handleRequestClose = (key) => {
-        this.setState({
-            [key]: false,
-        });
-    };
+    handleClickButton = (key) => { this.setState({ [key]: true }); };
+    handleRequestClose = (key) => { this.setState({ [key]: false }); };
 
     handleToggleUserMenu = (event) => {
         this.setState((state) => ({ openUserMenu: !state.openUserMenu }));
@@ -402,10 +280,7 @@ class LayoutLegacy extends React.Component {
     };
 
     handleCloseUserMenu = (event) => {
-        if (this.state.anchorEl?.contains(event.target)) {
-            return;
-        }
-
+        if (this.state.anchorEl?.contains(event.target)) return;
         this.setState({ openUserMenu: false });
     };
 
@@ -420,45 +295,29 @@ class LayoutLegacy extends React.Component {
         }
         if (logoWithTenant && /^(ftp|http|https):\/\/[^ "]+$/.test(logoWithTenant)) {
             return logoWithTenant;
-        } else {
-            return app.context + logoWithTenant;
         }
+        return app.context + logoWithTenant;
     };
 
-    getPasswordChangeEnabled = () => {
-        const { settings: { IsPasswordChangeEnabled } } = useSettingsContext();
-        return IsPasswordChangeEnabled;
-    };
-
-    /**
-     * toggleGlobalNavBar callback.
-     * @returns {void}
-     */
     toggleGlobalNavBar() {
         this.setState((prevState) => ({ openNavBar: !prevState.openNavBar }));
     }
 
-    // LOOP Matrix: open/close the header search box
+    // ✅ Toggles HeaderSearch (search icon button)
     toggleSearch = () => {
         this.setState((prevState) => ({ searchOpen: !prevState.searchOpen }));
     };
 
-    /**
-     * Render callback.
-     * @returns {JSX} returns the JSX
-     */
+    // ✅ Opens SearchModal (bell/reminder icon button)
+    openModal = () => { this.setState({ modalOpen: true }); };
+    closeModal = () => { this.setState({ modalOpen: false }); };
+
     render() {
-        const {
-            theme, children,
-        } = this.props;
+        const { theme, children } = this.props;
         const {
             custom: {
-                banner: {
-                    active, // LOOP Matrix: banner JSX commented out; only `active` still referenced
-                },
-                appBar: {
-                    showSearch,
-                },
+                banner: { active },
+                appBar: { showSearch },
                 publicTenantStore,
             },
         } = theme;
@@ -467,11 +326,7 @@ class LayoutLegacy extends React.Component {
         const { customUrl: { tenantDomain: customUrlEnabledDomain } } = app;
 
         const user = AuthManager.getUser();
-        // TODO: Refer to fix: https://github.com/mui-org/material-ui/issues/10076#issuecomment-361232810 ~tmkb
         let username = null;
-        // LOOP Matrix: organization label removed from the new user dropdown
-        // const userOrganization = sessionStorage.getItem('userOrganization');
-
         if (user) {
             username = user.name;
             const count = (username.match(/@/g) || []).length;
@@ -479,7 +334,7 @@ class LayoutLegacy extends React.Component {
                 username = user.name.replace('@carbon.super', '');
             }
         }
-        // LOOP Matrix: initials for the user avatar (e.g. "Chris M" -> "CM")
+
         let userInitials = '';
         if (username) {
             userInitials = username
@@ -490,85 +345,29 @@ class LayoutLegacy extends React.Component {
                 .join('')
                 .toUpperCase();
         }
-        const commonStyle = {
-            style: { top: 100 }, // LOOP Matrix: header height 100px
-        };
+
+        const commonStyle = { style: { top: 100 } };
         const paperStyles = {
-            style: {
-                top: 100, // LOOP Matrix: header height 100px
-                backgroundColor: theme.custom.appBar.background,
-            },
+            style: { top: 100, backgroundColor: theme.custom.appBar.background },
         };
 
         const strokeColor = theme.palette.getContrastText(theme.custom.appBar.background);
         const strokeColorSelected = theme.palette.getContrastText(theme.custom.appBar.activeBackground);
 
         let publicTenantStoreVisible = true;
-
         if (publicTenantStore) {
             const { active: publicTenantStoreActive } = publicTenantStore;
             publicTenantStoreVisible = publicTenantStoreActive;
         }
+
         return (
             <Root>
                 <LoopThemeStyles />
-                {/* {active && (
-                    <div className={classes.banner} id='bannerElement'>
-                        {style === 'text' ? text
-                            : (
-                                <img
-                                    alt={(
-                                        <FormattedMessage
-                                            id='Base.index.banner.alt'
-                                            defaultMessage='Dev Portal Banner'
-                                        />
-                                    )}
-                                    src={`${app.context}/${image}`}
-                                />
-                            )}
-                    </div>
-                )} */}
-                {/* <Toaster
-                    position='bottom-right'
-                    gutter={8}
-                    toastOptions={{
-                        style: {
-                            background: '#008fcc',
-                            color: '#ffffff',
-                            fontFamily: theme.typography.fontFamily,
-                            fontSize: '13px',
-                        },
-                        success: {
-                            style: {
-                                backgroundColor: '#4caf50',
-                                color: '#ffffff',
-                                fontFamily: theme.typography.fontFamily,
-                                fontSize: '13px',
-                            },
-                            iconTheme: {
-                                primary: '#ffffff',
-                                secondary: '#4caf50',
-                            },
-                        },
-                        error: {
-                            style: {
-                                backgroundColor: '#BD0808',
-                                color: '#ffffff',
-                                fontFamily: theme.typography.fontFamily,
-                                fontSize: '13px',
-                            },
-                            iconTheme: {
-                                primary: '#ffffff',
-                                secondary: '#BD0808',
-                            },
-                        },
-                        custom: {
-                            style: { backgroundColor: '#DDEFFF' },
-                        },
-                    }}
-                /> */}
                 <div className={classes.reactRoot} id='pageRoot'>
-                    <div className={classes.wrapper} style={{ marginTop: active ? (this.state.bannerHeight + 100) + 'px' : 0 }}>
+                    <div
+                        className={classes.wrapper}
+                        style={{ marginTop: active ? (this.state.bannerHeight + 100) + 'px' : 0 }}
+                    >
                         <AppBar
                             position='fixed'
                             className={classes.appBar}
@@ -576,16 +375,14 @@ class LayoutLegacy extends React.Component {
                             style={{ top: active ? this.state.bannerHeight + 'px' : 0 }}
                         >
                             <Toolbar className={classes.toolbar} id='toolBar'>
-                                {/* LOOP Matrix: hamburger opens the nav drawer on mobile (< md) */}
+                                {/* Hamburger */}
                                 <Hidden mdUp>
                                     <IconButton
                                         onClick={this.toggleGlobalNavBar}
                                         aria-label='open navigation menu'
                                         size='large'
                                         sx={{
-                                            mr: 1.5,
-                                            width: 44,
-                                            height: 44,
+                                            mr: 1.5, width: 44, height: 44,
                                             borderRadius: '10px',
                                             border: '1px solid rgba(255,255,255,0.1)',
                                             color: '#FFFFFF',
@@ -594,38 +391,21 @@ class LayoutLegacy extends React.Component {
                                         <Icon>menu</Icon>
                                     </IconButton>
                                 </Hidden>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        height: '100%',
-                                        gap: '120px',
-                                    }}
-                                >
+
+                                {/* Logo + nav */}
+                                <div style={{ display: 'flex', alignItems: 'center', height: '100%', gap: '120px' }}>
                                     <Link to='/' id='logoLink' aria-label='Go to home page'>
-                                        {/* LOOP Matrix: dark/light logo swapped by theme via CSS */}
                                         <img
                                             className='loop-logo-dark'
-                                            alt={(
-                                                <FormattedMessage
-                                                    id='Base.index.logo.alt'
-                                                    defaultMessage='Dev Portal'
-                                                />
-                                            )}
+                                            alt={<FormattedMessage id='Base.index.logo.alt' defaultMessage='Dev Portal' />}
                                             src={this.getLogoPath()}
-                                            style={{
-                                                height: theme.custom.appBar.logoHeight,
-                                                width: theme.custom.appBar.logoWidth,
-                                            }}
+                                            style={{ height: theme.custom.appBar.logoHeight, width: theme.custom.appBar.logoWidth }}
                                         />
                                         <img
                                             className='loop-logo-light'
                                             alt='LOOP Matrix'
                                             src={`${app.context}/site/public/images/lighlogo.svg`}
-                                            style={{
-                                                height: theme.custom.appBar.logoHeight,
-                                                width: theme.custom.appBar.logoWidth,
-                                            }}
+                                            style={{ height: theme.custom.appBar.logoHeight, width: theme.custom.appBar.logoWidth }}
                                         />
                                     </Link>
                                     <Hidden smDown>
@@ -641,6 +421,8 @@ class LayoutLegacy extends React.Component {
                                         </div>
                                     </Hidden>
                                 </div>
+
+                                {/* Mobile drawer */}
                                 <Hidden mdUp>
                                     <Drawer
                                         className={classes.drawerStyles}
@@ -651,12 +433,7 @@ class LayoutLegacy extends React.Component {
                                         open={openNavBar}
                                         onClose={this.toggleGlobalNavBar}
                                     >
-                                        <div
-                                            tabIndex={0}
-                                            role='button'
-                                            onClick={this.toggleGlobalNavBar}
-                                            onKeyDown={this.toggleGlobalNavBar}
-                                        >
+                                        <div tabIndex={0} role='button' onClick={this.toggleGlobalNavBar} onKeyDown={this.toggleGlobalNavBar}>
                                             <div className={classes.list}>
                                                 <GlobalNavBar
                                                     selected={selected}
@@ -670,43 +447,25 @@ class LayoutLegacy extends React.Component {
                                         </div>
                                     </Drawer>
                                 </Hidden>
-                                {/* LOOP Matrix: full search box replaced by a search icon in the right cluster below
-                                <VerticalDivider height={32} />
-                                {showSearch && (<HeaderSearch id='headerSearch' />)}
-                                */}
+
                                 <Box sx={{ flexGrow: 1 }} />
-                                {tenantDomain && customUrlEnabledDomain === 'null' && tenantDomain !== 'INVALID'
-                                    && publicTenantStoreVisible && (
-                                    <Link
-                                        style={{
-                                            textDecoration: 'none',
-                                            color: '#ffffff',
-                                        }}
-                                        to='/'
-                                        onClick={() => setTenantDomain('INVALID')}
-                                        id='gotoPubulicDevPortal'
-                                    >
+
+                                {/* Switch Dev Portals */}
+                                {tenantDomain && customUrlEnabledDomain === 'null' && tenantDomain !== 'INVALID' && publicTenantStoreVisible && (
+                                    <Link style={{ textDecoration: 'none', color: '#ffffff' }} to='/' onClick={() => setTenantDomain('INVALID')} id='gotoPubulicDevPortal'>
                                         <Button className={classes.publicStore}>
                                             <Icon className={classes.icons}>public</Icon>
                                             <Hidden lgDown>
-                                                <FormattedMessage
-                                                    id='Base.index.go.to.public.store'
-                                                    defaultMessage='Switch Dev Portals'
-                                                />
+                                                <FormattedMessage id='Base.index.go.to.public.store' defaultMessage='Switch Dev Portals' />
                                             </Hidden>
                                         </Button>
                                     </Link>
                                 )}
 
-                                {/* LOOP Matrix: language selector not part of the new header design
-                                {languageSwitchActive && <LanguageSelector />}
-                                */}
-                                {/* LOOP Matrix: right-side control cluster (search / theme toggle / notifications).
-                                    NOTE: theme toggle and notifications are visual placeholders for now —
-                                    they are not wired to any behaviour yet. */}
+                                {/* ✅ Search icon — toggles HeaderSearch inline */}
                                 {showSearch && (
                                     <>
-                                        {this.state.searchOpen && (<HeaderSearch id='headerSearch' />)}
+                                        {this.state.searchOpen && <HeaderSearch id='headerSearch' />}
                                         <IconButton
                                             color='inherit'
                                             className={classes.userLink}
@@ -722,6 +481,8 @@ class LayoutLegacy extends React.Component {
                                         </IconButton>
                                     </>
                                 )}
+
+                                {/* Theme toggle */}
                                 <IconButton
                                     color='inherit'
                                     className={classes.userLink}
@@ -729,189 +490,84 @@ class LayoutLegacy extends React.Component {
                                     size='large'
                                     onClick={() => toggleLoopThemeMode()}
                                 >
-                                    {/* LOOP Matrix: sun in dark mode, moon in light mode (CSS-swapped) */}
-                                    <img
-                                        className='loop-themeicon-dark'
-                                        src={`${app.context}/site/public/images/toggleTheme.svg`}
-                                        alt='Switch to light mode'
-                                        style={{ height: 36, width: 36 }}
-                                    />
-                                    <img
-                                        className='loop-themeicon-light'
-                                        src={`${app.context}/site/public/images/darkmode.svg`}
-                                        alt='Switch to dark mode'
-                                        style={{ height: 36, width: 36 }}
-                                    />
+                                    <img className='loop-themeicon-dark' src={`${app.context}/site/public/images/toggleTheme.svg`} alt='Switch to light mode' style={{ height: 36, width: 36 }} />
+                                    <img className='loop-themeicon-light' src={`${app.context}/site/public/images/darkmode.svg`} alt='Switch to dark mode' style={{ height: 36, width: 36 }} />
                                 </IconButton>
+
                                 <Hidden smDown>
-                                    {/* <IconButton
-                                        color='inherit'
-                                        className={classes.userLink}
+                                    {/* ✅ Bell icon — opens SearchModal popup */}
+                                    <Box
+                                        // color='inherit'
+                                        // className={classes.userLink}
                                         aria-label='notifications'
                                         size='large'
+                                        onClick={this.openModal}
+                                        style={{
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            marginLeft: 16,
+                                            border:  '1px solid #FFFFFF14',
+                                            padding: '8px',
+                                            marginRight: '20px',
+                                            borderRadius: '10px',
+                                            color:"rgba(0, 0, 0, 0.87)",
+                                            background:'rgba(0, 0, 0, 0.87)' ,
+                                        }}
                                     >
-                                        <Badge badgeContent={2} color='error'>
                                             <img
-                                                src={`${app.context}/site/public/images/reminderButton.svg`}
+                                                src={`${app.context}/site/public/images/remainder_icon.png`}
                                                 alt='Reminders'
-                                                style={{ height: 36, width: 36 }}
+                                                style={{ height: "16px", width: "16px" }}
                                             />
-                                        </Badge>
-                                    </IconButton> */}
-{/* {showSearch && (
-    <>
-        {this.state.searchOpen && <SearchModal id='headerSearch' />}
-        <IconButton
-            color='inherit'
-            className={classes.userLink}
-            aria-label='search'
-            size='large'
-            onClick={this.toggleSearchModal}
-        >
-            <img
-                src={`${app.context}/site/public/images/reminderButton.svg`}
-                alt='Search'
-                style={{ height: 36, width: 36 }}
-            />
-        </IconButton>
-    </>
-)} */}
+                                        
+                                    </Box>
 
-{/* Bell icon */}
-<IconButton
-    color='inherit'
-    className={classes.userLink}
-    aria-label='notifications'
-    size='large'
-    onClick={this.toggleSearchModal}
->
-    <Badge  color='error'>
-        <img
-            src={`${app.context}/site/public/images/reminderButton.svg`}
-            alt='Reminders'
-            style={{ height: 36, width: 36 }}
-        />
-    </Badge>
-</IconButton>
-
-{/* Just before </Root> */}
-{this.state.searchOpen && (
-    <SearchModal onClose={() => this.setState({ searchOpen: false })} />
-)}
+                                    {/* User menu or Sign In */}
                                     {user ? (
-                                        <>
-                                            <div className={classes.linkWrapper}>
-                                                <Button
-                                                    aria-owns={this.openUserMenu ? 'menu-list-grow' : null}
-                                                    aria-haspopup='true'
-                                                    onClick={this.handleToggleUserMenu}
-                                                    className={classes.userLink}
-                                                    id='userToggleButton'
-                                                    aria-label='user menu'
-                                                    sx={{ backgroundColor: '#FFBF9921', borderRadius: '10px' }}
-                                                >
-                                                    {/* LOOP Matrix: avatar + name + role block (replaces plain person icon)
-                                                <Icon className={classes.icons}>person</Icon>
-                                                <span
-                                                    style={{
-                                                        overflow: 'hidden',
-                                                        textOverflow: 'ellipsis',
-                                                        whiteSpace: 'nowrap',
-                                                        maxWidth: '200px',
-                                                    }}
-                                                >
-                                                    {username}
-                                                </span>
-                                                */}
-                                                    <Avatar
-                                                        variant='rounded'
-                                                        sx={{
-                                                            bgcolor: '#FF5F00',
-                                                            width: 36,
-                                                            height: 36,
-                                                            borderRadius: '10px',
-                                                            fontSize: 14,
-                                                            fontWeight: 700,
-                                                            mr: 1,
-                                                        }}
-                                                    >
-                                                        {userInitials}
-                                                    </Avatar>
-                                                    <span
-                                                        style={{
-                                                            display: 'flex',
-                                                            flexDirection: 'column',
-                                                            alignItems: 'flex-start',
-                                                            lineHeight: 1.15,
-                                                            textTransform: 'none',
-                                                            maxWidth: '200px',
-                                                        }}
-                                                    >
-                                                        <span
-                                                            style={{
-                                                                fontSize: 13,
-                                                                fontWeight: 600,
-                                                                overflow: 'hidden',
-                                                                textOverflow: 'ellipsis',
-                                                                whiteSpace: 'nowrap',
-                                                                maxWidth: '160px',
-                                                                color: '#FFFFFF',
-                                                            }}
-                                                        >
-                                                            {username}
-                                                        </span>
-                                                        {/* TODO: replace hardcoded role with real user role when available */}
-                                                        <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>Dev</span>
+                                        <div className={classes.linkWrapper}>
+                                            <Button
+                                                aria-owns={this.openUserMenu ? 'menu-list-grow' : null}
+                                                aria-haspopup='true'
+                                                onClick={this.handleToggleUserMenu}
+                                                className={classes.userLink}
+                                                id='userToggleButton'
+                                                aria-label='user menu'
+                                                sx={{ backgroundColor: '#FFBF9921', borderRadius: '10px' }}
+                                            >
+                                                <Avatar variant='rounded' sx={{ bgcolor: '#FF5F00', width: 36, height: 36, borderRadius: '10px', fontSize: 14, fontWeight: 700, mr: 1 }}>
+                                                    {userInitials}
+                                                </Avatar>
+                                                <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.15, textTransform: 'none', maxWidth: '200px' }}>
+                                                    <span style={{ fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '160px', color: '#FFFFFF' }}>
+                                                        {username}
                                                     </span>
-                                                    <Icon className={classes.icons} style={{ marginLeft: 6 }}>
-                                                        keyboard_arrow_down
-                                                    </Icon>
-                                                </Button>
-                                                <Popper
-                                                    id='userPopup'
-                                                    open={this.state.openUserMenu}
-                                                    anchorEl={this.state.anchorEl}
-                                                    transition
-                                                    disablePortal
-                                                    anchorOrigin={{
-                                                        vertical: 'bottom',
-                                                        horizontal: 'center',
-                                                    }}
-                                                    transformOrigin={{
-                                                        vertical: 'top',
-                                                        horizontal: 'center',
-                                                    }}
-                                                    placement='bottom-start'
-                                                >
-                                                    {({ TransitionProps, placement }) => (
-                                                        <Grow
-                                                            {...TransitionProps}
-                                                            id='menu-list-grow'
-                                                            style={{
-                                                                transformOrigin:
-                                                                placement === 'bottom' ? 'center top' : 'center bottom',
-                                                            }}
-                                                        >
-                                                            <div>
-                                                                <ClickAwayListener onClickAway={this.handleCloseUserMenu}>
-                                                                    <div>
-                                                                        <UserMenuDropdown
-                                                                            initials={userInitials}
-                                                                            name={username}
-                                                                            email={user && user.email ? user.email : ''}
-                                                                            plan='Growth'
-                                                                            onProfile={this.handleCloseUserMenu}
-                                                                            onSettings={this.handleCloseUserMenu}
-                                                                            onSignOut={this.doOIDCLogout}
-                                                                        />
-                                                                    </div>
-                                                                </ClickAwayListener>
-                                                            </div>
-                                                        </Grow>
-                                                    )}
-                                                </Popper>
-                                            </div>
-                                        </>
+                                                    <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>Dev</span>
+                                                </span>
+                                                <Icon className={classes.icons} style={{ marginLeft: 6 }}>keyboard_arrow_down</Icon>
+                                            </Button>
+                                            <Popper id='userPopup' open={this.state.openUserMenu} anchorEl={this.state.anchorEl} transition disablePortal placement='bottom-start'>
+                                                {({ TransitionProps, placement }) => (
+                                                    <Grow {...TransitionProps} id='menu-list-grow' style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+                                                        <div>
+                                                            <ClickAwayListener onClickAway={this.handleCloseUserMenu}>
+                                                                <div>
+                                                                    <UserMenuDropdown
+                                                                        initials={userInitials}
+                                                                        name={username}
+                                                                        email={user && user.email ? user.email : ''}
+                                                                        plan='Growth'
+                                                                        onProfile={this.handleCloseUserMenu}
+                                                                        onSettings={this.handleCloseUserMenu}
+                                                                        onSignOut={this.doOIDCLogout}
+                                                                    />
+                                                                </div>
+                                                            </ClickAwayListener>
+                                                        </div>
+                                                    </Grow>
+                                                )}
+                                            </Popper>
+                                        </div>
                                     ) : (
                                         <div className={classes.linkWrapper}>
                                             <Button
@@ -920,17 +576,12 @@ class LayoutLegacy extends React.Component {
                                                 href={app.context + '/services/configs'}
                                                 disableElevation
                                                 style={{
-                                                    height: '40px',
-                                                    width: '90px',
-                                                    minWidth: '90px',
-                                                    backgroundColor: '#FF5F00',
-                                                    borderRadius: '10px',
+                                                    height: '40px', width: '90px', minWidth: '90px',
+                                                    backgroundColor: '#FF5F00', borderRadius: '10px',
                                                     color: '#FFFFFF',
                                                     fontFamily: "'Poppins', 'Open Sans', 'Helvetica', 'Arial', sans-serif",
-                                                    fontWeight: 500,
-                                                    fontSize: '14px',
-                                                    lineHeight: '20px',
-                                                    textTransform: 'none',
+                                                    fontWeight: 500, fontSize: '14px',
+                                                    lineHeight: '20px', textTransform: 'none',
                                                 }}
                                             >
                                                 <FormattedMessage id='Base.index.sign.in' defaultMessage='Sign In' />
@@ -946,12 +597,17 @@ class LayoutLegacy extends React.Component {
                     </div>
                     <LoopFooter logoSrc={this.getLogoPath()} />
                 </div>
+
+                {/* ✅ SearchModal — outside AppBar so z-index works correctly */}
+                {this.state.modalOpen && (
+                    <SearchModal onClose={this.closeModal} />
+                )}
             </Root>
         );
     }
 }
-LayoutLegacy.contextType = Settings;
 
+LayoutLegacy.contextType = Settings;
 LayoutLegacy.propTypes = {
     classes: PropTypes.shape({}).isRequired,
     theme: PropTypes.shape({}).isRequired,
@@ -959,12 +615,7 @@ LayoutLegacy.propTypes = {
 
 function Layout(props) {
     const theme = useTheme();
-    return (
-        <LayoutLegacy
-            {...props}
-            theme={theme}
-        />
-    );
+    return <LayoutLegacy {...props} theme={theme} />;
 }
 
-export default injectIntl(withRouter((Layout)));
+export default injectIntl(withRouter(Layout));
