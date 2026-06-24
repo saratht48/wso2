@@ -16,17 +16,15 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
-// import { app } from 'Settings';
+import { app } from 'Settings';
 import { ArrowIcon, CheckIcon } from './Icons';
 import {
     ORANGE, ORANGE_LIGHT, DARK_1,
 } from './tokens';
 
 
-// ── Icon image paths (same pattern as paymentImage) ──
-// const HeroImg = `${app.context}/source/src/app/components/Products/images/payment_light_icon.png`;
+const HeroImg = `${app.context}/site/public/images/payments_landing/payment-icon.png`;
 
-const HeroImg= '../images/payment_light_icon.png';
 const PREFIX = 'PaymentsHero';
 
 const classes = {
@@ -46,6 +44,8 @@ const classes = {
     heroCardSub: `${PREFIX}-heroCardSub`,
     verified: `${PREFIX}-verified`,
     verifiedDot: `${PREFIX}-verifiedDot`,
+    innerbox: `${PREFIX}-innerbox`,
+    imgBox: `${PREFIX}-imgBox`,
 };
 
 const Root = styled('section')(({ theme }) => ({
@@ -158,7 +158,7 @@ const Root = styled('section')(({ theme }) => ({
     },
     [`& .${classes.heroCard}`]: {
         borderRadius: 24,
-        padding: 28,
+        padding: 24,
         background: 'linear-gradient(135deg, rgba(255,95,0,0.10), rgba(255,95,0,0.03))',
         border: '1px solid rgba(255,95,0,0.2)',
         position: 'relative',
@@ -186,6 +186,7 @@ const Root = styled('section')(({ theme }) => ({
         marginBottom: 28,
         boxShadow: '0 10px 15px rgba(0,0,0,0.1)',
     },
+
     [`& .${classes.heroCardTitle}`]: {
         color: DARK_1,
         fontWeight: 700,
@@ -224,6 +225,21 @@ const Root = styled('section')(({ theme }) => ({
         justifyContent: 'center',
         flexShrink: 0,
     },
+    [`& .${classes.innerbox}`]: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+    },
+    [`& .${classes.imgBox}`]: {
+        background: '#ff5500',
+        borderRadius: '8px',
+        justifyContent: 'center',
+        display: 'flex',
+        padding: '10px',
+        width: '60px',
+        height: '60px'
+    },
 }));
 
 /**
@@ -260,27 +276,35 @@ function Hero() {
                     </div>
                 </div>
 
+                {/* <div className={classes.heroCard}>
+                    <img src={HeroImg} alt="Hero" width="100%" height="100%" />
+
+                </div> */}
+
                 <div className={classes.heroCard}>
-                    <img src={HeroImg} alt="Hero" width="100px" height="100px" />
-                    {/* <div className={classes.heroCardInner}>
-                        <div className={classes.heroIcon}>
-                            <svg width='36' height='36' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
-                                <rect x='2' y='5' width='20' height='14' rx='2' stroke='#FFFFFF' strokeWidth='2' />
-                                <path d='M2 10h20' stroke='#FFFFFF' strokeWidth='2' />
-                            </svg>
+                    <div className={classes.innerbox} style={{
+                        display: 'flex', justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        height: '500px',
+                        background:'#F2F5F7',
+                        boxShadow: '0 2px 4px #00000040',
+                        borderRadius: '16px',
+                    }}>
+                        <div className={classes.imgBox} style={{
+                            background: '#ff5500',
+                            borderRadius: '8px',
+                            justifyContent: 'center',
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '10px',
+                            width: '60px',
+                            height: '60px',
+                        }}>
+                            <img src={HeroImg} alt="Hero" width="40px" height="40px" />
                         </div>
-                        <h3 className={classes.heroCardTitle}>Payment Processing</h3>
-                        <p className={classes.heroCardSub}>Secure transactions worldwide</p>
+                        <span>Payment Dashboard Preview</span>
                     </div>
-                    <div className={classes.verified}>
-                        <span className={classes.verifiedDot}>
-                            <CheckIcon color='#00A63E' />
-                        </span>
-                        <span>
-                            <strong style={{ display: 'block', color: DARK_1, fontSize: 15 }}>Verified</strong>
-                            <span style={{ color: '#6A7282', fontSize: 13 }}>Secure transactions</span>
-                        </span>
-                    </div> */}
                 </div>
             </div>
         </Root>

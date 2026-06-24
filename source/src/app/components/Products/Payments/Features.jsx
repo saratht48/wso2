@@ -15,10 +15,13 @@
  */
 
 import React from 'react';
+import { app } from 'Settings';
 import { styled } from '@mui/material/styles';
 import { ORANGE } from './tokens';
 
 const PREFIX = 'PaymentsFeatures';
+
+
 
 const classes = {
     container: `${PREFIX}-container`,
@@ -122,88 +125,58 @@ const Root = styled('section')(({ theme }) => ({
     },
 }));
 
+const multiplepayment = `${app.context}/site/public/images/payments_landing/multiple_pay.png`;
+const frauds = `${app.context}/site/public/images/payments_landing/fraud_pay.png`;
+const globals = `${app.context}/site/public/images/payments_landing/global.png`;
+const Inteligence= `${app.context}/site/public/images/payments_landing/sendmoney.png`;
+
 /**
  * Credit-card glyph (orange stroke) for the payment-methods card.
  * @returns {JSX.Element} the icon
  */
-function CardGlyph() {
-    return (
-        <svg width='28' height='28' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
-            <rect x='2' y='5' width='20' height='14' rx='2' stroke={ORANGE} strokeWidth='2' />
-            <path d='M2 10h20' stroke={ORANGE} strokeWidth='2' />
-        </svg>
-    );
-}
+// function CardGlyph() {
+//     return (
+//         <svg width='28' height='28' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+//             <rect x='2' y='5' width='20' height='14' rx='2' stroke={ORANGE} strokeWidth='2' />
+//             <path d='M2 10h20' stroke={ORANGE} strokeWidth='2' />
+//         </svg>
+//     );
+// }
 
-const featureIcons = {
-    methods: <CardGlyph />,
-    routing: (
-        <svg width='28' height='28' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
-            <circle cx='6' cy='6' r='2.5' stroke={ORANGE} strokeWidth='2' />
-            <circle cx='6' cy='18' r='2.5' stroke={ORANGE} strokeWidth='2' />
-            <circle cx='18' cy='12' r='2.5' stroke={ORANGE} strokeWidth='2' />
-            <path
-                d='M8 6h4a4 4 0 0 1 4 4M8 18h4a4 4 0 0 0 4-4'
-                stroke={ORANGE}
-                strokeWidth='2'
-                strokeLinecap='round'
-            />
-        </svg>
-    ),
-    fraud: (
-        <svg width='28' height='28' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
-            <path
-                d='M12 3 4 6v6c0 5 3.5 7.5 8 9 4.5-1.5 8-4 8-9V6l-8-3Z'
-                stroke={ORANGE}
-                strokeWidth='2'
-                strokeLinejoin='round'
-            />
-            <path
-                d='m9 12 2 2 4-4'
-                stroke={ORANGE}
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-            />
-        </svg>
-    ),
-    reconcile: (
-        <svg width='28' height='28' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
-            <path
-                d='M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5'
-                stroke={ORANGE}
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-            />
-        </svg>
-    ),
-};
 
-// Titles tagged "inferred" should be confirmed against Figma.
 const FEATURES = [
     {
         id: 'methods',
         title: 'Multiple Payment Methods',
+        icon:multiplepayment,
         desc: 'Accept credit cards, mobile money, bank transfers, and digital wallets in a single integration.',
     },
     {
         id: 'routing',
-        title: 'Smart Routing', // inferred
+        title: 'Smart Routing', 
+         icon: globals,
         desc: 'Automatically route every transaction through the optimal provider for higher success rates.',
     },
     {
         id: 'fraud',
-        title: 'Fraud Protection', // inferred
+        title: 'Fraud Protection',
+        icon: frauds,
         desc: 'Detect and block fraudulent transactions in real time with built-in risk scoring.',
     },
     {
         id: 'reconcile',
-        title: 'Auto Reconciliation', // inferred
+        title: 'Auto Reconciliation', 
+        icon:Inteligence,
         desc: 'Reconcile payments automatically and get a clear view of every settlement.',
     },
 ];
 
+
+const HeroImg = `${app.context}/site/public/images/payments_landing/payment-icon.png`;
+
+const fraud = `${app.context}/site/public/images/payments_landing/fraud_pay.png`;
+const global = `${app.context}/site/public/images/payments_landing/global.png`;
+const sendmoney= `${app.context}/site/public/images/payments_landing/sendmoney.png`;
 /**
  * Features section of the payments landing page.
  * @returns {JSX.Element} the features section
@@ -225,7 +198,10 @@ function Features() {
                                 <span className={classes.dot} />
                                 <span className={classes.dot} />
                             </div>
-                            <div className={classes.cardIcon}>{featureIcons[feature.id]}</div>
+                            {/* <div className={classes.cardIcon}>{icon[feature.id]}</div> */}
+                            <div className={classes.cardIcon}>
+                                <img src={feature.icon} alt={feature.title} width="24px" height="24px" />
+                            </div>
                             <h3 className={classes.cardTitle}>{feature.title}</h3>
                             <p className={classes.cardDesc}>{feature.desc}</p>
                         </div>
