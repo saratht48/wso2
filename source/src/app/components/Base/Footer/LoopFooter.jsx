@@ -186,6 +186,26 @@ const Root = styled('footer')(({ theme }) => ({
     width:'138px',
     border:'1px solid #ff5500'
     },
+
+    /* ---- LIGHT MODE (html[data-loop-theme="light"]) ---- */
+    [`[data-loop-theme="light"] &`]: {
+        background: '#FFFFFF',
+        color: '#4B5563',
+    },
+    [`[data-loop-theme="light"] & .${classes.tagline}`]: { color: '#4B5563' },
+    [`[data-loop-theme="light"] & .${classes.colTitle}`]: { color: ORANGE },
+    [`[data-loop-theme="light"] & .${classes.colLink}`]: {
+        color: '#4B5563',
+        '&:hover': { color: ORANGE },
+    },
+    [`[data-loop-theme="light"] & .${classes.copyright}`]: { color: '#4B5563' },
+    [`[data-loop-theme="light"] & .${classes.bottom}`]: { borderTopColor: 'rgba(0,0,0,0.08)' },
+    [`[data-loop-theme="light"] & .${classes.email}`]: {
+        background: '#FFFFFF',
+        border: '1px solid #E5E7EB',
+        color: '#141A21',
+    },
+    [`[data-loop-theme="light"] & .${classes.social}`]: { borderColor: 'rgba(0,0,0,0.14)' },
 }));
 
 /**
@@ -217,7 +237,7 @@ function LoopFooter(props) {
             </div>
 
             <div className={classes.bottom}>
-                <span className={classes.copyright}>© 2025 LOOP Matrix. All rights reserved.</span>
+                <span className={classes.copyright}>© 2026 LOOP, Inc. All rights reserved.</span>
                 <div className={classes.socials}>
                     {/* {SOCIALS.map((s) => (
                         <button key={s.id} type='button' aria-label={s.label} className={classes.social}>

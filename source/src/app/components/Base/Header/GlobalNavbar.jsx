@@ -50,7 +50,7 @@ function GlobalNavBar(props) {
     // Top-level nav items (routes will be added later as the screens are built)
     const navItems = [
         { key: 'developers', label: 'Developers & Resources', to: '/developers' },
-        { key: 'app', label: 'App', to: '/applications' },
+        { key: 'app', label: 'App', to: '/my-apps' },
         { key: 'faqs', label: 'FAQs', to: '/faqs' },
     ];
 
@@ -262,7 +262,7 @@ function GlobalNavBar(props) {
             )}
             <Link
                 id='itest-link-to-applications'
-                to='/applications'
+                to='/my-apps'
                 className={classNames({
                     [classes.selected]: selected === 'applications',
                     'selected': selected === 'applications',

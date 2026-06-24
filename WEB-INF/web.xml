@@ -115,6 +115,7 @@
         <url-pattern>/login/*</url-pattern>
         <url-pattern>/settings/*</url-pattern>
         <url-pattern>/applications/*</url-pattern>
+        <url-pattern>/my-apps/*</url-pattern>
         <url-pattern>/logout/*</url-pattern>
         <url-pattern>/search</url-pattern>
     </servlet-mapping>
