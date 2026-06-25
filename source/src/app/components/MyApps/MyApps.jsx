@@ -25,6 +25,7 @@ import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import CircularProgress from '@mui/material/CircularProgress';
 import Application from 'AppData/Application';
@@ -234,11 +235,12 @@ function AppCard({ app, onEdit, onDelete }) {
                 >
                     <MenuItem
                         onClick={() => { setAnchor(null); onEdit(app); }}
-                        sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: '#FFFFFF', borderBottom: '1px solid #FFFFFF1A' }}
+                        sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: '#FFFFFF' }}
                     >
                         <Icon sx={{ fontSize: 18, mr: 1, color: '#FFFFFF' }}>edit</Icon>
                         Edit
                     </MenuItem>
+                    <Divider sx={{ borderColor: '#FFFFFF1A', mx: 2, my: 0 }} />
                     <MenuItem
                         onClick={() => { setAnchor(null); onDelete(app); }}
                         sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: C.red }}
@@ -352,6 +354,7 @@ function MyApps() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(0);
 
     const [apis, setApis] = useState([]);
     const [apisLoaded, setApisLoaded] = useState(false);
@@ -366,9 +369,27 @@ function MyApps() {
     const [currentSubs, setCurrentSubs] = useState([]); // [{subscriptionId, apiId}]
     const [saving, setSaving] = useState(false);
 
-    const loadApps = () => Application.all(100).then((res) => {
-        setApps(res && res.list ? res.list : []);
-    });
+    // Server-side pagination (matches the stock Applications screen): one page per call,
+    // limit = PAGE_SIZE, offset = (page-1)*PAGE_SIZE, total from pagination.total.
+    const loadApps = (p = page, q = search) => Application.all(PAGE_SIZE, (p - 1) * PAGE_SIZE, 'asc', 'name', q)
+        .then((res) => {
+            setApps(res && res.list ? res.list : []);
+            setTotal((res && res.pagination && res.pagination.total) || 0);
+        });
+
+    const searchTimer = React.useRef(null);
+    const onSearch = (val) => {
+        setSearch(val);
+        setPage(1);
+        if (searchTimer.current) clearTimeout(searchTimer.current);
+        searchTimer.current = setTimeout(() => {
+            loadApps(1, val).catch(() => Alert.error('Error while loading applications'));
+        }, 300);
+    };
+    const goToPage = (n) => {
+        setPage(n);
+        loadApps(n, search).catch(() => Alert.error('Error while loading applications'));
+    };
 
     const ensureApis = () => {
         if (apisLoaded) return Promise.resolve();
@@ -381,9 +402,20 @@ function MyApps() {
     };
 
     useEffect(() => {
-        loadApps()
+        loadApps(1, '')
             .catch(() => Alert.error('Error while loading applications'))
             .finally(() => setLoading(false));
+    }, []);
+
+    // Page-scoped: the global content wrapper forces min-height ~100vh (sticky footer),
+    // which leaves a big gap above the footer on short pages. Relax it only while this
+    // page is mounted so the footer hugs the content (per design); restore on unmount.
+    useEffect(() => {
+        const cw = document.querySelector('[class*="contentWrapper"]');
+        if (!cw) return undefined;
+        const prev = cw.style.minHeight;
+        cw.style.minHeight = 'auto';
+        return () => { cw.style.minHeight = prev; };
     }, []);
 
     const toggle = (id) => setSelected((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
@@ -427,7 +459,7 @@ function MyApps() {
                 if (!appId) throw new Error('Application id not returned');
                 return Promise.all(selected.map((id) => restApi.subscribe(id, appId, subPolicy(id)).catch(() => null)));
             })
-            .then(() => { Alert.success('Application created'); closeModals(); return loadApps(); })
+            .then(() => { Alert.success('Application created'); closeModals(); setPage(1); return loadApps(1, search); })
             .catch((e) => Alert.error(e && e.message ? e.message : 'Failed to create application'))
             .finally(() => setSaving(false));
     };
@@ -448,7 +480,7 @@ function MyApps() {
                 ...toAdd.map((id) => restApi.subscribe(id, appId, subPolicy(id)).catch(() => null)),
                 ...toRemove.map((s) => subClient.deleteSubscription(s.subscriptionId).catch(() => null)),
             ]))
-            .then(() => { Alert.success('Application updated'); closeModals(); return loadApps(); })
+            .then(() => { Alert.success('Application updated'); closeModals(); return loadApps(page, search); })
             .catch((e) => Alert.error(e && e.message ? e.message : 'Failed to update application'))
             .finally(() => setSaving(false));
     };
@@ -457,15 +489,14 @@ function MyApps() {
         if (!deleteApp) return;
         setSaving(true);
         Application.deleteApp(deleteApp.applicationId)
-            .then(() => { Alert.success('Application deleted'); closeModals(); return loadApps(); })
+            .then(() => { Alert.success('Application deleted'); closeModals(); const target = (apps.length === 1 && page > 1) ? page - 1 : page; setPage(target); return loadApps(target, search); })
             .catch((e) => Alert.error(e && e.message ? e.message : 'Failed to delete application'))
             .finally(() => setSaving(false));
     };
 
-    const filtered = apps.filter((a) => (a.name || '').toLowerCase().includes(search.toLowerCase()));
-    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
     const safePage = Math.min(page, totalPages);
-    const pageItems = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+    const pageItems = apps; // server already returns just this page
 
     if (loading) {
         return (
@@ -478,26 +509,26 @@ function MyApps() {
     const modalOpen = createOpen || Boolean(editApp);
 
     return (
-        <Box sx={{ bgcolor: C.pageBg, minHeight: '100vh', p: '36px 48px 56px', width: '100%', flex: '1 1 auto', minWidth: 0 }}>
+        <Box sx={{ bgcolor: C.pageBg, p: { xs: '20px 16px 40px', sm: '28px 24px 48px', md: '36px 48px 56px' }, width: '100%', flex: '1 1 auto', minWidth: 0 }}>
             {/* header */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 2, mb: 4 }}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'stretch', md: 'flex-start' }, gap: 2, mb: 4 }}>
                 <Box>
-                    <Typography sx={{ fontFamily: POP, fontWeight: 700, fontSize: 28, color: C.name }}>
-                        {`My Applications (${filtered.length})`}
+                    <Typography sx={{ fontFamily: POP, fontWeight: 700, fontSize: { xs: 24, sm: 28 }, color: C.name }}>
+                        {`My Applications (${total})`}
                     </Typography>
                     <Typography sx={{ fontFamily: POP, fontSize: 14, color: C.muted, mt: 0.5 }}>
                         Manage your applications, credentials and product subscriptions
                     </Typography>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'stretch', sm: 'center' }, gap: 1.5, width: { xs: '100%', md: 'auto' } }}>
                     <TextField
                         size="small"
                         placeholder="Search apps..."
                         value={search}
-                        onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                        onChange={(e) => onSearch(e.target.value)}
                         InputProps={{ startAdornment: (<InputAdornment position="start"><Icon sx={{ color: C.muted, fontSize: 18 }}>search</Icon></InputAdornment>) }}
                         sx={{
-                            width: 300,
+                            width: { xs: '100%', sm: 300 },
                             '& .MuiOutlinedInput-root': { bgcolor: C.cardBg, borderRadius: '10px', color: C.name, fontFamily: POP },
                             '& .MuiOutlinedInput-notchedOutline': { borderColor: C.cardBorder },
                             '& input::placeholder': { color: C.muted, opacity: 1 },
@@ -506,7 +537,7 @@ function MyApps() {
                     <Button
                         onClick={openCreate}
                         startIcon={<Icon>add</Icon>}
-                        sx={{ bgcolor: C.orange, color: '#fff', textTransform: 'none', fontFamily: POP, fontWeight: 500, fontSize: 14, borderRadius: '10px', px: 2.5, py: 1, boxShadow: '0 8px 22px rgba(255,95,0,0.30)', '&:hover': { bgcolor: '#ff7a2e' } }}
+                        sx={{ bgcolor: C.orange, color: '#fff', textTransform: 'none', fontFamily: POP, fontWeight: 500, fontSize: 14, borderRadius: '10px', px: 2.5, py: 1, whiteSpace: 'nowrap', width: { xs: '100%', sm: 'auto' }, boxShadow: '0 8px 22px rgba(255,95,0,0.30)', '&:hover': { bgcolor: '#ff7a2e' } }}
                     >
                         New Application
                     </Button>
@@ -518,7 +549,7 @@ function MyApps() {
                 {pageItems.map((app) => (
                     <AppCard key={app.applicationId} app={app} onEdit={openEdit} onDelete={setDeleteApp} />
                 ))}
-                {filtered.length === 0 && (
+                {pageItems.length === 0 && (
                     <Typography sx={{ color: C.muted }}>No applications found.</Typography>
                 )}
             </Box>
@@ -526,11 +557,11 @@ function MyApps() {
             {/* pagination */}
             {totalPages > 1 && (
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 4 }}>
-                    <PageBtn disabled={safePage === 1} onClick={() => setPage(safePage - 1)}><Icon sx={{ fontSize: 18 }}>chevron_left</Icon></PageBtn>
+                    <PageBtn disabled={safePage === 1} onClick={() => goToPage(safePage - 1)}><Icon sx={{ fontSize: 18 }}>chevron_left</Icon></PageBtn>
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-                        <PageBtn key={n} active={n === safePage} onClick={() => setPage(n)}>{n}</PageBtn>
+                        <PageBtn key={n} active={n === safePage} onClick={() => goToPage(n)}>{n}</PageBtn>
                     ))}
-                    <PageBtn disabled={safePage === totalPages} onClick={() => setPage(safePage + 1)}><Icon sx={{ fontSize: 18 }}>chevron_right</Icon></PageBtn>
+                    <PageBtn disabled={safePage === totalPages} onClick={() => goToPage(safePage + 1)}><Icon sx={{ fontSize: 18 }}>chevron_right</Icon></PageBtn>
                 </Box>
             )}
 
@@ -576,9 +607,9 @@ function MyApps() {
                 open={Boolean(deleteApp)}
                 onClose={closeModals}
                 maxWidth={false}
-                PaperProps={{ sx: { bgcolor: '#141A21', border: '1px solid #1E262F', borderRadius: '16px', backgroundImage: 'none', width: 516, height: 516, maxWidth: 'none' } }}
+                PaperProps={{ sx: { bgcolor: '#141A21', border: '1px solid #1E262F', borderRadius: '16px', backgroundImage: 'none', width: { xs: 'calc(100% - 32px)', sm: 516 }, height: { xs: 'auto', sm: 516 }, maxWidth: 'none', m: { xs: 2, sm: 4 } } }}
             >
-                <Box sx={{ height: '100%', p: 5, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                <Box sx={{ height: '100%', p: { xs: 3, sm: 5 }, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                     <Box sx={{ width: 64, height: 64, borderRadius: '50%', bgcolor: 'rgba(255,69,58,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
                         <Icon sx={{ color: '#FF453A', fontSize: 32 }}>warning_amber</Icon>
                     </Box>
@@ -591,18 +622,18 @@ function MyApps() {
                     <Typography sx={{ fontFamily: POP, fontWeight: 700, fontSize: 14, lineHeight: '100%', color: '#FF453A', mb: 4 }}>
                         This cannot be undone.
                     </Typography>
-                    <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, justifyContent: 'center', width: '100%' }}>
                         <Button
                             onClick={closeModals}
                             disabled={saving}
-                            sx={{ width: 220, height: 44, color: '#FFFFFF', border: `1px solid ${C.cardBorder}`, borderRadius: '12px', textTransform: 'none', fontFamily: INTER, fontWeight: 600, fontSize: 14, lineHeight: '100%' }}
+                            sx={{ width: { xs: '100%', sm: 220 }, height: 44, color: '#FFFFFF', border: `1px solid ${C.cardBorder}`, borderRadius: '12px', textTransform: 'none', fontFamily: INTER, fontWeight: 600, fontSize: 14, lineHeight: '100%' }}
                         >
                             Cancel
                         </Button>
                         <Button
                             onClick={handleDelete}
                             disabled={saving}
-                            sx={{ width: 220, height: 44, bgcolor: '#FF453A', color: '#FFFFFF', borderRadius: '12px', textTransform: 'none', fontFamily: INTER, fontWeight: 600, fontSize: 14, lineHeight: '100%', '&:hover': { bgcolor: '#e23b31' } }}
+                            sx={{ width: { xs: '100%', sm: 220 }, height: 44, bgcolor: '#FF453A', color: '#FFFFFF', borderRadius: '12px', textTransform: 'none', fontFamily: INTER, fontWeight: 600, fontSize: 14, lineHeight: '100%', '&:hover': { bgcolor: '#e23b31' } }}
                         >
                             {saving ? 'Deleting...' : 'Delete App'}
                         </Button>
