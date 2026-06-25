@@ -66,7 +66,7 @@ const Root = styled('div')(({ theme }) => ({
         fontSize: '12px',
         letterSpacing: '2.5px',
         textTransform: 'uppercase',
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'Poppins, sans-serif',
         display: 'block',
         marginBottom: '16px',
     },
@@ -76,7 +76,7 @@ const Root = styled('div')(({ theme }) => ({
         fontSize: '22px',
         fontWeight: 700,
         lineHeight: 1.2,
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'Poppins, sans-serif',
         marginBottom: '12px',
         [theme.breakpoints.up('md')]: { fontSize: '40px' },
     },
@@ -140,7 +140,7 @@ const Root = styled('div')(({ theme }) => ({
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'Poppins, sans-serif',
         fontSize: '11px',
         fontWeight: 700,
         color: DIM,
@@ -164,7 +164,7 @@ const Root = styled('div')(({ theme }) => ({
     '& .qs-step-title': {
         fontSize: '16px',
         fontWeight: 700,
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'Poppins, sans-serif',
         color: DIM,
         marginBottom: '6px',
         transition: 'color 0.2s ease',
@@ -210,7 +210,7 @@ const Root = styled('div')(({ theme }) => ({
     '& .qs-panel-filename': {
         color: DIM,
         fontSize: '11px',
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'Poppins, sans-serif',
     },
 
     '& .qs-panel-img': {
@@ -255,7 +255,7 @@ function StepPanel({ step }) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     color: DIM,
-                    fontFamily: 'JetBrains Mono',
+                    fontFamily: 'Poppins, sans-serif',
                     fontSize: '12px',
                     p: 3,
                 }}>

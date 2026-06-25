@@ -111,7 +111,7 @@ const Root = styled('div')(({ theme }) => ({
     fontWeight: 700,
     letterSpacing: '2px',
     textTransform: 'uppercase',
-    fontFamily: 'JetBrains Mono,',
+    fontFamily: 'Poppins, sans-serif,',
     marginBottom: '16px',
     [theme.breakpoints.up('md')]: { fontSize: '14px' },
   },

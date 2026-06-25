@@ -72,7 +72,7 @@ const Root = styled('div')(({ theme }) => ({
         fontSize: '12px',
         letterSpacing: '2px',
         textTransform: 'uppercase',
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'Poppins, sans-serif',
     },
 
     '& .op-main-title': {
@@ -80,7 +80,7 @@ const Root = styled('div')(({ theme }) => ({
         fontWeight: 700,
         lineHeight: 1.3,
         marginBottom: theme.spacing(1.25),
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'Poppins, sans-serif',
         fontSize: '26px',                          // mobile
         [theme.breakpoints.up('md')]: { fontSize: '38px', lineHeight: '50px' },  // desktop unchanged
     },
@@ -103,7 +103,7 @@ const Root = styled('div')(({ theme }) => ({
         '& .MuiTabs-scroller': { overflowX: 'auto !important' },
 
         '& .MuiTab-root': {
-            fontFamily: 'JetBrains Mono',
+            fontFamily: 'Poppins, sans-serif',
             fontSize: '10px',
             fontWeight: 700,
             letterSpacing: '1.2px',
@@ -149,14 +149,14 @@ const Root = styled('div')(({ theme }) => ({
         letterSpacing: '2px',
         textTransform: 'uppercase',
         marginBottom: theme.spacing(1.5),
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'Poppins, sans-serif',
     },
 
     '& .op-heading': {
         color: 'var(--loop-text-primary)',
         fontWeight: 700,
         marginBottom: theme.spacing(1.5),
-        fontFamily: 'JetBrains Mono',
+        fontFamily: 'Poppins, sans-serif',
         lineHeight: 1.15,
         fontSize: '32px',                          // mobile — readable, not too large
         [theme.breakpoints.up('sm')]: { fontSize: '30px' },
@@ -351,7 +351,7 @@ function TabLabel({ num, label, isActive }) {
 //                     display: 'none', width: '100%', minHeight: 200,
 //                     alignItems: 'center', justifyContent: 'center',
 //                     background: '#12141f', color: DIM,
-//                     fontFamily: 'JetBrains Mono', fontSize: 12, borderRadius: 4,
+//                     fontFamily: 'Poppins, sans-serif', fontSize: 12, borderRadius: 4,
 //                 }}>
 //                     [ {tab.heading} Image ]
 //                 </div>

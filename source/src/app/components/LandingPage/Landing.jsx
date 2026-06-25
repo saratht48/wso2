@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 // import PropTypes from 'prop-types';
 // import Typography from '@mui/material/Typography';
@@ -48,6 +48,22 @@ const Root = styled('div')(() => ({
  * @returns {JSX} renders landing view.
  */
 function Landing() {
+    // Ensure the LOOP fonts are loaded on the home landing (these components use
+    // 'Poppins, sans-serif' + 'Poppins'; without this they fall back to system fonts).
+    useEffect(() => {
+        const id = 'loop-landing-fonts';
+        if (!document.getElementById(id)) {
+            const link = document.createElement('link');
+            link.id = id;
+            link.rel = 'stylesheet';
+            link.href = 'https://fonts.googleapis.com/css2'
+                + '?family=JetBrains+Mono:wght@400;500;600;700;800'
+                + '&family=Poppins:wght@300;400;500;600;700'
+                + '&display=swap';
+            document.head.appendChild(link);
+        }
+    }, []);
+
     // const theme = useTheme();
     return (
         <Root className={classes.superRoot}>

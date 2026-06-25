@@ -55,7 +55,7 @@ export default function HeroSection() {
                                 color: ORANGE,
                                 border: `1px solid ${ORANGE}`,
                                 borderRadius: '20px',
-                                fontFamily: 'JetBrains Mono',
+                                fontFamily: 'Poppins, sans-serif',
                                 '&::before': { content: '"• >"', fontSize: '14px', color: ORANGE },
                             }}>
                             DEVELOPER_FIRST_API
@@ -76,7 +76,7 @@ export default function HeroSection() {
                         },
                         fontWeight: 700,
                         lineHeight: 1.1,
-                        fontFamily: 'JetBrains Mono',
+                        fontFamily: 'Poppins, sans-serif',
                         mb: { xs: 2.5, md: 3 },
                     }}>
                         <Box component="span" sx={{ color: 'var(--loop-text-primary)', display: 'block' }}>

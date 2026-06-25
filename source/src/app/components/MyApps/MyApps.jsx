@@ -500,7 +500,7 @@ function MyApps() {
 
     if (loading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', p: 8, bgcolor: C.pageBg, minHeight: '60vh' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 8, bgcolor: C.pageBg, width: '100%', flex: '1 1 auto', minHeight: '100vh' }}>
                 <CircularProgress sx={{ color: C.orange }} />
             </Box>
         );
