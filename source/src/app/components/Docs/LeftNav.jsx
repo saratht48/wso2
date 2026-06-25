@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import API from 'AppData/api';
 import {
     HomeIcon, RocketIcon, CodeIcon, SearchIcon, ChevronRightIcon, ChevronDownIcon, ArrowRightIcon,
 } from './Icons';
 import { ORANGE, GREEN } from './tokens';
+import { slugify } from './apiDocRegistry';
+
+// Static entry that always appears first under "LOOP API".
+const OVERVIEW_ITEM = { id: 'overview', label: 'Overview', to: '/docs/loop-api/overview' };
 
 const PREFIX = 'DocsLeftNav';
 
@@ -259,14 +264,6 @@ const NAV = [
     },
 ];
 
-const API_SUB = [
-    { id: 'overview', label: 'Overview', to: '/docs/loop-api/overview' },
-    { id: 'authorization', label: 'Authorization', to: '/docs/loop-api/authorization' },
-    { id: 'send-money', label: 'Send Money', expandable: true },
-    { id: 'pay', label: 'Pay', expandable: true },
-    { id: 'ecommerce', label: 'E-Commerce', expandable: true },
-];
-
 const NAV_ICONS = { home: HomeIcon, rocket: RocketIcon };
 
 /**
@@ -275,6 +272,26 @@ const NAV_ICONS = { home: HomeIcon, rocket: RocketIcon };
  * @returns {JSX.Element} the left nav
  */
 function LeftNav({ active }) {
+    // Overview (static, first) + published APIs (dynamic from the API list response).
+    const [apiSub, setApiSub] = useState([OVERVIEW_ITEM]);
+
+    useEffect(() => {
+        let mounted = true;
+        new API().getAllAPIs({ limit: 200 })
+            .then((res) => {
+                const body = (res && (res.body || res.obj)) || {};
+                const list = body.list || [];
+                const items = [OVERVIEW_ITEM].concat(list.map((a) => ({
+                    id: slugify(a.name),
+                    label: a.name,
+                    to: `/docs/loop-api/${slugify(a.name)}`,
+                })));
+                if (mounted) setApiSub(items);
+            })
+            .catch(() => { /* keep the static nav (just Overview) if the list fails */ });
+        return () => { mounted = false; };
+    }, []);
+
     return (
         <Root>
             <div className={classes.guide}>
@@ -318,7 +335,7 @@ function LeftNav({ active }) {
                 </a>
                 <div className={classes.subWrap}>
                     <div className={classes.subList}>
-                        {API_SUB.map((sub) => {
+                        {apiSub.map((sub) => {
                             const cls = `${classes.subItem} ${sub.id === active ? classes.subItemActive : ''}`;
                             const inner = (
                                 <>

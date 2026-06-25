@@ -24,7 +24,7 @@ import AuthorizationContent from './AuthorizationContent';
  * "on this page" table of contents.
  */
 
-const AUTH_TOC = [
+export const AUTH_TOC = [
     { id: 'endpoint', label: 'Endpoint', active: true },
     { id: 'overview', label: 'Overview' },
     { id: 'how-it-works', label: 'How It Works' },

@@ -232,7 +232,25 @@ function Faq({ q, a }) {
     );
 }
 
-function AuthorizationContent() {
+export const AUTH_TOC = [
+    { id: 'endpoint', label: 'Endpoint', active: true },
+    { id: 'overview', label: 'Overview' },
+    { id: 'how-it-works', label: 'How It Works' },
+    { id: 'security-credentials', label: 'Security Credentials' },
+    {
+        id: 'oauth2-bearer-token',
+        label: 'OAuth2 Bearer Token',
+        subs: [
+            { id: 'request', label: 'Request' },
+            { id: 'response', label: 'Response' },
+        ],
+    },
+    { id: 'sdk', label: 'SDK' },
+    { id: 'faqs', label: 'FAQs' },
+];
+
+// Static slot A — rendered BEFORE the dynamic Endpoints block.
+export function AuthIntro() {
     return (
         <Root>
             <section id='authorization-intro' className='sec'>
@@ -243,25 +261,14 @@ function AuthorizationContent() {
                     from the Merchant Portal and an OAuth2 Bearer Token from your Developer Portal application.
                 </p>
             </section>
+        </Root>
+    );
+}
 
-            <section id='endpoint' className='sec'>
-                <span className='marker'>{'// ENDPOINT'}</span>
-                <h2 className='h2'>Endpoint</h2>
-                {ENDPOINTS.map((e) => (
-                    <div className='epRow' key={e.env}>
-                        <span className='epBadge' style={{ color: e.color }}>{e.env}</span>
-                        <span className='epMethod'>POST</span>
-                        <span className='epUrl'>{e.url}</span>
-                        <button type='button' className='epCopy' onClick={() => copy(e.url)}>Copy</button>
-                    </div>
-                ))}
-                <div className='epBtns'>
-                    <button type='button' className='epBtnPostman'>Postman Collection</button>
-                    <button type='button' className='epBtn'>Swagger (/swagger.json)</button>
-                    <button type='button' className='epBtnGhost'>Try out API / Simulate API</button>
-                </div>
-            </section>
-
+// Static slot B — rendered BETWEEN the dynamic Endpoints and SDKs blocks.
+export function AuthMiddle() {
+    return (
+        <Root>
             <section id='overview' className='sec'>
                 <span className='marker'>{'// OVERVIEW'}</span>
                 <h2 className='h2'>Overview</h2>
@@ -356,29 +363,31 @@ function AuthorizationContent() {
                     </table>
                 </div>
             </section>
+        </Root>
+    );
+}
 
-            <section id='sdk' className='sec'>
-                <span className='marker'>{'// SDK'}</span>
-                <h2 className='h2'>SDK</h2>
-                <p className='para'>Download integration SDKs for your platform.</p>
-                {SDKS.map((s) => (
-                    <div className='sdk' key={s.name}>
-                        <span className='sdkTag'>{s.tag}</span>
-                        <div>
-                            <div className='sdkName'>{s.name}</div>
-                            <p className='sdkDesc'>{s.desc}</p>
-                        </div>
-                        <button type='button' className='sdkBtn'>Download</button>
-                    </div>
-                ))}
-            </section>
-
+// Static slot C — rendered AFTER the dynamic SDKs block.
+export function AuthEnd() {
+    return (
+        <Root>
             <section id='faqs' className='sec'>
                 <span className='marker'>{'// FAQS'}</span>
                 <h2 className='h2'>FAQs</h2>
                 {FAQS.map((f) => (<Faq key={f.q} q={f.q} a={f.a} />))}
             </section>
         </Root>
+    );
+}
+
+// Legacy composed view (slots only, no dynamic blocks) — kept for back-compat.
+function AuthorizationContent() {
+    return (
+        <>
+            <AuthIntro />
+            <AuthMiddle />
+            <AuthEnd />
+        </>
     );
 }
 
