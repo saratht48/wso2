@@ -47,6 +47,11 @@ function GlobalNavBar(props) {
     const pathname = (location && location.pathname) || '';
     const isActive = (to) => pathname === to || pathname.startsWith(`${to}/`);
 
+    // Close the Products mega-menu whenever the route changes (navigation).
+    React.useEffect(() => {
+        setProductsOpen(false);
+    }, [pathname]);
+
     // Top-level nav items (routes will be added later as the screens are built)
     const navItems = [
         { key: 'developers', label: 'Developers & Resources', to: '/developers' },
@@ -110,9 +115,14 @@ function GlobalNavBar(props) {
                 />
             )}
 
-            {/* Remaining top-level links */}
+            {/* Remaining top-level links — also close the Products menu on click */}
             {navItems.map((item) => (
-                <Link key={item.key} to={item.to} style={linkStyle(isActive(item.to))}>
+                <Link
+                    key={item.key}
+                    to={item.to}
+                    style={linkStyle(isActive(item.to))}
+                    onClick={() => setProductsOpen(false)}
+                >
                     {item.label}
                 </Link>
             ))}

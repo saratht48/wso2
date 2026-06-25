@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Icon from '@mui/material/Icon';
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
+import Portal from '@mui/material/Portal';
 
 // --- palette (kept in-component per project preference, not in userTheme.js) ---
 const SECTION_BG = '#171E26';
@@ -15,6 +16,13 @@ const FOOTER_BG = '#0F141A';
 const ORANGE = '#FF5F00';
 const ICON_BG = '#F8E9D6';
 const BADGE_COLOR = '#34D399';
+// light-mode palette
+const L_PANEL_BG = '#FFFFFF';
+const L_FOOTER_BG = '#F2F5F7';
+const L_MUTED = '#6B7280';
+const L_DESC = '#4A5565';
+const L_BORDER = '1px solid rgba(0,0,0,0.08)';
+const D_BORDER = '1px solid rgba(255,255,255,0.06)';
 const FONT = "'Poppins', 'Open Sans', 'Helvetica', 'Arial', sans-serif";
 
 // Product list shown in the dropdown (routes are placeholders until the pages exist)
@@ -156,6 +164,7 @@ function ProductsMegaMenu(props) {
     // Measure the real header height so the dropdown opens flush BELOW it
     // (the AppBar has vertical padding, so its height is not a fixed 100px).
     const [topPx, setTopPx] = React.useState(top);
+    const [isLight, setIsLight] = React.useState(false);
 
     React.useEffect(() => {
         if (!open) return;
@@ -163,10 +172,33 @@ function ProductsMegaMenu(props) {
         if (bar) {
             setTopPx(Math.round(bar.getBoundingClientRect().bottom));
         }
+        setIsLight(document.documentElement.getAttribute('data-loop-theme') === 'light');
     }, [open, top]);
 
+    // theme-aware style overrides
+    const panelStyle = {
+        ...styles.panel,
+        // sit a little lower than the header for a floating gap
+        top: topPx + 12,
+        zIndex: 1500,
+        background: isLight ? L_PANEL_BG : SECTION_BG,
+        border: isLight ? L_BORDER : D_BORDER,
+        borderTop: 'none',
+        boxShadow: isLight ? '0 18px 40px rgba(0,0,0,0.18)' : '0 18px 40px rgba(0,0,0,0.55)',
+    };
+    const headerRowStyle = {
+        ...styles.headerRow,
+        color: isLight ? L_MUTED : '#9CA3AF',
+        borderBottom: isLight ? L_BORDER : D_BORDER,
+    };
+    const descStyle = { ...styles.desc, display: 'block', color: isLight ? L_DESC : '#F2F5F7' };
+    const footerStyle = { ...styles.footer, background: isLight ? L_FOOTER_BG : FOOTER_BG };
+    const footerLeftStyle = { ...styles.footerLeft, color: isLight ? L_MUTED : '#9CA3AF' };
+
+    // Portal to <body> so the panel escapes the header's stacking context and
+    // renders ON TOP of the header (otherwise the AppBar's context traps it).
     return (
-        <>
+        <Portal>
             <Backdrop
                 open={open}
                 onClick={onClose}
@@ -174,13 +206,13 @@ function ProductsMegaMenu(props) {
                     // dim everything below the header (header stays bright, matching Figma)
                     top: `${topPx}px`,
                     backgroundColor: 'rgba(0, 0, 0, 0.55)',
-                    zIndex: 1200,
+                    zIndex: 1499,
                 }}
             />
             <Fade in={open} unmountOnExit>
-                <div style={{ ...styles.panel, top: topPx }}>
+                <div style={panelStyle}>
                     <div style={styles.section}>
-                        <div style={styles.headerRow}>
+                        <div style={headerRowStyle}>
                             <span>Our Products</span>
                             <span>
                                 {PRODUCTS.length}
@@ -198,21 +230,21 @@ function ProductsMegaMenu(props) {
                                             <span style={styles.title}>{p.title}</span>
                                             {p.badge && (<span style={styles.badge}>{p.badge}</span>)}
                                         </span>
-                                        <span style={{ ...styles.desc, display: 'block' }}>{p.desc}</span>
+                                        <span style={descStyle}>{p.desc}</span>
                                     </span>
                                 </Link>
                             ))}
                         </div>
                     </div>
-                    <div style={styles.footer}>
-                        <span style={styles.footerLeft}>Not sure where to start?</span>
+                    <div style={footerStyle}>
+                        <span style={footerLeftStyle}>Not sure where to start?</span>
                         <Link to='/docs/get-started' style={styles.footerLink} onClick={onClose}>
                             Explore the docs →
                         </Link>
                     </div>
                 </div>
             </Fade>
-        </>
+        </Portal>
     );
 }
 
