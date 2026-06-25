@@ -136,7 +136,11 @@ function AppRouts(props) {
                     exact
                     render={(localProps) => {
                         if (isAuthenticated) {
-                            return <MyApps {...localProps} />;
+                            return (
+                                <Suspense fallback={<div style={{ flex: '1 1 auto', width: '100%', minHeight: '100vh', background: '#080808' }} />}>
+                                    <MyApps {...localProps} />
+                                </Suspense>
+                            );
                         } else if (isUserFound) {
                             return <ScopeNotFound {...localProps} />;
                         } else {
