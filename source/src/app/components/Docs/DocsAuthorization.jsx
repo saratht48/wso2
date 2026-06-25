@@ -25,19 +25,20 @@ import AuthorizationContent from './AuthorizationContent';
  */
 
 const AUTH_TOC = [
-    { id: 'how-it-works', label: 'How It Works', active: true },
+    { id: 'endpoint', label: 'Endpoint', active: true },
+    { id: 'overview', label: 'Overview' },
+    { id: 'how-it-works', label: 'How It Works' },
+    { id: 'security-credentials', label: 'Security Credentials' },
     {
-        id: 'required-headers',
-        label: 'Required Headers',
+        id: 'oauth2-bearer-token',
+        label: 'OAuth2 Bearer Token',
         subs: [
-            { id: 'step-1', label: 'Generate Key Pair' },
-            { id: 'step-2', label: 'Upload Public Key' },
-            { id: 'step-3', label: 'Sign & Build Token' },
+            { id: 'request', label: 'Request' },
+            { id: 'response', label: 'Response' },
         ],
     },
-    { id: 'common-errors', label: 'Common Errors' },
-    { id: 'next-steps', label: 'Next Steps' },
-    { id: 'propose-changes', label: 'Propose Changes' },
+    { id: 'sdk', label: 'SDK' },
+    { id: 'faqs', label: 'FAQs' },
 ];
 
 /**

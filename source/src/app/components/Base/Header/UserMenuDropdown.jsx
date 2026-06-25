@@ -144,7 +144,7 @@ function UserMenuDropdown(props) {
                 <Icon style={styles.itemIcon}>person_outline</Icon>
                 My Profile
             </div>
-            <div style={styles.item} role='button' tabIndex={0} onClick={onSettings} onKeyDown={onKey(onSettings)}>
+            <div style={{ ...styles.item, marginBottom: 120 }} role='button' tabIndex={0} onClick={onSettings} onKeyDown={onKey(onSettings)}>
                 <Icon style={styles.itemIcon}>settings</Icon>
                 Settings
             </div>

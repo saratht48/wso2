@@ -189,7 +189,7 @@ const Root = styled('footer')(({ theme }) => ({
 
     /* ---- LIGHT MODE (html[data-loop-theme="light"]) ---- */
     [`[data-loop-theme="light"] &`]: {
-        background: '#FFFFFF',
+        background: '#F2F5F7',
         color: '#4B5563',
     },
     [`[data-loop-theme="light"] & .${classes.tagline}`]: { color: '#4B5563' },

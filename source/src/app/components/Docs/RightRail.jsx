@@ -100,6 +100,25 @@ const SECTIONS = [
     { id: 'next-steps', label: 'Next Steps' },
 ];
 
+// Fixed-header height to offset the scroll target so the section heading
+// isn't hidden underneath the global header.
+const HEADER_OFFSET = 96;
+
+/**
+ * Smoothly scroll to a section by id, accounting for the fixed header.
+ * Uses scrollTo (not the native anchor jump) so it never touches the
+ * router/URL or lands the heading behind the header.
+ * @param {Event} e click event
+ * @param {string} id target section id
+ */
+function scrollToSection(e, id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    const top = el.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET;
+    window.scrollTo({ top, behavior: 'smooth' });
+}
+
 /**
  * Right "on this page" navigation rail.
  * @param {object} props component props
@@ -114,13 +133,21 @@ function RightRail({ sections }) {
                 <React.Fragment key={section.id}>
                     <a
                         href={`#${section.id}`}
+                        onClick={(e) => scrollToSection(e, section.id)}
                         className={`${classes.link} ${section.active ? classes.linkActive : ''}`}
                     >
                         {section.active && <span className={classes.dot} />}
                         {section.label}
                     </a>
                     {section.subs && section.subs.map((sub) => (
-                        <a key={sub.id} href={`#${sub.id}`} className={classes.sub}>{sub.label}</a>
+                        <a
+                            key={sub.id}
+                            href={`#${sub.id}`}
+                            onClick={(e) => scrollToSection(e, sub.id)}
+                            className={classes.sub}
+                        >
+                            {sub.label}
+                        </a>
                     ))}
                 </React.Fragment>
             ))}
