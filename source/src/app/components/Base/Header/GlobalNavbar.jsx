@@ -56,7 +56,8 @@ function GlobalNavBar(props) {
     const navItems = [
         { key: 'developers', label: 'Developers & Resources', to: '/developers' },
         { key: 'app', label: 'App', to: '/my-apps' },
-        { key: 'faqs', label: 'FAQs', to: '/faqs' },
+        // FAQs hidden for the demo — uncomment to restore.
+        // { key: 'faqs', label: 'FAQs', to: '/faqs' },
     ];
 
     // LOOP Matrix: header menu typography spec (Poppins 400 / 14px / 18px line-height)
