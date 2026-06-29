@@ -7,7 +7,11 @@
  */
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
+import JSFileDownload from 'js-file-download';
+import openapiToPostman from 'openapi-to-postmanv2';
 import API from 'AppData/api';
+import AuthManager from 'AppData/AuthManager';
+import { app } from 'Settings';
 import Alert from 'AppComponents/Shared/Alert';
 import ApiTryOutModal from './ApiTryOutModal';
 
@@ -29,6 +33,8 @@ const Root = styled('div')(() => ({
     '& .epBtn': { cursor: 'pointer', background: 'none', border: `1px solid ${ORANGE}`, color: ORANGE, borderRadius: 10, padding: '13px 22px', fontSize: 15, fontFamily: 'inherit' },
     '& .epBtnGhost': { cursor: 'pointer', background: 'none', border: '1px solid #FFFFFF33', color: '#E5E7EB', borderRadius: 10, padding: '13px 22px', fontSize: 15, fontFamily: 'inherit' },
     '& .epBtnPostman': { cursor: 'pointer', background: '#0A0A0A', border: '1px solid #FFFFFF4D', color: '#E5E7EB', borderRadius: 10, padding: '13px 22px', fontSize: 15, fontFamily: 'inherit' },
+    '& .signin': { color: '#9CA3AF', fontSize: 15, lineHeight: '24px', margin: '14px 0 0' },
+    '& .signinLink': { color: ORANGE, fontWeight: 700, textDecoration: 'underline', cursor: 'pointer' },
 }));
 
 const ENV_COLOR = { SANDBOX: '#4ADE80', PRODUCTION: '#FB923C', DEFAULT: '#A78BFA' };
@@ -65,20 +71,35 @@ const copy = (v) => { try { navigator.clipboard.writeText(v); Alert.info('Copied
 function ApiEndpoints({ api }) {
     const [open, setOpen] = useState(false);
     const rows = toRows(api);
+    const isLoggedIn = !!AuthManager.getUser();
+    const signInUrl = `${app.context}/services/configs`;
 
-    const downloadDef = (asPostman) => {
+    const fileBase = (api.name || 'api').replace(/\s+/g, '-').toLowerCase();
+
+    const downloadSwagger = () => {
         new API().getSwaggerByAPIId(api.id)
             .then((res) => {
                 const data = (res && (res.obj || res.body || res.data)) || {};
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${(api.name || 'api').replace(/\s+/g, '-').toLowerCase()}-${asPostman ? 'postman' : 'swagger'}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
+                JSFileDownload(JSON.stringify(data, null, 2), `${fileBase}-swagger.json`);
             })
-            .catch(() => Alert.error('Could not download the definition'));
+            .catch(() => Alert.error('Could not download the swagger'));
+    };
+
+    // Real Postman conversion (same library the stock console uses).
+    const downloadPostman = () => {
+        new API().getSwaggerByAPIId(api.id)
+            .then((res) => {
+                const data = (res && (res.obj || res.body || res.data)) || {};
+                const str = typeof data === 'string' ? data : JSON.stringify(data);
+                openapiToPostman.convert({ type: 'string', data: str }, {}, (err, result) => {
+                    if (result && result.result) {
+                        JSFileDownload(JSON.stringify(result.output[0].data), `${fileBase}-postman.json`);
+                    } else {
+                        Alert.error('Could not convert to a Postman collection');
+                    }
+                });
+            })
+            .catch(() => Alert.error('Could not download the Postman collection'));
     };
 
     return (
@@ -97,13 +118,19 @@ function ApiEndpoints({ api }) {
                         <button type='button' className='epCopy' onClick={() => copy(r.url)}>Copy</button>
                     </div>
                 ))}
-                <div className='epBtns'>
-                    <button type='button' className='epBtnPostman' onClick={() => downloadDef(true)}>Postman Collection</button>
-                    <button type='button' className='epBtn' onClick={() => downloadDef(false)}>Swagger (/swagger.json)</button>
-                    <button type='button' className='epBtnGhost' onClick={() => setOpen(true)}>Try out API</button>
-                </div>
+                {isLoggedIn ? (
+                    <div className='epBtns'>
+                        <button type='button' className='epBtnPostman' onClick={downloadPostman}>Postman Collection</button>
+                        <button type='button' className='epBtn' onClick={downloadSwagger}>Swagger (/swagger.json)</button>
+                        <button type='button' className='epBtnGhost' onClick={() => setOpen(true)}>Try out API</button>
+                    </div>
+                ) : (
+                    <p className='signin'>
+                        <a className='signinLink' href={signInUrl}>Sign In</a> to download and try the API.
+                    </p>
+                )}
             </section>
-            <ApiTryOutModal api={api} open={open} onClose={() => setOpen(false)} />
+            {isLoggedIn && <ApiTryOutModal api={api} open={open} onClose={() => setOpen(false)} />}
         </Root>
     );
 }

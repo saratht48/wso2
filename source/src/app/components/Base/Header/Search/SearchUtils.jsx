@@ -296,5 +296,5 @@ function getSuggestions(searchText, lcstate) {
 }
 
 export {
-    renderInput, renderSuggestion, getSuggestions, getSuggestionValue, buildSearchQuery,
+    renderInput, renderSuggestion, getSuggestions, getSuggestionValue, buildSearchQuery, getPath,
 };

@@ -9,6 +9,8 @@ import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import JSFileDownload from 'js-file-download';
 import API from 'AppData/api';
+import AuthManager from 'AppData/AuthManager';
+import { app } from 'Settings';
 import Alert from 'AppComponents/Shared/Alert';
 
 const ORANGE = '#FF5F00';
@@ -25,13 +27,18 @@ const Root = styled('div')(() => ({
     '& .sdkName': { color: '#E5E7EB', fontSize: 14, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace", textTransform: 'capitalize' },
     '& .sdkBtn': { marginLeft: 'auto', cursor: 'pointer', background: ORANGE, color: '#fff', border: 'none', borderRadius: 8, padding: '8px 18px', fontSize: 13, fontFamily: 'inherit' },
     '& .muted': { color: '#9CA3AF', fontSize: 14 },
+    '& .signin': { color: '#9CA3AF', fontSize: 15, lineHeight: '24px', margin: 0 },
+    '& .signinLink': { color: ORANGE, fontWeight: 700, textDecoration: 'underline', cursor: 'pointer' },
 }));
 
 function ApiSdks({ api }) {
     const [langs, setLangs] = useState(null); // null = loading
     const [busy, setBusy] = useState('');
+    const isLoggedIn = !!AuthManager.getUser();
+    const signInUrl = `${app.context}/services/configs`;
 
     useEffect(() => {
+        if (!isLoggedIn) return undefined; // SDKs need login; show Sign In instead
         let mounted = true;
         new API().getSdkLanguages()
             .then((res) => {
@@ -59,18 +66,26 @@ function ApiSdks({ api }) {
             <section id='sdk'>
                 <span className='marker'>{'// SDK'}</span>
                 <h2 className='h2'>SDK</h2>
-                <p className='para'>Download an integration SDK for your platform.</p>
-                {langs === null && <p className='muted'>Loading SDKs…</p>}
-                {langs && langs.length === 0 && <p className='muted'>SDK generation is not available for this API.</p>}
-                {langs && langs.map((lang) => (
-                    <div className='sdk' key={lang}>
-                        <span className='sdkTag'>{String(lang).slice(0, 3)}</span>
-                        <div className='sdkName'>{lang}</div>
-                        <button type='button' className='sdkBtn' disabled={busy === lang} onClick={() => download(lang)}>
-                            {busy === lang ? 'Generating…' : 'Download'}
-                        </button>
-                    </div>
-                ))}
+                {!isLoggedIn ? (
+                    <p className='signin'>
+                        <a className='signinLink' href={signInUrl}>Sign In</a> to download SDKs.
+                    </p>
+                ) : (
+                    <>
+                        <p className='para'>Download an integration SDK for your platform.</p>
+                        {langs === null && <p className='muted'>Loading SDKs…</p>}
+                        {langs && langs.length === 0 && <p className='muted'>SDK generation is not available for this API.</p>}
+                        {langs && langs.map((lang) => (
+                            <div className='sdk' key={lang}>
+                                <span className='sdkTag'>{String(lang).slice(0, 3)}</span>
+                                <div className='sdkName'>{lang}</div>
+                                <button type='button' className='sdkBtn' disabled={busy === lang} onClick={() => download(lang)}>
+                                    {busy === lang ? 'Generating…' : 'Download'}
+                                </button>
+                            </div>
+                        ))}
+                    </>
+                )}
             </section>
         </Root>
     );

@@ -32,22 +32,32 @@ import Application from 'AppData/Application';
 import API from 'AppData/api';
 import Subscription from 'AppData/Subscription';
 import Alert from 'AppComponents/Shared/Alert';
+import { getLoopThemeMode } from 'AppComponents/Shared/LoopTheme';
 
-const C = {
-    pageBg: '#080808',          // token
-    cardBg: '#141A21',          // token
-    cardBorder: '#1F2937',      // token
-    name: '#FFFFFF',            // token
-    muted: '#6B7280',           // token
-    viewKeys: '#9CA3AF',        // token
-    red: '#EF4444',             // token
-    orange: '#FF5F00',          // default
-    sandboxBg: 'rgba(167,139,250,0.14)', sandboxText: '#A78BFA',   // default
-    prodBg: 'rgba(52,211,153,0.12)', prodText: '#34D399',          // default
-    fieldBg: '#0F141A',         // default
-    inputBg: '#0F141A',         // default
-    modalBg: '#141A21',         // default
+// Dark = original look. Light = client-provided values (title #141A21/name #111827,
+// muted #6B7280, delete #EF4444) + white surfaces/light borders.
+const DARK = {
+    pageBg: '#080808', cardBg: '#141A21', cardBorder: '#1F2937', name: '#FFFFFF', muted: '#6B7280',
+    viewKeys: '#9CA3AF', red: '#EF4444', orange: '#FF5F00',
+    sandboxBg: 'rgba(167,139,250,0.14)', sandboxText: '#A78BFA',
+    prodBg: 'rgba(52,211,153,0.12)', prodText: '#34D399',
+    fieldBg: '#0F141A', inputBg: '#0F141A', modalBg: '#141A21',
+    envBg: '#0B0F14', menuBorder: '#FFFFFF1A', hoverBg: '#1b232d', placeholder: '#444444',
 };
+const LIGHT = {
+    pageBg: '#F7F8FA', cardBg: '#FFFFFF', cardBorder: '#E5E7EB', name: '#111827', muted: '#6B7280',
+    viewKeys: '#6B7280', red: '#EF4444', orange: '#FF5F00',
+    sandboxBg: 'rgba(124,58,237,0.10)', sandboxText: '#7C3AED',
+    prodBg: 'rgba(5,150,105,0.10)', prodText: '#059669',
+    fieldBg: '#F3F4F6', inputBg: '#FFFFFF', modalBg: '#FFFFFF',
+    envBg: '#F7F8FA', menuBorder: '#E5E7EB', hoverBg: '#F3F4F6', placeholder: '#9CA3AF',
+};
+// Resolve every C.<key> against the CURRENT LOOP theme at access time, so all the
+// existing C.xxx usages switch between light/dark with no other changes.
+const PALETTES = { dark: DARK, light: LIGHT };
+const C = new Proxy({}, {
+    get: (_t, k) => PALETTES[getLoopThemeMode() === 'light' ? 'light' : 'dark'][k],
+});
 // All typography on this screen uses Poppins (per design). MONO/INTER kept as
 // aliases so existing usages don't need touching.
 const POP = "'Poppins', sans-serif";
@@ -108,7 +118,7 @@ function KeyEnv({
     );
 
     return (
-        <Box sx={{ bgcolor: '#0B0F14', border: `1px solid ${C.cardBorder}`, borderRadius: '16px', p: 1.75, mb: 1.5 }}>
+        <Box sx={{ bgcolor: C.envBg, border: `1px solid ${C.cardBorder}`, borderRadius: '16px', p: 1.75, mb: 1.5 }}>
             {/* top row: chip + (Hide / Generate) */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 {chip}
@@ -230,17 +240,17 @@ function AppCard({ app, onEdit, onDelete }) {
                     anchorEl={anchor}
                     open={Boolean(anchor)}
                     onClose={() => setAnchor(null)}
-                    PaperProps={{ sx: { bgcolor: '#141A21', border: '1px solid #FFFFFF1A', width: 180, borderRadius: '10px', backgroundImage: 'none', boxShadow: '0 12px 30px rgba(0,0,0,0.5)' } }}
+                    PaperProps={{ sx: { bgcolor: C.modalBg, border: `1px solid ${C.menuBorder}`, width: 180, borderRadius: '10px', backgroundImage: 'none', boxShadow: '0 12px 30px rgba(0,0,0,0.5)' } }}
                     MenuListProps={{ sx: { py: 0 } }}
                 >
                     <MenuItem
                         onClick={() => { setAnchor(null); onEdit(app); }}
-                        sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: '#FFFFFF' }}
+                        sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: C.name }}
                     >
-                        <Icon sx={{ fontSize: 18, mr: 1, color: '#FFFFFF' }}>edit</Icon>
+                        <Icon sx={{ fontSize: 18, mr: 1, color: C.name }}>edit</Icon>
                         Edit
                     </MenuItem>
-                    <Divider sx={{ borderColor: '#FFFFFF1A', mx: 2, my: 0 }} />
+                    <Divider sx={{ borderColor: C.menuBorder, mx: 2, my: 0 }} />
                     <MenuItem
                         onClick={() => { setAnchor(null); onDelete(app); }}
                         sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: C.red }}
@@ -327,7 +337,7 @@ function ProductPicker({ apis, selected, toggle, toggleAll }) {
                             onClick={() => toggle(api.id)}
                             sx={{
                                 display: 'flex', alignItems: 'center', gap: 1.25, p: 1.25, cursor: 'pointer',
-                                bgcolor: '#0B0F14', border: `1px solid ${on ? C.orange : C.cardBorder}`, borderRadius: '10px',
+                                bgcolor: C.envBg, border: `1px solid ${on ? C.orange : C.cardBorder}`, borderRadius: '10px',
                             }}
                         >
                             <Checkbox checked={on} sx={{ p: 0.25, color: C.muted, '&.Mui-checked': { color: C.orange } }} />
@@ -343,17 +353,28 @@ function ProductPicker({ apis, selected, toggle, toggleAll }) {
     );
 }
 
-const labelSx = { fontFamily: MONO, fontWeight: 500, fontSize: 12, lineHeight: '15px', textTransform: 'uppercase', color: C.muted };
-const inputSx = {
+// Functions (not consts) so the C Proxy resolves at render time, not module load.
+const labelSx = () => ({ fontFamily: MONO, fontWeight: 500, fontSize: 12, lineHeight: '15px', textTransform: 'uppercase', color: C.muted });
+const inputSx = () => ({
     mt: 0.75, mb: 2.5,
     '& .MuiOutlinedInput-root': { bgcolor: C.inputBg, borderRadius: '10px', color: C.name, fontFamily: POP },
     '& .MuiOutlinedInput-notchedOutline': { borderColor: C.cardBorder },
     '& .MuiInputBase-input::placeholder': {
-        fontFamily: POP, fontWeight: 400, fontSize: 14, lineHeight: '100%', color: '#444444', opacity: 1,
+        fontFamily: POP, fontWeight: 400, fontSize: 14, lineHeight: '100%', color: C.placeholder, opacity: 1,
     },
-};
+});
 
 function MyApps() {
+    // Re-render when the LOOP theme is toggled while this page is open, so the
+    // C Proxy colors repaint live (light/dark).
+    const [, setThemeTick] = useState(0);
+    useEffect(() => {
+        const el = document.documentElement;
+        const obs = new MutationObserver(() => setThemeTick((t) => t + 1));
+        obs.observe(el, { attributes: true, attributeFilter: ['data-loop-theme'] });
+        return () => obs.disconnect();
+    }, []);
+
     const [apps, setApps] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
@@ -579,11 +600,11 @@ function MyApps() {
                         <IconButton onClick={closeModals} sx={{ color: C.muted }}><Icon>close</Icon></IconButton>
                     </Box>
 
-                    <Typography sx={labelSx}>App Name</Typography>
-                    <TextField fullWidth size="small" placeholder="My Payments App" value={name} onChange={(e) => setName(e.target.value)} sx={inputSx} />
+                    <Typography sx={labelSx()}>App Name</Typography>
+                    <TextField fullWidth size="small" placeholder="My Payments App" value={name} onChange={(e) => setName(e.target.value)} sx={inputSx()} />
 
-                    <Typography sx={labelSx}>Description</Typography>
-                    <TextField fullWidth size="small" placeholder="What does this app do?" value={description} onChange={(e) => setDescription(e.target.value)} sx={inputSx} />
+                    <Typography sx={labelSx()}>Description</Typography>
+                    <TextField fullWidth size="small" placeholder="What does this app do?" value={description} onChange={(e) => setDescription(e.target.value)} sx={inputSx()} />
 
                     <ProductPicker apis={apis} selected={selected} toggle={toggle} toggleAll={toggleAll} />
 
@@ -611,16 +632,16 @@ function MyApps() {
                 open={Boolean(deleteApp)}
                 onClose={closeModals}
                 maxWidth={false}
-                PaperProps={{ sx: { bgcolor: '#141A21', border: '1px solid #1E262F', borderRadius: '16px', backgroundImage: 'none', width: { xs: 'calc(100% - 32px)', sm: 516 }, height: { xs: 'auto', sm: 516 }, maxWidth: 'none', m: { xs: 2, sm: 4 } } }}
+                PaperProps={{ sx: { bgcolor: C.modalBg, border: `1px solid ${C.cardBorder}`, borderRadius: '16px', backgroundImage: 'none', width: { xs: 'calc(100% - 32px)', sm: 516 }, height: { xs: 'auto', sm: 516 }, maxWidth: 'none', m: { xs: 2, sm: 4 } } }}
             >
                 <Box sx={{ height: '100%', p: { xs: 3, sm: 5 }, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                     <Box sx={{ width: 64, height: 64, borderRadius: '50%', bgcolor: 'rgba(255,69,58,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
                         <Icon sx={{ color: '#FF453A', fontSize: 32 }}>warning_amber</Icon>
                     </Box>
-                    <Typography sx={{ fontFamily: POP, fontWeight: 700, fontSize: 20, lineHeight: '100%', color: '#FFFFFF', mb: 2 }}>
+                    <Typography sx={{ fontFamily: POP, fontWeight: 700, fontSize: 20, lineHeight: '100%', color: C.name, mb: 2 }}>
                         Delete Application?
                     </Typography>
-                    <Typography sx={{ fontFamily: POP, fontWeight: 400, fontSize: 14, lineHeight: '150%', color: '#6B7280', maxWidth: 380, mb: 1.5 }}>
+                    <Typography sx={{ fontFamily: POP, fontWeight: 400, fontSize: 14, lineHeight: '150%', color: C.muted, maxWidth: 380, mb: 1.5 }}>
                         {`This will permanently remove ${deleteApp ? deleteApp.name : ''}, revoke all credentials, and cancel all product subscriptions.`}
                     </Typography>
                     <Typography sx={{ fontFamily: POP, fontWeight: 700, fontSize: 14, lineHeight: '100%', color: '#FF453A', mb: 4 }}>
@@ -630,7 +651,7 @@ function MyApps() {
                         <Button
                             onClick={closeModals}
                             disabled={saving}
-                            sx={{ width: { xs: '100%', sm: 220 }, height: 44, color: '#FFFFFF', border: `1px solid ${C.cardBorder}`, borderRadius: '12px', textTransform: 'none', fontFamily: INTER, fontWeight: 600, fontSize: 14, lineHeight: '100%' }}
+                            sx={{ width: { xs: '100%', sm: 220 }, height: 44, color: C.name, border: `1px solid ${C.cardBorder}`, borderRadius: '12px', textTransform: 'none', fontFamily: INTER, fontWeight: 600, fontSize: 14, lineHeight: '100%' }}
                         >
                             Cancel
                         </Button>
@@ -657,7 +678,7 @@ function PageBtn({ active, disabled, onClick, children }) {
                 minWidth: 38, height: 38, p: 0, borderRadius: '8px', fontFamily: POP, fontWeight: 600,
                 bgcolor: active ? C.orange : C.cardBg, color: active ? '#fff' : C.viewKeys,
                 border: `1px solid ${active ? C.orange : C.cardBorder}`,
-                '&:hover': { bgcolor: active ? '#ff7a2e' : '#1b232d' },
+                '&:hover': { bgcolor: active ? '#ff7a2e' : C.hoverBg },
             }}
         >
             {children}

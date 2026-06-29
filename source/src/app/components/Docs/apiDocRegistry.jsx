@@ -16,6 +16,12 @@
  * optional — leave it out and that static block is simply skipped.
  */
 import { AuthIntro, AuthMiddle, AuthEnd, AUTH_TOC } from './AuthorizationContent';
+import {
+    MpesaStkIntro, MpesaStkMiddle, MpesaStkEnd, MPESA_STK_TOC,
+} from './MpesaStkPushContent';
+import {
+    LoopPromptIntro, LoopPromptMiddle, LoopPromptEnd, LOOP_PROMPT_TOC,
+} from './LoopPromptContent';
 
 export const slugify = (s) => (s || '')
     .toString()
@@ -28,6 +34,14 @@ export const slugify = (s) => (s || '')
 const REGISTRY = {
     authorization: {
         label: 'Authorization', toc: AUTH_TOC, intro: AuthIntro, middle: AuthMiddle, end: AuthEnd,
+    },
+    // slug('M-PESA STK Push') === 'm-pesa-stk-push' — must match the published API name.
+    'm-pesa-stk-push': {
+        label: 'M-PESA STK Push', toc: MPESA_STK_TOC, intro: MpesaStkIntro, middle: MpesaStkMiddle, end: MpesaStkEnd,
+    },
+    // slug('LOOP Prompt') === 'loop-prompt' — must match the published API name.
+    'loop-prompt': {
+        label: 'LOOP Prompt', toc: LOOP_PROMPT_TOC, intro: LoopPromptIntro, middle: LoopPromptMiddle, end: LoopPromptEnd,
     },
     // 'send-money': { label: 'Send Money', toc: SEND_MONEY_TOC, intro: SendMoneyIntro, middle: SendMoneyMiddle },
     // 'pay':        { label: 'Pay',        toc: PAY_TOC,        intro: PayIntro },
