@@ -17,7 +17,6 @@ import Popper from '@mui/material/Popper';
 import Grow from '@mui/material/Grow';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Drawer from '@mui/material/Drawer';
-import HeaderSearch from 'AppComponents/Base/Header/Search/HeaderSearch';
 import Settings from 'AppComponents/Shared/SettingsContext';
 import { app } from 'Settings';
 import Box from '@mui/material/Box';
@@ -462,24 +461,21 @@ class LayoutLegacy extends React.Component {
                                     </Link>
                                 )}
 
-                                {/* ✅ Search icon — toggles HeaderSearch inline */}
+                                {/* ✅ Search icon — opens the SearchModal popup (latest design + real search) */}
                                 {showSearch && (
-                                    <>
-                                        {this.state.searchOpen && <HeaderSearch id='headerSearch' />}
-                                        <IconButton
-                                            color='inherit'
-                                            className={classes.userLink}
-                                            aria-label='search'
-                                            size='large'
-                                            onClick={this.toggleSearch}
-                                        >
-                                            <img
-                                                src={`${app.context}/site/public/images/searchButton.svg`}
-                                                alt='Search'
-                                                style={{ height: 36, width: 36 }}
-                                            />
-                                        </IconButton>
-                                    </>
+                                    <IconButton
+                                        color='inherit'
+                                        className={classes.userLink}
+                                        aria-label='search'
+                                        size='large'
+                                        onClick={this.openModal}
+                                    >
+                                        <img
+                                            src={`${app.context}/site/public/images/searchButton.svg`}
+                                            alt='Search'
+                                            style={{ height: 36, width: 36 }}
+                                        />
+                                    </IconButton>
                                 )}
 
                                 {/* Theme toggle */}
