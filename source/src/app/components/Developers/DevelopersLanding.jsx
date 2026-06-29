@@ -57,7 +57,7 @@ const Root = styled('div')(() => ({
     [`${LIGHT} .DevCta-btnDark`]: {
         backgroundColor: '#F3F4F6', color: '#141A21', border: '1px solid #E5E7EB',
     },
-    [`${LIGHT} .DevBrowse-tab`]: { color: '#4A5565' },
+    // [`${LIGHT} .DevBrowse-tab`]: { color: '#4A5565' },
 }));
 
 /**

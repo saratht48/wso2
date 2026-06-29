@@ -125,7 +125,7 @@ function KeyEnv({
                         onClick={onGenerate}
                         disabled={busy}
                         startIcon={<Icon sx={{ fontSize: 16 }}>add</Icon>}
-                        sx={{ color: C.orange, border: `1px solid ${C.orange}`, borderRadius: '8px', textTransform: 'none', fontFamily: POP, fontWeight: 600, fontSize: 12, px: 1.5 }}
+                        sx={{ color: C.orange, border: `1px solid ${C.orange}`, borderRadius: '8px', textTransform: 'none', fontFamily: POP, fontWeight: 600, fontSize: 12, px: 1.5,transition:'none' }}
                     >
                         Generate Keys
                     </Button>
@@ -274,6 +274,7 @@ function AppCard({ app, onEdit, onDelete }) {
                     />
                 </Box>
             )}
+            <Box sx={{borderTop:'0.2px solid #E5E7EB',width:'100%'}}></Box>
 
             {/* footer toggle */}
             <Box sx={{ mt: 'auto', pt: 1.5, display: 'flex', justifyContent: 'flex-end' }}>
@@ -292,7 +293,10 @@ function AppCard({ app, onEdit, onDelete }) {
                         {expanded ? 'Hide Keys' : 'View Keys'}
                     </Button>
                 )}
+                   
             </Box>
+            
+         
         </Box>
     );
 }

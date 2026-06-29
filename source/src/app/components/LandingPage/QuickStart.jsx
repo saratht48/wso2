@@ -8,8 +8,8 @@ import { app } from 'Settings';
 
 // ── Image paths — one image per step ─────────────────
 const image01 = `${app.context}/site/public/images/landing/quick-start-img1.png`;
-const image02 = `${app.context}/site/public/images/landing/quick-start-img1.png`;
-const image03 = `${app.context}/site/public/images/landing/quick-start-img1.png`;
+const image02 = `${app.context}/site/public/images/landing/explore_sandbox.png`;
+const image03 = `${app.context}/site/public/images/landing/GoLive.png`;
 
 // ── Brand tokens ──────────────────────────────────────
 const ORANGE = '#ff5500';

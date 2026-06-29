@@ -16,7 +16,8 @@
 
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import CodeWindow from './CodeWindow';
+import { app } from 'Settings';
+// import CodeWindow from './CodeWindow';
 import { ORANGE, DARK_1 } from './tokens';
 
 const PREFIX = 'DevHero';
@@ -35,6 +36,7 @@ const classes = {
     cardWrap: `${PREFIX}-cardWrap`,
     cardGlow: `${PREFIX}-cardGlow`,
     card: `${PREFIX}-card`,
+    heroimg: `${PREFIX}-heroimg`,
 };
 
 const HERO_CODE = [
@@ -128,7 +130,7 @@ const Root = styled('section')(({ theme }) => ({
         fontWeight: 400,
         fontSize: 18,
         lineHeight: '29px',
-        maxWidth: 480,
+        // maxWidth: 480,
         margin: '24px 0 40px',
         [theme.breakpoints.down('sm')]: {
             fontSize: 16,
@@ -156,7 +158,7 @@ const Root = styled('section')(({ theme }) => ({
         borderRadius: 12,
         padding: '16px 28px',
         transition: 'opacity 0.2s ease',
-        '&:hover': { opacity: 0.9 },
+        // '&:hover': { opacity: 0.9 },
     },
     [`& .${classes.btnLight}`]: {
         display: 'inline-flex',
@@ -173,7 +175,7 @@ const Root = styled('section')(({ theme }) => ({
         padding: '16px 28px',
         border: 'none',
         transition: 'background 0.2s ease',
-        '&:hover': { backgroundColor: '#F3F3F3' },
+        // '&:hover': { backgroundColor: '#F3F3F3' },
     },
     [`& .${classes.cardWrap}`]: {
         position: 'relative',
@@ -181,24 +183,44 @@ const Root = styled('section')(({ theme }) => ({
             maxWidth: 560,
             width: '100%',
             margin: '0 auto',
+            position: 'relative',
         },
     },
     [`& .${classes.cardGlow}`]: {
         position: 'absolute',
         inset: '8px -16px -24px 16px',
         borderRadius: 28,
-        background: 'linear-gradient(160deg, rgba(255,95,0,0.18) 0%, rgba(0,0,0,0.4) 100%)',
+        // background: 'linear-gradient(160deg, rgba(255,95,0,0.18) 0%, rgba(0,0,0,0.4) 100%)',
         filter: 'blur(8px)',
         pointerEvents: 'none',
+
     },
     [`& .${classes.card}`]: {
         position: 'relative',
         backgroundColor: '#FFFFFF',
         borderRadius: 24,
         padding: 16,
-        boxShadow: '0 25px 50px -12px rgba(0,0,0,0.45)',
+        // boxShadow: '0 25px 50px -12px rgba(0,0,0,0.45)',
+        '&::after': {
+            position: 'absolute',
+            content: '""',
+            width: '599px',
+            height: '500px',
+            background: 'linear-gradient(to top, #000, #FF5F0033,)',
+            left: '-46px',
+            top: '-17px',
+            zIndex: '-990',
+            borderRadius: '16px',
+            transform: 'rotateZ(7deg)',
+        },
+    },
+    [`& .${classes.heroimg}`]: {
+        width: '100%',
+        height: '400px',
     },
 }));
+
+const DeveloperHero = `${app.context}/site/public/images/developerResource/resource_dev_hero_img.png`;
 
 /**
  * Hero section of the developer-resources landing page.
@@ -232,7 +254,8 @@ function Hero() {
                     <div className={classes.cardWrap}>
                         <span className={classes.cardGlow} aria-hidden='true' />
                         <div className={classes.card}>
-                            <CodeWindow fileName='payment.js' lines={HERO_CODE} />
+                            {/* <CodeWindow fileName='payment.js' lines={HERO_CODE} /> */}
+                            <img src={DeveloperHero} alt="resource_dev_hero_img" className={classes.heroimg} />
                         </div>
                     </div>
                 </div>
