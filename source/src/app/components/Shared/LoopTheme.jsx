@@ -176,6 +176,8 @@ function LoopThemeStyles() {
                 ':root': DARK_VARS,
                 [`[${ATTR}="dark"]`]: DARK_VARS,
                 [`[${ATTR}="light"]`]: LIGHT_VARS,
+                // Username color in header
+                [`[${ATTR}="light"] .loop-username`]: { color: '#444444 !important' },
                 // Mode-driven asset swaps (logo wordmark + theme-toggle icon).
                 '.loop-logo-light, .loop-themeicon-light': { display: 'none' },
                 '.loop-logo-dark, .loop-themeicon-dark': { display: 'block' },

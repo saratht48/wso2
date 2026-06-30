@@ -23,16 +23,22 @@ const Root = styled('div')(() => ({
     fontFamily: "'Poppins', sans-serif",
     '& .marker': { color: ORANGE, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 600, letterSpacing: 1, display: 'block', marginBottom: 10 },
     '& .h2': { fontFamily: "'JetBrains Mono', monospace", fontSize: 24, fontWeight: 700, lineHeight: '100%', color: '#E8EDF2', margin: '0 0 16px' },
+    '[data-loop-theme="light"] & .h2': { color: '#111827' },
     '& .epRow': { display: 'flex', alignItems: 'center', gap: 8, background: '#113516', border: '1px solid #FFFFFF1A', borderRadius: 10, padding: '12px 14px', marginBottom: 12 },
     '& .epBadge': { fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 700, letterSpacing: 0.5, minWidth: 84, flexShrink: 0 },
     '& .epMethod': { fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 700, lineHeight: '16px', color: '#28C840', background: '#28C8401F', border: '0.61px solid #28C84040', padding: '4px 8px', borderRadius: 6 },
     '& .epUrl': { flex: 1, fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: '#A78BFA', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
-    '& .epCopy': { cursor: 'pointer', color: '#6B7280', fontSize: 13, background: '#FFFFFF12', border: '1px solid #FFFFFF24', borderRadius: 6, padding: '4px 12px' },
+    '& .epCopy': { cursor: 'pointer', color: '#6B7280', fontSize: 13, background: '#FFFFFF12', border: '1px solid #FFFFFF24', borderRadius: 6, padding: '4px 12px', transition: 'color 0.2s, background 0.2s, border-color 0.2s' },
+    '& .epCopy.copied': { color: '#22C55E', background: 'rgba(34,197,94,0.1)', borderColor: 'rgba(34,197,94,0.4)' },
     '& .muted': { color: '#9CA3AF', fontSize: 14, margin: '0 0 12px' },
+    '[data-loop-theme="light"] & .muted': { color: '#6B7280' },
+    '[data-loop-theme="light"] & .signin': { color: '#6B7280' },
     '& .epBtns': { display: 'flex', gap: 14, marginTop: 14, flexWrap: 'wrap' },
     '& .epBtn': { cursor: 'pointer', background: 'none', border: `1px solid ${ORANGE}`, color: ORANGE, borderRadius: 10, padding: '13px 22px', fontSize: 15, fontFamily: 'inherit' },
     '& .epBtnGhost': { cursor: 'pointer', background: 'none', border: '1px solid #FFFFFF33', color: '#E5E7EB', borderRadius: 10, padding: '13px 22px', fontSize: 15, fontFamily: 'inherit' },
+    '[data-loop-theme="light"] & .epBtnGhost': { color: '#374151', border: '1px solid #D1D5DB' },
     '& .epBtnPostman': { cursor: 'pointer', background: '#0A0A0A', border: '1px solid #FFFFFF4D', color: '#E5E7EB', borderRadius: 10, padding: '13px 22px', fontSize: 15, fontFamily: 'inherit' },
+    '[data-loop-theme="light"] & .epBtnPostman': { background: '#F9FAFB', border: '1px solid #D1D5DB', color: '#374151' },
     '& .signin': { color: '#9CA3AF', fontSize: 15, lineHeight: '24px', margin: '14px 0 0' },
     '& .signinLink': { color: ORANGE, fontWeight: 700, textDecoration: 'underline', cursor: 'pointer' },
 }));
@@ -66,13 +72,19 @@ const toRows = (api) => {
     return out;
 };
 
-const copy = (v) => { try { navigator.clipboard.writeText(v); Alert.info('Copied'); } catch (e) { /* ignore */ } };
 
 function ApiEndpoints({ api }) {
     const [open, setOpen] = useState(false);
+    const [copiedUrl, setCopiedUrl] = useState('');
     const rows = toRows(api);
     const isLoggedIn = !!AuthManager.getUser();
     const signInUrl = `${app.context}/services/configs`;
+
+    const handleCopy = (url) => {
+        try { navigator.clipboard.writeText(url); } catch (e) { /* ignore */ }
+        setCopiedUrl(url);
+        setTimeout(() => setCopiedUrl(''), 2000);
+    };
 
     const fileBase = (api.name || 'api').replace(/\s+/g, '-').toLowerCase();
 
@@ -115,7 +127,9 @@ function ApiEndpoints({ api }) {
                         <span className='epBadge' style={{ color: ENV_COLOR[r.env] || ENV_COLOR.DEFAULT }}>{r.env}</span>
                         <span className='epMethod'>API</span>
                         <span className='epUrl'>{r.url}</span>
-                        <button type='button' className='epCopy' onClick={() => copy(r.url)}>Copy</button>
+                        <button type='button' className={`epCopy${copiedUrl === r.url ? ' copied' : ''}`} onClick={() => handleCopy(r.url)}>
+                            {copiedUrl === r.url ? '✓ Copied' : 'Copy'}
+                        </button>
                     </div>
                 ))}
                 {isLoggedIn ? (

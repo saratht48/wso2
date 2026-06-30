@@ -113,6 +113,7 @@ const Root = styled('div')(({ theme }) => ({
         margin: '0 0 8px',
         maxWidth: 720,
     },
+    [`[data-loop-theme="light"] & .${classes.lead}`]: { color: '#6B7280' },
     [`& .${classes.para}`]: {
         color: 'var(--loop-text-muted)',
         fontSize: 15,
@@ -120,6 +121,7 @@ const Root = styled('div')(({ theme }) => ({
         margin: '0 0 28px',
         maxWidth: 720,
     },
+    [`[data-loop-theme="light"] & .${classes.para}`]: { color: '#6B7280' },
     [`& .${classes.inlineCode}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
         color: ORANGE,
@@ -268,6 +270,15 @@ const Root = styled('div')(({ theme }) => ({
         paddingBottom: 28,
         position: 'relative',
     },
+    [`& .${classes.step}:not(:last-child)::after`]: {
+        content: '""',
+        position: 'absolute',
+        left: 15,
+        top: 32,
+        bottom: 0,
+        width: 1,
+        backgroundColor: 'rgba(255, 95, 0, 0.25)',
+    },
     [`& .${classes.stepNum}`]: {
         flexShrink: 0,
         width: 32,
@@ -295,6 +306,7 @@ const Root = styled('div')(({ theme }) => ({
         fontSize: 14,
         margin: '0 0 6px',
     },
+    [`[data-loop-theme="light"] & .${classes.stepdesc}`]: { color: '#6B7280' },
     [`& .${classes.stepText}`]: {
         color: '#6B7280',
         fontSize: 13.5,

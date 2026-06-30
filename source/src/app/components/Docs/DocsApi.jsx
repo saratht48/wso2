@@ -31,8 +31,10 @@ const ComingSoonRoot = styled('div')(() => ({
     fontFamily: "'Poppins', sans-serif",
     '& .marker': { color: ORANGE, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 600, letterSpacing: 1, display: 'block', marginBottom: 10 },
     '& .h1': { fontFamily: "'JetBrains Mono', monospace", fontSize: 24, fontWeight: 700, color: '#E8EDF2', margin: '0 0 14px' },
+    '[data-loop-theme="light"] & .h1': { color: '#111827' },
     '& .soon': { display: 'inline-block', color: ORANGE, background: 'rgba(255,95,0,0.12)', border: '1px solid rgba(255,95,0,0.4)', borderRadius: 20, fontSize: 12, fontWeight: 600, padding: '4px 12px', marginBottom: 16 },
     '& .lead': { color: '#9CA3AF', fontSize: 16, lineHeight: '27px', margin: 0, maxWidth: 680 },
+    '[data-loop-theme="light"] & .lead': { color: '#6B7280' },
 }));
 
 function ComingSoon({ name, notFound }) {

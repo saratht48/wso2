@@ -140,6 +140,16 @@ const Root = styled('section')(({ theme }) => ({
         textAlign: 'left',
         width: '100%',
         fontFamily: 'inherit',
+        position: 'relative',
+    },
+    [`& .${classes.step}:not(:last-child)::after`]: {
+        content: '""',
+        position: 'absolute',
+        left: 22,
+        top: 56,
+        bottom: -8,
+        width: 1,
+        backgroundColor: 'rgba(255, 95, 0, 0.25)',
     },
     [`& .${classes.stepNum}`]: {
         flexShrink: 0,

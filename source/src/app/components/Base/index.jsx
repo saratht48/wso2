@@ -545,7 +545,7 @@ class LayoutLegacy extends React.Component {
                                                     {userInitials}
                                                 </Avatar>
                                                 <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.15, textTransform: 'none', maxWidth: '200px' }}>
-                                                    <span style={{ fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '160px', color: '#FFFFFF' }}>
+                                                    <span className='loop-username' style={{ fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '160px', color: '#FFFFFF' }}>
                                                         {username}
                                                     </span>
                                                     <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>{user && user.isAdmin() ? 'Admin' : 'Dev'}</span>

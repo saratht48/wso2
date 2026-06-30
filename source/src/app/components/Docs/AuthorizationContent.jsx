@@ -8,8 +8,8 @@ import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 
 const ORANGE = '#FF5F00';
-const TEXT = 'var(--loop-text, #E5E7EB)';
-const MUTED = 'var(--loop-muted, #9CA3AF)';
+const TEXT = 'var(--loop-text-primary, #E5E7EB)';
+const MUTED = 'var(--loop-text-muted, #9CA3AF)';
 const SURFACE = 'var(--loop-surface, #11161f)';
 const BORDER = 'var(--loop-border, #232a36)';
 const CODEBG = 'var(--loop-code-bg, #0b0e14)';
@@ -119,7 +119,11 @@ const Root = styled('div')(() => ({
     '& .h1': { fontFamily: "'JetBrains Mono', monospace", fontSize: 24, fontWeight: 700, lineHeight: '100%', margin: '0 0 14px', color: '#E8EDF2' },
     '& .h2': { fontFamily: "'JetBrains Mono', monospace", fontSize: 24, fontWeight: 700, lineHeight: '100%', margin: '0 0 14px', color: '#E8EDF2' },
     '& .h3': { fontSize: 14, fontWeight: 600, margin: '18px 0 10px', color: TEXT },
+    '[data-loop-theme="light"] & .h1': { color: '#111827' },
+    '[data-loop-theme="light"] & .h2': { color: '#111827' },
+    '[data-loop-theme="light"] & .h3': { color: '#6B7280' },
     '& .lead': { fontFamily: "'Poppins', sans-serif", color: '#9CA3AF', fontWeight: 400, fontSize: 16, lineHeight: '27.8px', margin: 0, maxWidth: 680 },
+    '[data-loop-theme="light"] & .lead': { color: '#6B7280' },
     '& .para': { color: MUTED, fontSize: 15, lineHeight: '24px', margin: '0 0 12px', maxWidth: 680 },
     '& .mono': { color: ORANGE, fontFamily: "'JetBrains Mono', monospace", fontSize: 13.5 },
     '& .points': { listStyle: 'none', padding: 0, margin: 0 },
