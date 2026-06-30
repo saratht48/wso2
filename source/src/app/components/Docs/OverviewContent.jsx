@@ -69,7 +69,7 @@ const classes = {
 
 const Root = styled('div')(({ theme }) => ({
     minWidth: 0,
-    color: '#D1D5DC',
+    color: '#E8EDF2',
     [`& .${classes.section}`]: {
         scrollMarginTop: 24,
         marginBottom: 56,
@@ -196,7 +196,7 @@ const Root = styled('div')(({ theme }) => ({
     },
     [`& .${classes.diagramTitle}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
-        color: 'var(--loop-text-primary)',
+        color: '#F2652459',
         fontSize: 14,
         fontWeight: 600,
         margin: '0 0 4px',
@@ -251,7 +251,7 @@ const Root = styled('div')(({ theme }) => ({
         display: 'inline-flex',
         alignItems: 'center',
         gap: 6,
-        color: GREEN,
+        color: '#22C55E',
         fontSize: 13,
         fontWeight: 600,
     },
@@ -301,7 +301,7 @@ const Root = styled('div')(({ theme }) => ({
         fontSize: 13.5,
         lineHeight: '22px',
         margin: '0 0 14px',
-        maxWidth: 640,
+        maxWidth: 670,
     },
     [`& .${classes.codeBlock}`]: {
         backgroundColor: 'var(--loop-code-bg)',
@@ -581,12 +581,12 @@ function OverviewContent() {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Sandbox</td>
+                                <td > <span  style={{padding:'8px 28px',borderRadius:'4px',border:'1px solid #60A5FA', color:'#60A5FA'}}>Sandbox</span></td>
                                 <td><span className={classes.pill}>api-sandbox.loopapis.co.ke</span></td>
                                 <td><span className={classes.badgeGreen}>Active</span></td>
                             </tr>
                             <tr>
-                                <td>Production</td>
+                                <td> <span  style={{padding:'8px 20px',borderRadius:'4px',border:'1px solid #22C55E40', color:'#22C55E40'}}> Production</span> </td>
                                 <td><span className={classes.pill}>api.loopapis.co.ke</span></td>
                                 <td><span className={classes.badgeGray}>By request</span></td>
                             </tr>
