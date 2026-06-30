@@ -196,6 +196,8 @@ function ApiTryOutModal({ api, open, onClose }) {
                 '& [class*="-centerItems"]': { maxWidth: '100%', flexBasis: '100%' },
                 // hide the stock "Security" heading — we render it OUTSIDE the card (below)
                 '& [class*="-centerItems"] [class*="-categoryHeading"]': { display: 'none' },
+                // hide the "?" help tooltip icon beside GET TEST KEY
+                '& [aria-label="Use existing access token or generate a new test key"]': { display: 'none !important' },
                 // radios — unchecked #4B5563, selected (active) clearly #FF5F00 ring + dot
                 '& .MuiRadio-root, & .MuiCheckbox-root': { color: '#4B5563' },
                 '& .MuiRadio-root.Mui-checked, & .Mui-checked': { color: `${ORANGE} !important` },
@@ -258,6 +260,94 @@ function ApiTryOutModal({ api, open, onClose }) {
                 '& .swagger-ui .responses-table .response[data-code^="2"] .response-col_status': { color: C.green },
                 '& .swagger-ui .responses-table .response[data-code^="4"] .response-col_status': { color: C.red },
                 '& .swagger-ui .responses-inner > div, & .swagger-ui table.responses-table td': { borderColor: C.border },
+
+                // ---- operation tag rows (section headers like "menu", "order") ----
+                '& .swagger-ui .opblock-tag': { border: 'none !important', borderBottom: `1px solid ${C.border} !important`, padding: '10px 0 !important', marginBottom: '8px !important', background: 'transparent !important' },
+                '& .swagger-ui .opblock-tag a, & .swagger-ui .opblock-tag span:not(small)': { color: `${C.heading} !important`, fontFamily: `${C.pop} !important`, fontWeight: '700 !important', fontSize: '15px !important' },
+                '& .swagger-ui .opblock-tag small': { color: `${C.muted} !important`, fontFamily: `${C.pop} !important`, fontSize: '12px !important', fontWeight: '400 !important' },
+                '& .swagger-ui .opblock-tag svg, & .swagger-ui .expand-operation svg': { fill: `${C.muted} !important` },
+
+                // ---- GET opblock (blue) ----
+                '& .swagger-ui .opblock.opblock-get': { borderColor: '#2563EB !important' },
+                '& .swagger-ui .opblock.opblock-get .opblock-summary': { background: '#0F1E3D !important', borderColor: '#2563EB !important' },
+                '& .swagger-ui .opblock.opblock-get .opblock-summary-method': { background: '#2563EB !important' },
+
+                // ---- PUT opblock (amber) ----
+                '& .swagger-ui .opblock.opblock-put': { borderColor: '#B45309 !important' },
+                '& .swagger-ui .opblock.opblock-put .opblock-summary': { background: '#2D1500 !important', borderColor: '#B45309 !important' },
+                '& .swagger-ui .opblock.opblock-put .opblock-summary-method': { background: '#B45309 !important' },
+
+                // ---- DELETE opblock (red) ----
+                '& .swagger-ui .opblock.opblock-delete': { borderColor: '#DC2626 !important' },
+                '& .swagger-ui .opblock.opblock-delete .opblock-summary': { background: '#300A0A !important', borderColor: '#DC2626 !important' },
+                '& .swagger-ui .opblock.opblock-delete .opblock-summary-method': { background: '#DC2626 !important' },
+
+                // ---- PATCH opblock (teal) ----
+                '& .swagger-ui .opblock.opblock-patch': { borderColor: '#059669 !important' },
+                '& .swagger-ui .opblock.opblock-patch .opblock-summary': { background: '#022C22 !important', borderColor: '#059669 !important' },
+                '& .swagger-ui .opblock.opblock-patch .opblock-summary-method': { background: '#059669 !important' },
+
+                // summary path + description + lock icon
+                '& .swagger-ui .opblock-summary-path, & .swagger-ui .opblock-summary-path a': { color: `${C.text} !important`, fontFamily: `${C.mono} !important`, fontSize: '13px !important' },
+                '& .swagger-ui .opblock-summary-description': { color: `${C.muted} !important`, fontFamily: `${C.pop} !important`, fontSize: '12px !important' },
+                '& .swagger-ui .authorization__btn svg, & .swagger-ui .opblock-summary-control svg': { fill: `${C.muted} !important` },
+                '& .swagger-ui .arrow': { fill: `${C.muted} !important` },
+
+                // ---- expanded opblock body + section headers ----
+                '& .swagger-ui .opblock-body': { background: `${C.panelBg} !important` },
+                '& .swagger-ui .opblock .opblock-section-header': { background: '#0F141A !important', boxShadow: 'none !important', borderTop: `1px solid ${C.border} !important` },
+                '& .swagger-ui .opblock .opblock-section-header h4': { color: `${C.heading} !important`, fontFamily: `${C.pop} !important`, fontWeight: '600 !important', fontSize: '13px !important' },
+                '& .swagger-ui .opblock .opblock-section-header label': { color: `${C.muted} !important`, fontFamily: `${C.pop} !important` },
+
+                // ---- "Try it out" button ----
+                '& .swagger-ui .try-out__btn': { color: `${ORANGE} !important`, border: `1px solid ${ORANGE} !important`, background: 'transparent !important', borderRadius: '6px !important', fontFamily: `${C.pop} !important`, fontWeight: '600 !important', fontSize: '12px !important', padding: '4px 10px !important' },
+                '& .swagger-ui .try-out__btn.cancel': { color: `${C.muted} !important`, border: `1px solid ${C.muted} !important` },
+
+                // ---- Parameter labels + required asterisk ----
+                '& .swagger-ui .parameter__name': { color: `${C.text} !important`, fontFamily: `${C.mono} !important`, fontSize: '13px !important', fontWeight: '700 !important' },
+                '& .swagger-ui .parameter__name.required span': { color: `${ORANGE} !important` },
+                '& .swagger-ui .parameter__type': { color: `${C.muted} !important`, fontFamily: `${C.mono} !important`, fontSize: '11px !important' },
+                '& .swagger-ui .parameter__deprecated': { color: `${C.red} !important` },
+                '& .swagger-ui table.parameters': { background: 'transparent' },
+                '& .swagger-ui table.parameters td, & .swagger-ui table.parameters th': { borderColor: `${C.border} !important`, color: `${C.muted} !important`, fontFamily: `${C.pop} !important`, fontSize: '12px !important' },
+
+                // ---- Tabs (Example Value / Schema, Parameters / Responses) ----
+                '& .swagger-ui .tab': { padding: '0 !important' },
+                '& .swagger-ui .tab li, & .swagger-ui .tab li button': { color: `${C.muted} !important`, fontFamily: `${C.pop} !important`, fontSize: '12px !important' },
+                '& .swagger-ui .tab li.active, & .swagger-ui .tab li.active button': { color: `${ORANGE} !important` },
+                '& .swagger-ui .tab li:first-of-type:after': { background: `${ORANGE} !important` },
+
+                // ---- Execute button (already set but boost specificity) ----
+                '& .swagger-ui .btn.execute': { background: `${C.green} !important`, borderColor: `${C.green} !important`, color: '#fff !important', borderRadius: '6px !important', fontFamily: `${C.pop} !important`, fontWeight: '700 !important', padding: '8px 20px !important', fontSize: '14px !important' },
+
+                // ---- Clear button ----
+                '& .swagger-ui .btn.btn-clear': { color: `${C.muted} !important`, borderColor: `${C.border} !important`, background: 'transparent !important' },
+
+                // ---- Authorize button at top ----
+                '& .swagger-ui .btn.authorize': { color: `${ORANGE} !important`, borderColor: `${ORANGE} !important`, background: 'transparent !important' },
+                '& .swagger-ui .btn.authorize svg': { fill: `${ORANGE} !important` },
+
+                // ---- Servers section ----
+                '& .swagger-ui .servers > label': { color: `${C.muted} !important`, fontFamily: `${C.pop} !important`, fontSize: '12px !important', display: 'flex !important', flexDirection: 'column !important', gap: '4px !important' },
+                '& .swagger-ui .servers > label select': { background: `${C.ctrlBg} !important`, color: `${C.text} !important`, border: `1px solid ${C.border} !important`, borderRadius: '6px !important', padding: '6px 10px !important', fontFamily: `${C.mono} !important`, fontSize: '13px !important' },
+
+                // ---- Response area ----
+                '& .swagger-ui .live-responses-wrap, & .swagger-ui .responses-wrapper': { background: 'transparent !important' },
+                '& .swagger-ui .response-col_description': { color: `${C.text} !important` },
+                '& .swagger-ui .response-col_links': { color: `${C.muted} !important` },
+                '& .swagger-ui .col_header': { color: `${C.muted} !important`, fontFamily: `${C.pop} !important`, fontSize: '12px !important', fontWeight: '700 !important' },
+                '& .swagger-ui .response .response-col_status': { fontFamily: `${C.mono} !important`, fontWeight: '700 !important', fontSize: '14px !important' },
+
+                // ---- Wrapper transparency ----
+                '& .swagger-ui .wrapper': { background: 'transparent !important', padding: '0 !important' },
+                '& .swagger-ui section.models': { display: 'none' },
+
+                // ---- content type dropdown ----
+                '& .swagger-ui .content-type': { background: `${C.inputBg} !important`, color: `${C.text} !important`, border: `1px solid ${C.border} !important`, borderRadius: '4px !important', fontFamily: `${C.pop} !important` },
+
+                // ---- copy to clipboard ----
+                '& .swagger-ui .copy-to-clipboard': { background: `${C.border} !important` },
+                '& .swagger-ui .copy-to-clipboard button': { background: 'transparent !important', border: 'none !important' },
             }}
             >
                 <Box sx={{ display: tab === 'token' ? 'block' : 'none' }}>

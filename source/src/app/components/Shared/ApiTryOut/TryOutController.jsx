@@ -1037,14 +1037,15 @@ function TryOutController(props) {
                                     <>
                                         <Button
                                             onClick={securitySchemeType === 'API-KEY' ? generateApiKey
-                                                : (isConsumerSecretRequired
-                                                    ? () => setSecretDialogOpen(true) : generateAccessToken)}
+                                                : (!ksGenerated && securitySchemeType === 'OAUTH'
+                                                    ? () => Alert.warning('No consumer key/secret found for this application. Please go to My Applications and generate keys first.')
+                                                    : (isConsumerSecretRequired
+                                                        ? () => setSecretDialogOpen(true) : generateAccessToken))}
                                             variant='contained'
                                             color='grey'
                                             className={classes.genKeyButton}
                                             disabled={!user
                                                 || (subscriptions && subscriptions.length === 0 && !isSubValidationDisabled)
-                                                || (!ksGenerated && securitySchemeType === 'OAUTH')
                                                 || isUpdating}
                                             id='gen-test-key'
                                         >
