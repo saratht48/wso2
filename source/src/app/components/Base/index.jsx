@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
@@ -403,7 +404,7 @@ class LayoutLegacy extends React.Component {
                                         <img
                                             className='loop-logo-light'
                                             alt='LOOP Matrix'
-                                            src={`${app.context}/site/public/images/lighlogo.svg`}
+                                            src={`${app.context}/site/public/images/logo_light.png`}
                                             style={{ height: theme.custom.appBar.logoHeight, width: theme.custom.appBar.logoWidth }}
                                         />
                                     </Link>
@@ -492,7 +493,7 @@ class LayoutLegacy extends React.Component {
 
                                 <Hidden smDown>
                                     {/* ✅ Bell icon — opens SearchModal popup */}
-                                    <Box
+                                    {/* <Box
                                         // color='inherit'
                                         // className={classes.userLink}
                                         aria-label='notifications'
@@ -511,13 +512,22 @@ class LayoutLegacy extends React.Component {
                                             background:'rgba(0, 0, 0, 0.87)' ,
                                         }}
                                     >
-                                            <img
-                                                src={`${app.context}/site/public/images/remainder_icon.png`}
-                                                alt='Reminders'
-                                                style={{ height: "16px", width: "16px" }}
-                                            />
+                                    
+                                        <img className='loop-themeicon-dark' src={`${app.context}/site/public/images/remainder_icon.png`} alt=' light mode' style={{ height: 28, width: 28 }} />
+                                        <img className='loop-themeicon-light' src={`${app.context}/site/public/images/light_remainder.png`} alt=' dark mode' style={{ height: 28, width: 36 }} />
                                         
-                                    </Box>
+                                    </Box> */}
+                                     <IconButton
+                                    color='inherit'
+                                    className={classes.userLink}
+                                    aria-label='toggle theme'
+                                    size='large'
+                                    onClick={this.openModal}
+                                >
+                                    <img className='loop-themeicon-dark' src={`${app.context}/site/public/images/remainder_icon.png`} alt=' light mode' style={{ height: 18, width: 18 }} />
+                                    <img className='loop-themeicon-light' src={`${app.context}/site/public/images/light_remainder.png`} alt=' dark mode' style={{ height: 18, width: 18 }} />
+                                </IconButton>
+
 
                                     {/* User menu or Sign In */}
                                     {user ? (

@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { app } from 'Settings';
 import { Link } from 'react-router-dom';
 import Icon from '@mui/material/Icon';
 import Backdrop from '@mui/material/Backdrop';
@@ -25,17 +26,20 @@ const L_BORDER = '1px solid rgba(0,0,0,0.08)';
 const D_BORDER = '1px solid rgba(255,255,255,0.06)';
 const FONT = "'Poppins', 'Open Sans', 'Helvetica', 'Arial', sans-serif";
 
+const Payment = `${app.context}/site/public/images/landing/billing.png`;
+const ecommerce = `${app.context}/site/public/images/landing/e-commerce.png`;
+
 // Product list shown in the dropdown (routes are placeholders until the pages exist)
 const PRODUCTS = [
     {
         title: 'Payments',
-        icon: 'credit_card',
+        icon: Payment,
         to: '/products/payments',
         desc: 'Accept, process and reconcile payments across multiple channels.',
     },
     {
         title: 'E-Commerce',
-        icon: 'shopping_bag',
+        icon: ecommerce,
         to: '/products/ecommerce',
         desc: 'Build powerful online stores with our full e-commerce API suite.',
     },
@@ -223,7 +227,8 @@ function ProductsMegaMenu(props) {
                             {PRODUCTS.map((p) => (
                                 <Link key={p.title} to={p.to} style={styles.item} onClick={onClose}>
                                     <span style={styles.iconBox}>
-                                        <Icon style={{ color: ORANGE, fontSize: 22 }}>{p.icon}</Icon>
+                                        {/* <Icon style={{ color: ORANGE, fontSize: 22 }}>{p.icon}</Icon> */}
+                                        <img src={p.icon} alt={p.title} width='22px' height='22px' />
                                     </span>
                                     <span>
                                         <span style={styles.titleRow}>

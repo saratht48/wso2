@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 import { styled } from '@mui/material/styles';
@@ -7,7 +8,7 @@ import { Button } from '@mui/material';
 const ORANGE = '#ff5500';
 const BG = 'var(--loop-section-bg)';
 const MUTED = 'var(--loop-text-muted)';
-const WHITE  = '#ffffff';
+const WHITE = '#ffffff';
 
 // ── Styled root ───────────────────────────────────────
 const Root = styled('div')(({ theme }) => ({
@@ -18,7 +19,7 @@ const Root = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding:'64px 25px',
+  padding: '64px 25px',
 
   [theme.breakpoints.up('sm')]: { padding: '64px 25px' },
   [theme.breakpoints.up('md')]: { padding: '272px 72px' },

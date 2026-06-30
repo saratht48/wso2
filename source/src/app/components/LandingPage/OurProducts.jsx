@@ -239,20 +239,6 @@ const Root = styled('div')(({ theme }) => ({
         background: ORANGE,
     },
 
-    // ── right panel ──
-    // '& .op-panel': {
-    //     background: PANEL,
-    //     border: '0.3px solid #ff550079',
-    //     borderRadius: '16px',
-    //     padding: theme.spacing(2),
-    //     width: '100%',
-    //     boxSizing: 'border-box',
-    //     position: 'relative',
-    //     display: 'flex',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    //     [theme.breakpoints.up('md')]: { padding: theme.spacing(2.5) },
-    // },
     '& .op-panel': {
     background: PANEL,
     border: '0.3px solid #ff550079',
