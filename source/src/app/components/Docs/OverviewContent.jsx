@@ -91,7 +91,7 @@ const Root = styled('div')(({ theme }) => ({
     [`& .${classes.h1}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",
         color: 'var(--loop-text-primary)',
-        fontSize: 34,
+        fontSize: 38,
         fontWeight: 700,
         lineHeight: '42px',
         margin: '0 0 18px',
@@ -108,17 +108,18 @@ const Root = styled('div')(({ theme }) => ({
     },
     [`& .${classes.lead}`]: {
         color: 'var(--loop-text-muted)',
-        fontSize: 16,
+        fontSize: 18,
         lineHeight: '27px',
         margin: '0 0 8px',
-        maxWidth: 720,
+        maxWidth: 920,
+        [theme.breakpoints.down('sm')]: { fontSize: 16 },
     },
     [`& .${classes.para}`]: {
         color: 'var(--loop-text-muted)',
-        fontSize: 15,
+        fontSize: 16,
         lineHeight: '25px',
         margin: '0 0 28px',
-        maxWidth: 720,
+        maxWidth: 920,
     },
     [`& .${classes.inlineCode}`]: {
         fontFamily: "'JetBrains Mono', 'Courier New', monospace",

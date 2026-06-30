@@ -16,6 +16,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
+import { app } from 'Settings';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -33,11 +34,41 @@ import API from 'AppData/api';
 import Subscription from 'AppData/Subscription';
 import Alert from 'AppComponents/Shared/Alert';
 import { getLoopThemeMode } from 'AppComponents/Shared/LoopTheme';
+import { styled } from '@mui/material/styles';
+import { after } from 'lodash';
 
-// Dark = original look. Light = client-provided values (title #141A21/name #111827,
-// muted #6B7280, delete #EF4444) + white surfaces/light borders.
+const editDark = `${app.context}/site/public/images/edit_icon_dark.png`;
+const editLight = `${app.context}/site/public/images/edit_icon_light.png`;
+const deleteLight = `${app.context}/site/public/images/delete_icon_light.png`;
+const warningIcon =`${app.context}/site/public/images/warning_icon.png`;
+const CopyIcon=`${app.context}/site/public/images/copy_light.png`;
+const revokeIcon=`${app.context}/site/public/images/revoke_icon.png`; 
+const ThemeIcon = styled('span')(() => ({
+    display: 'inline-flex',
+    alignItems: 'center',
+
+    '& .loop-icon-dark': {
+        display: 'inline-block',
+    },
+
+    '& .loop-icon-light': {
+        display: 'none',
+    },
+
+    '[data-loop-theme="light"] & .loop-icon-dark': {
+        display: 'none',
+    },
+
+    '[data-loop-theme="light"] & .loop-icon-light': {
+        display: 'inline-block',
+    },
+
+}));
+
+// Dark = footer theme (dark mode). Light = footer theme (light mode).
+// Both aligned with LoopFooter color scheme.
 const DARK = {
-    pageBg: '#080808', cardBg: '#141A21', cardBorder: '#1F2937', name: '#FFFFFF', muted: '#6B7280',
+    pageBg: '#141A21', cardBg: '#141A21', cardBorder: '#1F2937', name: '#FFFFFF', muted: '#6B7280',
     viewKeys: '#9CA3AF', red: '#EF4444', orange: '#FF5F00',
     sandboxBg: 'rgba(167,139,250,0.14)', sandboxText: '#A78BFA',
     prodBg: 'rgba(52,211,153,0.12)', prodText: '#34D399',
@@ -45,12 +76,12 @@ const DARK = {
     envBg: '#0B0F14', menuBorder: '#FFFFFF1A', hoverBg: '#1b232d', placeholder: '#444444',
 };
 const LIGHT = {
-    pageBg: '#F7F8FA', cardBg: '#FFFFFF', cardBorder: '#E5E7EB', name: '#111827', muted: '#6B7280',
-    viewKeys: '#6B7280', red: '#EF4444', orange: '#FF5F00',
+    pageBg: '#F2F5F7', cardBg: '#FFFFFF', cardBorder: '#E5E7EB', name: '#111827', muted: '#4B5563',
+    viewKeys: '#4B5563', red: '#EF4444', orange: '#FF5F00',
     sandboxBg: 'rgba(124,58,237,0.10)', sandboxText: '#7C3AED',
     prodBg: 'rgba(5,150,105,0.10)', prodText: '#059669',
     fieldBg: '#F3F4F6', inputBg: '#FFFFFF', modalBg: '#FFFFFF',
-    envBg: '#F7F8FA', menuBorder: '#E5E7EB', hoverBg: '#F3F4F6', placeholder: '#9CA3AF',
+    envBg: '#F7F8FA', menuBorder: '#E5E7EB', hoverBg: '#F3F4F6', placeholder: '#6B7280',
 };
 // Resolve every C.<key> against the CURRENT LOOP theme at access time, so all the
 // existing C.xxx usages switch between light/dark with no other changes.
@@ -98,7 +129,8 @@ function KeyField({ label, value }) {
                     {mask(value)}
                 </Box>
                 <IconButton size="small" onClick={() => copyText(value)} sx={{ color: C.muted }}>
-                    <Icon sx={{ fontSize: 16 }}>content_copy</Icon>
+                    {/* <Icon sx={{ fontSize: 16 }}>content_copy</Icon> */}
+                    <img src={CopyIcon} alt="copy" width={18} height={18} />
                 </IconButton>
             </Box>
         </Box>
@@ -135,7 +167,7 @@ function KeyEnv({
                         onClick={onGenerate}
                         disabled={busy}
                         startIcon={<Icon sx={{ fontSize: 16 }}>add</Icon>}
-                        sx={{ color: C.orange, border: `1px solid ${C.orange}`, borderRadius: '8px', textTransform: 'none', fontFamily: POP, fontWeight: 600, fontSize: 12, px: 1.5,transition:'none' }}
+                        sx={{ color: C.orange, border: `1px solid ${C.orange}`, borderRadius: '8px', textTransform: 'none', fontFamily: POP, fontWeight: 600, fontSize: 12, px: 1.5, transition: 'none' }}
                     >
                         Generate Keys
                     </Button>
@@ -151,7 +183,7 @@ function KeyEnv({
                         <Button
                             onClick={onRevoke}
                             disabled={busy}
-                            startIcon={<Icon sx={{ fontSize: 16 }}>block</Icon>}
+                            startIcon={<img src={revokeIcon} alt="revokeIcon" width={14} height={14}/>}
                             sx={{ color: C.red, border: `1px solid ${C.red}`, borderRadius: '8px', textTransform: 'none', fontFamily: POP, fontWeight: 600, fontSize: 13, px: 2 }}
                         >
                             Revoke Keys
@@ -217,7 +249,8 @@ function AppCard({ app, onEdit, onDelete }) {
     const date = fmtDate(app.createdTime);
 
     return (
-        <Box sx={{ bgcolor: C.cardBg, border: `1px solid ${C.cardBorder}`, borderRadius: '14px', p: 2.25, display: 'flex', flexDirection: 'column' }}>
+        <Box className='myapps-container' sx={{ bgcolor: C.cardBg, border: `1px solid ${C.cardBorder}`, borderRadius: '14px',  display: 'flex', flexDirection: 'column' }}> 
+        <Box className='myapps-container' sx={{p: 2.25, }} >
             {/* header */}
             <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
                 <Box sx={{ width: 40, height: 40, borderRadius: '10px', flexShrink: 0, bgcolor: 'rgba(255,95,0,0.14)', color: C.orange, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: MONO, fontWeight: 700, fontSize: 16 }}>
@@ -243,19 +276,64 @@ function AppCard({ app, onEdit, onDelete }) {
                     PaperProps={{ sx: { bgcolor: C.modalBg, border: `1px solid ${C.menuBorder}`, width: 180, borderRadius: '10px', backgroundImage: 'none', boxShadow: '0 12px 30px rgba(0,0,0,0.5)' } }}
                     MenuListProps={{ sx: { py: 0 } }}
                 >
-                    <MenuItem
+                    {/* <MenuItem
                         onClick={() => { setAnchor(null); onEdit(app); }}
-                        sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: C.name }}
+                        sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: C.name, marginLeft:'20px' }}
                     >
-                        <Icon sx={{ fontSize: 18, mr: 1, color: C.name }}>edit</Icon>
+                        
+                        <img src={editDark} alt='edit dark' width='18px' height='18px'/>
+                        <img src={editLight} alt='edit dark' width='18px' height='18px'/>
+                        Edit
+                    </MenuItem> */}
+                    <MenuItem
+                        onClick={() => {
+                            setAnchor(null);
+                            onEdit(app);
+                        }}
+                        sx={{
+                            fontFamily: INTER,
+                            fontWeight: 500,
+                            fontSize: 14,
+                            py: 1.25,
+                            color: C.name,
+                        }}
+                    >
+                        <ThemeIcon style={{ marginRight: 8 }}>
+                            <img
+                                className="loop-icon-dark"
+                                src={editDark}
+                                alt="Edit"
+                                width={18}
+                                height={18}
+                            />
+
+                            <img
+                                className="loop-icon-light"
+                                src={editLight}
+                                alt="Edit"
+                                width={18}
+                                height={18}
+                            />
+                        </ThemeIcon>
+
                         Edit
                     </MenuItem>
                     <Divider sx={{ borderColor: C.menuBorder, mx: 2, my: 0 }} />
                     <MenuItem
                         onClick={() => { setAnchor(null); onDelete(app); }}
-                        sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: C.red }}
+                        sx={{ fontFamily: INTER, fontWeight: 500, fontSize: 14, py: 1.25, color: C.red, }}
                     >
-                        <Icon sx={{ fontSize: 18, mr: 1, color: C.red }}>delete</Icon>
+                        <ThemeIcon style={{ marginRight: 8 }}>
+
+
+                            <img
+                                src={deleteLight}
+                                alt="Delete"
+                                width={18}
+                                height={18}
+                            // style={{marginLeft:'20px'}}
+                            />
+                        </ThemeIcon>
                         Delete
                     </MenuItem>
                 </Menu>
@@ -284,10 +362,18 @@ function AppCard({ app, onEdit, onDelete }) {
                     />
                 </Box>
             )}
-            <Box sx={{borderTop:'0.2px solid #E5E7EB',width:'100%'}}></Box>
+              </Box>
+            <Box sx={{
+        width: '100%',
+        height: '1px',
+        backgroundColor: '#E5E7EB',
+        opacity: 0.5,
+        transform: 'scaleY(0.5)',
+        transformOrigin: 'top',
+    }} />
 
             {/* footer toggle */}
-            <Box sx={{ mt: 'auto', pt: 1.5, display: 'flex', justifyContent: 'flex-end' }}>
+            <Box sx={{ mt:0,padding:'18px', display: 'flex', justifyContent: 'flex-end' }}>
                 {loadingKeys ? (
                     <CircularProgress size={18} sx={{ color: C.viewKeys }} />
                 ) : (
@@ -303,10 +389,11 @@ function AppCard({ app, onEdit, onDelete }) {
                         {expanded ? 'Hide Keys' : 'View Keys'}
                     </Button>
                 )}
-                   
+
             </Box>
-            
-         
+
+
+      
         </Box>
     );
 }
@@ -632,16 +719,18 @@ function MyApps() {
                 open={Boolean(deleteApp)}
                 onClose={closeModals}
                 maxWidth={false}
-                PaperProps={{ sx: { bgcolor: C.modalBg, border: `1px solid ${C.cardBorder}`, borderRadius: '16px', backgroundImage: 'none', width: { xs: 'calc(100% - 32px)', sm: 516 }, height: { xs: 'auto', sm: 516 }, maxWidth: 'none', m: { xs: 2, sm: 4 } } }}
+                PaperProps={{ sx: { bgcolor: C.modalBg, border: `1px solid ${C.cardBorder}`, borderRadius: '20px', backgroundImage: 'none', width: { xs: 'calc(100% - 32px)', sm: 516 }, height: { xs: 'auto',  }, maxWidth: 'none', m: { xs: 2, sm: 4 } } }}
             >
-                <Box sx={{ height: '100%', p: { xs: 3, sm: 5 }, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                <Box sx={{ height: '100%', p: { xs: 3, sm: 3 }, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                     <Box sx={{ width: 64, height: 64, borderRadius: '50%', bgcolor: 'rgba(255,69,58,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
-                        <Icon sx={{ color: '#FF453A', fontSize: 32 }}>warning_amber</Icon>
+                        {/* <Icon sx={{ color: '#FF453A', fontSize: 32 }}>warning_amber</Icon> */}
+                        <img src={warningIcon} alt="warning icon"  style={{width:'24px' ,height:'24px'}}  />
                     </Box>
+                    
                     <Typography sx={{ fontFamily: POP, fontWeight: 700, fontSize: 20, lineHeight: '100%', color: C.name, mb: 2 }}>
                         Delete Application?
                     </Typography>
-                    <Typography sx={{ fontFamily: POP, fontWeight: 400, fontSize: 14, lineHeight: '150%', color: C.muted, maxWidth: 380, mb: 1.5 }}>
+                    <Typography sx={{ fontFamily: POP, fontWeight: 400, fontSize: 14, lineHeight: '150%', color: C.muted, mb: 1.5 }}>
                         {`This will permanently remove ${deleteApp ? deleteApp.name : ''}, revoke all credentials, and cancel all product subscriptions.`}
                     </Typography>
                     <Typography sx={{ fontFamily: POP, fontWeight: 700, fontSize: 14, lineHeight: '100%', color: '#FF453A', mb: 4 }}>
