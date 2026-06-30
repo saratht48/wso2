@@ -19,7 +19,7 @@ const ORANGE = '#FF5F00';
 
 const Root = styled('div')(() => ({
     maxWidth: 820,
-    marginBottom: 44,
+    marginBottom: 54,
     fontFamily: "'Poppins', sans-serif",
     '& .marker': { color: ORANGE, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 600, letterSpacing: 1, display: 'block', marginBottom: 10 },
     '& .h2': { fontFamily: "'JetBrains Mono', monospace", fontSize: 24, fontWeight: 700, lineHeight: '100%', color: '#E8EDF2', margin: '0 0 16px' },

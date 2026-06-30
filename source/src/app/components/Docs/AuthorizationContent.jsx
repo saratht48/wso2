@@ -116,7 +116,7 @@ const Root = styled('div')(() => ({
         color: ORANGE, fontFamily: "'JetBrains Mono', monospace", fontSize: 12,
         fontWeight: 600, letterSpacing: 1, display: 'inline-block', marginBottom: 10,
     },
-    '& .h1': { fontFamily: "'JetBrains Mono', monospace", fontSize: 24, fontWeight: 700, lineHeight: '100%', margin: '0 0 14px', color: '#E8EDF2' },
+    '& .h1': { fontFamily: "'JetBrains Mono', monospace", fontSize: 28, fontWeight: 700, lineHeight: '100%', margin: '0 0 14px', color: '#E8EDF2' },
     '& .h2': { fontFamily: "'JetBrains Mono', monospace", fontSize: 24, fontWeight: 700, lineHeight: '100%', margin: '0 0 14px', color: '#E8EDF2' },
     '& .h3': { fontSize: 14, fontWeight: 600, margin: '18px 0 10px', color: TEXT },
     '& .lead': { fontFamily: "'Poppins', sans-serif", color: '#9CA3AF', fontWeight: 400, fontSize: 16, lineHeight: '27.8px', margin: 0, maxWidth: 680 },

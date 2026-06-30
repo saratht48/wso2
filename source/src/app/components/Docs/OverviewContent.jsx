@@ -581,7 +581,7 @@ function OverviewContent() {
                         </thead>
                         <tbody>
                             <tr>
-                                <td > <span  style={{padding:'8px 28px',borderRadius:'4px',border:'1px solid #60A5FA', color:'#60A5FA'}}>Sandbox</span></td>
+                                <td > <span  style={{padding:'8px 27px',borderRadius:'4px',border:'1px solid #60A5FA', color:'#60A5FA'}}>Sandbox</span></td>
                                 <td><span className={classes.pill}>api-sandbox.loopapis.co.ke</span></td>
                                 <td><span className={classes.badgeGreen}>Active</span></td>
                             </tr>

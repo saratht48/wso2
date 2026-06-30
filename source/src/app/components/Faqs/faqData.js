@@ -18,6 +18,9 @@
 // list are taken verbatim from Figma node 4156-*; remaining answers are authored
 // placeholders that should be confirmed against the final copy.
 
+// import { app } from 'Settings';
+// const serviceIcon=`${app.context}/site/public/images/overview/service.png`;
+
 const FAQ_CATEGORIES = [
     {
         id: 'general',
@@ -104,6 +107,7 @@ const FAQ_CATEGORIES = [
         id: 'ecommerce',
         label: 'E-Commerce',
         icon: 'bag',
+        // icon: serviceIcon,
         questions: [
             {
                 q: 'What does the E-Commerce API offer?',
