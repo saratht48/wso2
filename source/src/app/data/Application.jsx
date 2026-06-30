@@ -229,7 +229,7 @@ export default class Application extends Resource {
                 callbackUrl,
                 additionalProperties,
                 keyManager,
-                validityTime: 3600,
+                validityTime: -1,
                 scopes: ['default'],
             };
             const payload = { applicationId: this.id };

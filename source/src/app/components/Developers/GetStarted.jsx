@@ -191,7 +191,7 @@ const Root = styled('section')(({ theme }) => ({
 }));
 
 /**
- * "Get Started in 3 Steps" section with an interactive step list and code window.
+
  * @returns {JSX.Element} the section
  */
 function GetStarted() {
