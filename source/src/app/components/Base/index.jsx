@@ -538,7 +538,7 @@ class LayoutLegacy extends React.Component {
                                                     <span style={{ fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '160px', color: '#FFFFFF' }}>
                                                         {username}
                                                     </span>
-                                                    <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>Dev</span>
+                                                    <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>{user && user.isAdmin() ? 'Admin' : 'Dev'}</span>
                                                 </span>
                                                 <Icon className={classes.icons} style={{ marginLeft: 6 }}>keyboard_arrow_down</Icon>
                                             </Button>
