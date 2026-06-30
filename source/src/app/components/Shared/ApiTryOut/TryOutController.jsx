@@ -17,19 +17,17 @@
  */
 
 import React, {
-    useEffect, useState, useRef,
+    useEffect, useState,
 } from 'react';
 import { styled } from '@mui/material/styles';
 import { FormattedMessage } from 'react-intl';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import {
-    Radio, RadioGroup, FormControlLabel, FormControl, CircularProgress, Tooltip,
+    Radio, RadioGroup, FormControlLabel, FormControl, CircularProgress,
     Dialog, DialogTitle, DialogContent, DialogActions,
 } from '@mui/material';
-import HelpOutline from '@mui/icons-material/HelpOutline';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Icon from '@mui/material/Icon';
@@ -37,7 +35,6 @@ import AuthManager from 'AppData/AuthManager';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import WarningIcon from '@mui/icons-material/Warning';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -52,8 +49,59 @@ import { isMultipleClientSecretsEnabled } from 'AppComponents/Shared/AppsAndKeys
 import Alert from 'AppComponents/Shared/Alert';
 import isPlatformGatewayApi from '../../Apis/Details/ApiConsole/platformGateway';
 
-const PREFIX = 'TryOutController';
+/* ── LOOP Matrix design tokens ── */
+const ORANGE = '#FF5F00';
+const panelBg = '#080808';
+const border = 'rgba(255,255,255,0.12)';
+const muted = '#9CA3AF';
+const textColor = '#E5E7EB';
+const pop = "'Poppins', sans-serif";
 
+/* ── shared sx helpers ── */
+const labelSx = {
+    display: 'block',
+    fontFamily: pop,
+    fontSize: 13,
+    fontWeight: 500,
+    color: muted,
+    mb: '6px',
+};
+
+const fieldSx = {
+    width: '100%',
+    '& .MuiOutlinedInput-root': {
+        background: panelBg,
+        color: textColor,
+        borderRadius: '8px',
+        minHeight: 48,
+        fontFamily: pop,
+        fontSize: 14,
+    },
+    '& .MuiOutlinedInput-notchedOutline': { borderColor: border },
+    '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.25)' },
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: ORANGE },
+    '& .MuiOutlinedInput-notchedOutline legend': { width: 0, maxWidth: 0, padding: 0 },
+    '& .MuiInputLabel-root': { display: 'none' },
+    '& .MuiSelect-icon': { color: muted },
+    '& .MuiInputAdornment-root': { color: muted },
+    '& .MuiFormHelperText-root': { display: 'none' },
+};
+
+const radioSx = { color: '#4B5563', '&.Mui-checked': { color: ORANGE } };
+
+const warnBoxSx = {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: 1.5,
+    background: 'rgba(245,158,11,0.08)',
+    border: '1px solid rgba(180,83,9,0.5)',
+    borderRadius: '8px',
+    padding: '12px 16px',
+    mb: 3,
+};
+
+/* Keep Root so AdvertiseDetailsPanel still gets `classes` correctly */
+const PREFIX = 'TryOutController';
 const classes = {
     centerItems: `${PREFIX}-centerItems`,
     tokenType: `${PREFIX}-tokenType`,
@@ -70,101 +118,8 @@ const classes = {
     link: `${PREFIX}-link`,
     authHeader: `${PREFIX}-authHeader`,
 };
+const Root = styled('div')(() => ({ width: '100%' }));
 
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled('div')((
-    {
-        theme,
-    },
-) => ({
-    width: '100%',
-    [`& .${classes.centerItems}`]: {
-        margin: 'auto',
-    },
-
-    [`& .${classes.tokenType}`]: {
-        margin: 'auto',
-        display: 'flex',
-        '& .MuiButton-contained.Mui-disabled span.MuiButton-label': {
-            color: '#6d6d6d',
-        },
-    },
-
-    [`& .${classes.paper}`]: {
-        margin: theme.spacing(1),
-        padding: theme.spacing(1),
-    },
-
-    [`& .${classes.grid}`]: {
-        marginTop: theme.spacing(4),
-        marginBottom: theme.spacing(4),
-        paddingRight: theme.spacing(2),
-        justifyContent: 'center',
-    },
-
-    [`& .${classes.tryoutHeading}`]: {
-        fontWeight: 400,
-        display: 'block',
-    },
-
-    [`& .${classes.genKeyButton}`]: {
-        background: theme.palette.grey[300],
-        width: theme.spacing(20),
-        height: theme.spacing(5),
-        marginTop: theme.spacing(2.5),
-        marginLeft: theme.spacing(2),
-        '&:disabled': {
-            cursor: 'not-allowed',
-            background: theme.palette.grey[50],
-        },
-    },
-
-    [`& .${classes.gatewayEnvironment}`]: {
-        marginTop: theme.spacing(4),
-    },
-
-    [`& .${classes.categoryHeading}`]: {
-        marginBottom: theme.spacing(2),
-        marginLeft: theme.spacing(-5),
-    },
-
-    [`& .${classes.tooltip}`]: {
-        marginLeft: theme.spacing(1),
-    },
-
-    [`& .${classes.menuItem}`]: {
-        color: theme.palette.getContrastText(theme.palette.background.paper),
-    },
-
-    [`& .${classes.warningIcon}`]: {
-        color: '#ff9a00',
-        fontSize: 25,
-        marginRight: 10,
-    },
-
-    [`& .${classes.loadMoreLink}`]: {
-        textDecoration: 'none',
-        margin: 'auto',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-
-    [`& .${classes.link}`]: {
-        color: theme.palette.getContrastText(theme.palette.background.default),
-        cursor: 'pointer',
-    },
-
-    [`& .${classes.authHeader}`]: {
-        marginBottom: '20px',
-    },
-}));
-
-/**
- * TryOut component
- *
- * @class TryOutController
- * @extends {Component}
- */
 function TryOutController(props) {
     const {
         securitySchemeType, selectedEnvironment, environments,
@@ -227,9 +182,7 @@ function TryOutController(props) {
                         if (appList && appList.length > 0) {
                             newSelectedApplication = appList[0].applicationId;
                             Application.get(newSelectedApplication)
-                                .then((application) => {
-                                    return application.getKeys();
-                                })
+                                .then((application) => application.getKeys())
                                 .then((appKeys) => {
                                     if (appKeys.get(selectedKeyManager)
                                         && appKeys.get(selectedKeyManager).keyType === 'SANDBOX') {
@@ -254,13 +207,9 @@ function TryOutController(props) {
                         }
                     }
                 }).catch((error) => {
-                    if (process.env.NODE_ENV !== 'production') {
-                        console.error(error);
-                    }
+                    if (process.env.NODE_ENV !== 'production') { console.error(error); }
                     const { status } = error;
-                    if (status === 404) {
-                        setNotFound(true);
-                    }
+                    if (status === 404) { setNotFound(true); }
                 });
             }
             const promiseSubscriptions = restApi.getSubscriptions(apiID);
@@ -272,9 +221,7 @@ function TryOutController(props) {
                     if (subscriptionsList && subscriptionsList.length > 0) {
                         newSelectedApplication = subscriptionsList[0].applicationId;
                         Application.get(newSelectedApplication)
-                            .then((application) => {
-                                return application.getKeys();
-                            })
+                            .then((application) => application.getKeys())
                             .then((appKeys) => {
                                 if (appKeys.get(selectedKeyManager)
                                     && appKeys.get(selectedKeyManager).keyType === 'SANDBOX') {
@@ -321,13 +268,9 @@ function TryOutController(props) {
                     setSelectedKeyType(selectedKeyType, false);
                 }
             }).catch((error) => {
-                if (process.env.NODE_ENV !== 'production') {
-                    console.error(error);
-                }
+                if (process.env.NODE_ENV !== 'production') { console.error(error); }
                 const { status } = error;
-                if (status === 404) {
-                    setNotFound(true);
-                }
+                if (status === 404) { setNotFound(true); }
             });
             const promisedKeyManagers = restApi.getKeyManagers();
             promisedKeyManagers
@@ -341,20 +284,13 @@ function TryOutController(props) {
                     }
                 })
                 .catch((error) => {
-                    if (process.env.NODE_ENV !== 'production') {
-                        console.log(error);
-                    }
+                    if (process.env.NODE_ENV !== 'production') { console.log(error); }
                     const { status } = error;
-                    if (status === 404) {
-                        setNotFound(true);
-                    }
+                    if (status === 404) { setNotFound(true); }
                 });
         }
     }, []);
 
-    /**
-     * Generate access token
-     * */
     function generateAccessToken(secretOverride) {
         const secret = (typeof secretOverride === 'string') ? secretOverride : consumerSecret;
         if (api.lifeCycleStatus) {
@@ -368,7 +304,7 @@ function TryOutController(props) {
                     scopes,
                     undefined,
                     undefined,
-                    secret
+                    secret,
                 ))
                 .then((response) => {
                     console.log('token generated successfully ' + response);
@@ -384,9 +320,7 @@ function TryOutController(props) {
                 .catch((error) => {
                     console.error(error);
                     const { status } = error;
-                    if (status === 404) {
-                        setNotFound(true);
-                    }
+                    if (status === 404) { setNotFound(true); }
                     setIsUpdating(false);
                     const { response } = error;
                     if (response && response.body && response.body.message && response.body.description) {
@@ -396,9 +330,6 @@ function TryOutController(props) {
         }
     }
 
-    /**
-     * Generate api key
-     * */
     function generateApiKey() {
         if (api.lifeCycleStatus) {
             setIsUpdating(true);
@@ -418,27 +349,16 @@ function TryOutController(props) {
                 .catch((error) => {
                     console.log(error);
                     const { status } = error;
-                    if (status === 404) {
-                        setNotFound(true);
-                    }
+                    if (status === 404) { setNotFound(true); }
                     setIsUpdating(false);
                 });
         }
     }
 
-    /**
-     *
-     * Handle onClick of shown access token
-     * @memberof TryOutController
-     */
     function handleClickShowToken() {
         setShowToken(!showToken);
     }
 
-    /**
-     * Load the selected application information
-     * @memberof TryOutController
-     */
     function updateApplication() {
         if (api.lifeCycleStatus) {
             if (selectedApplication == null || String(selectedApplication).trim() === '') {
@@ -456,21 +376,17 @@ function TryOutController(props) {
                         keyType = selectedKeyType;
                     }
                 }
-            } else {
-                if (subscriptions !== null && subscriptions.length !== 0 && selectedApplication.length !== 0) {
-                    if (subscriptions.find((sub) => sub.applicationId
-                        === selectedApplication).status === 'PROD_ONLY_BLOCKED') {
-                        setSelectedKeyType(selectedKeyType, false);
-                        keyType = 'SANDBOX';
-                    } else {
-                        keyType = selectedKeyType;
-                    }
+            } else if (subscriptions !== null && subscriptions.length !== 0 && selectedApplication.length !== 0) {
+                if (subscriptions.find((sub) => sub.applicationId
+                    === selectedApplication).status === 'PROD_ONLY_BLOCKED') {
+                    setSelectedKeyType(selectedKeyType, false);
+                    keyType = 'SANDBOX';
+                } else {
+                    keyType = selectedKeyType;
                 }
             }
             Application.get(selectedApplication)
-                .then((application) => {
-                    return application.getKeys(keyType || 'PRODUCTION');
-                })
+                .then((application) => application.getKeys(keyType || 'PRODUCTION'))
                 .then((appKeys) => {
                     const selectedKeys = appKeys.get(selectedKeyManager);
                     if (selectedKeys && selectedKeys.keyType === selectedKeyType) {
@@ -490,7 +406,6 @@ function TryOutController(props) {
                 })
                 .catch((err) => {
                     if (process.env.NODE_ENV !== 'production') {
-                        // eslint-disable-next-line no-console
                         console.warn('TryOutController: could not load application keys', err);
                     }
                     setKeys([]);
@@ -517,16 +432,11 @@ function TryOutController(props) {
                 newSecurityScheme: securitySchemeType,
                 newUsername: username,
                 newPassword: password,
-                newSelectedEnvironment: selectedEnvironment
+                newSelectedEnvironment: selectedEnvironment,
             });
         }
-    }, [username, password, selectedEnvironment, securitySchemeType]); 
+    }, [username, password, selectedEnvironment, securitySchemeType]);
 
-    /**
-     * Handle onChange of inputs
-     * @param {*} event event
-     * @memberof TryOutController
-     */
     function handleChanges(event) {
         const { target } = event;
         const { name, value } = target;
@@ -597,12 +507,9 @@ function TryOutController(props) {
         }
     }
 
-    if (api == null) {
-        return <Progress />;
-    }
-    if (notFound) {
-        return 'API Not found !';
-    }
+    if (api == null) { return <Progress />; }
+    if (notFound) { return 'API Not found !'; }
+
     let isApiKeyEnabled = false;
     let isBasicAuthEnabled = false;
     let isOAuthEnabled = false;
@@ -623,7 +530,6 @@ function TryOutController(props) {
         isOAuthEnabled = securitySchemes.has('oauth2');
         isTestKeyEnabled = securitySchemes.has('test_auth');
         if (isPlatformGateway) {
-            // For Platform APIs, only show OAuth/API Key when mapped headers are available from hub policies.
             isApiKeyEnabled = isApiKeyEnabled && !!api.apiKeyHeader;
             isOAuthEnabled = isOAuthEnabled && !!api.authorizationHeader;
         }
@@ -652,12 +558,10 @@ function TryOutController(props) {
     }
 
     const authHeader = `${authorizationHeader}: ${prefix}`;
-
     const isMultipleClientSecretsAllowed = isMultipleClientSecretsEnabled(selectedKMObject?.additionalProperties);
-
-    const isConsumerSecretRequired = selectedKMObject && (isMultipleClientSecretsAllowed || selectedKMObject.enableTokenHashing) 
+    const isConsumerSecretRequired = selectedKMObject
+        && (isMultipleClientSecretsAllowed || selectedKMObject.enableTokenHashing)
         && securitySchemeType === 'OAUTH';
-    // Consumer secret is now collected via dialog, so GET TEST KEY is always enabled.
 
     useEffect(() => {
         if (securitySchemeType === 'API-KEY') {
@@ -667,342 +571,334 @@ function TryOutController(props) {
         }
     }, [securitySchemeType, selectedKeyType, productionAccessToken, sandboxAccessToken, productionApiKey, sandboxApiKey]);
 
+    const isWso2Gateway = !api.advertiseInfo || !api.advertiseInfo.advertised;
+    const isWso2Vendor = api.gatewayVendor === 'wso2' || !api.gatewayVendor;
+
+    /* ── shared dark dropdown portal styling ── */
+    const menuItemSx = {
+        fontFamily: pop,
+        color: textColor,
+        background: '#141A21',
+        '&:hover': { background: '#1F2937' },
+        '&.Mui-selected': { background: '#1F2937' },
+        '&.Mui-selected:hover': { background: '#374151' },
+    };
+
+    const darkMenuProps = {
+        PaperProps: {
+            sx: {
+                background: '#141A21',
+                border: `1px solid ${border}`,
+                borderRadius: '8px',
+                mt: '4px',
+                '& .MuiMenuItem-root': {
+                    fontFamily: pop,
+                    color: textColor,
+                    fontSize: 14,
+                    '&:hover': { background: '#1F2937' },
+                    '&.Mui-selected': { background: '#1F2937' },
+                    '&.Mui-selected:hover': { background: '#374151' },
+                },
+            },
+        },
+    };
+
     return (
         <Root>
-            <Grid x={12} md={6} className={classes.centerItems}>
-                <Box>
-                    {securitySchemeType !== 'TEST' && (!api.advertiseInfo || !api.advertiseInfo.advertised) 
-                        && (api.gatewayVendor === 'wso2' || !api.gatewayVendor) && (
-                        <>
-                            <Box mb={1}>
-                                <Typography variant='body1'>
-                                    <Box display='flex' alignItems='center'>
-                                        {(keyManagers.length > 1 && selectedKMObject && selectedKMObject.enabled) && (
-                                            <FormattedMessage
-                                                id='Apis.Details.ApiConsole.TryOutController.default.km.msg.one'
-                                                defaultMessage='The Resident Key Manager is selected for try out console.'
-                                            />
-                                        )}
-                                        {(selectedKMObject && !selectedKMObject.enabled) && (
-                                            <>
-                                                <WarningIcon className={classes.warningIcon} />
-                                                <div>
-                                                    <FormattedMessage
-                                                        id='Apis.Details.ApiConsole.TryOutController.default.km.msg.two'
-                                                        defaultMessage={'Try it console is only accessible via the default key manager.'
-                                        + 'But the default key manager is disabled at the moment.'}
-                                                    />
-                                                </div>
-                                            </>
-                                        )}
-                                        {(selectedKMObject && selectedKMObject.length === 0) && (
-                                            <FormattedMessage
-                                                id='Apis.Details.ApiConsole.TryOutController.default.km.msg.three'
-                                                defaultMessage={'Try it console is only accessible via the default key manager.'
-                                        + 'Something went wrong while selecting the default Key manager.'}
-                                            />
-                                        )}
-                                    </Box>
+            <Box sx={{ width: '100%', color: textColor, fontFamily: pop }}>
+
+                {/* ── Key Manager warning ── */}
+                {securitySchemeType !== 'TEST' && isWso2Gateway && isWso2Vendor && (
+                    <>
+                        {(keyManagers.length > 1 && selectedKMObject && selectedKMObject.enabled) && (
+                            <Box sx={{ ...warnBoxSx, background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.3)' }}>
+                                <Typography sx={{ fontFamily: pop, fontSize: 13, color: '#93C5FD' }}>
+                                    <FormattedMessage
+                                        id='Apis.Details.ApiConsole.TryOutController.default.km.msg.one'
+                                        defaultMessage='The Resident Key Manager is selected for try out console.'
+                                    />
                                 </Typography>
                             </Box>
-                        </>
-                    )}
-                    {((isApiKeyEnabled || isBasicAuthEnabled || isOAuthEnabled) && showSecurityType)
-                        && (!api.advertiseInfo || !api.advertiseInfo.advertised) 
-                        && (api.gatewayVendor === 'wso2' || !api.gatewayVendor) && (
-                        <>
-                            <Typography variant='h5' component='h2' color='textPrimary' className={classes.categoryHeading}>
-                                <FormattedMessage
-                                    id='api.console.security.heading'
-                                    defaultMessage='Security'
+                        )}
+                        {selectedKMObject && !selectedKMObject.enabled && (
+                            <Box sx={warnBoxSx}>
+                                <Typography sx={{ fontFamily: pop, fontSize: 13, color: '#FCD34D' }}>
+                                    <FormattedMessage
+                                        id='Apis.Details.ApiConsole.TryOutController.default.km.msg.two'
+                                        defaultMessage={'Try it console is only accessible via the default key manager.'
+                                            + 'But the default key manager is disabled at the moment.'}
+                                    />
+                                </Typography>
+                            </Box>
+                        )}
+                        {selectedKMObject && selectedKMObject.length === 0 && (
+                            <Box sx={warnBoxSx}>
+                                <Typography sx={{ fontFamily: pop, fontSize: 13, color: '#FCD34D' }}>
+                                    <FormattedMessage
+                                        id='Apis.Details.ApiConsole.TryOutController.default.km.msg.three'
+                                        defaultMessage={'Try it console is only accessible via the default key manager.'
+                                            + 'Something went wrong while selecting the default Key manager.'}
+                                    />
+                                </Typography>
+                            </Box>
+                        )}
+                    </>
+                )}
+
+                {/* ── Security Type radios ── */}
+                {(isApiKeyEnabled || isBasicAuthEnabled || isOAuthEnabled) && showSecurityType
+                    && isWso2Gateway && isWso2Vendor && (
+                    <Box sx={{ mb: 3 }}>
+                        <Box component='span' sx={{ ...labelSx, display: 'block' }} id='security-type'>
+                            Security Type
+                        </Box>
+                        <FormControl variant='standard' component='fieldset'>
+                            <RadioGroup
+                                name='securityScheme'
+                                value={securitySchemeType}
+                                onChange={handleChanges}
+                                aria-labelledby='security-type'
+                                row
+                                sx={{ background: panelBg, borderRadius: '7px', padding: '12px 16px', gap: 2 }}
+                            >
+                                <FormControlLabel
+                                    value='OAUTH'
+                                    disabled={!isOAuthEnabled}
+                                    control={<Radio sx={radioSx} />}
+                                    label={<span style={{ fontFamily: pop, fontSize: 14, color: muted }}>OAuth</span>}
                                 />
-                            </Typography>
-                            <Typography
-                                variant='h6'
-                                component='label'
-                                id='security-type'
-                                color='textSecondary'
-                                className={classes.tryoutHeading}
+                                <FormControlLabel
+                                    value='API-KEY'
+                                    disabled={!isApiKeyEnabled}
+                                    control={<Radio sx={radioSx} />}
+                                    id='api-key-select-radio-button'
+                                    label={<span style={{ fontFamily: pop, fontSize: 14, color: muted }}>API Key</span>}
+                                />
+                                <FormControlLabel
+                                    value='BASIC'
+                                    disabled={!isBasicAuthEnabled}
+                                    control={<Radio sx={radioSx} />}
+                                    label={<span style={{ fontFamily: pop, fontSize: 14, color: muted }}>Basic</span>}
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </Box>
+                )}
+
+                {/* ── Application + Key Type (SelectAppPanel) ── */}
+                {user && subscriptions
+                    && ((isSubValidationDisabled && allApplications !== null)
+                        || (subscriptions.length > 0 && !isSubValidationDisabled))
+                    && securitySchemeType !== 'BASIC' && securitySchemeType !== 'TEST'
+                    && isWso2Gateway && isWso2Vendor && (
+                    <SelectAppPanel
+                        subscriptions={subscriptions}
+                        allApplications={allApplications}
+                        handleChanges={handleChanges}
+                        selectedApplication={selectedApplication}
+                        selectedKeyManager={selectedKeyManager}
+                        selectedKeyType={selectedKeyType}
+                        keyManagers={keyManagers}
+                    />
+                )}
+
+                {/* ── No subscription warning ── */}
+                {subscriptions && subscriptions.length === 0
+                    && securitySchemeType !== 'TEST' && securitySchemeType !== 'BASIC'
+                    && isWso2Vendor && isWso2Gateway
+                    && !isSubValidationDisabled && !isPlatformGateway && (
+                    <Box sx={warnBoxSx}>
+                        <Typography sx={{ fontFamily: pop, fontSize: 13, color: '#FCD34D' }}>
+                            <FormattedMessage
+                                id='Apis.Details.ApiConsole.ApiConsole.subscribe.to.application'
+                                defaultMessage='Please subscribe to an application'
+                            />
+                        </Typography>
+                    </Box>
+                )}
+
+                {/* ── No keys warning ── */}
+                {!ksGenerated && securitySchemeType === 'OAUTH'
+                    && isWso2Gateway && isWso2Vendor
+                    && !isPlatformGateway
+                    && subscriptions && subscriptions.length > 0 && (
+                    <Box sx={warnBoxSx}>
+                        <Typography sx={{ fontFamily: pop, fontSize: 13, color: '#FCD34D' }}>
+                            <FormattedMessage
+                                id='Apis.Details.ApiConsole.ApiConsole.keys.not.generated'
+                                defaultMessage={'Consumer key and secret not generated for the selected'
+                                    + ' application on the {what} environment. '}
+                                values={{ what: selectedKeyType }}
+                            />
+                        </Typography>
+                    </Box>
+                )}
+
+                {/* ── Consumer Secret Dialog ── */}
+                {isConsumerSecretRequired && (
+                    <Dialog
+                        open={secretDialogOpen}
+                        onClose={() => { setSecretDialogOpen(false); setConsumerSecret(''); setShowSecret(false); }}
+                        fullWidth
+                        maxWidth='sm'
+                        PaperProps={{
+                            sx: {
+                                background: '#141A21',
+                                border: `1px solid ${border}`,
+                                borderRadius: '12px',
+                            },
+                        }}
+                    >
+                        <DialogTitle sx={{ fontFamily: pop, color: textColor, borderBottom: `1px solid ${border}`, pb: 2 }}>
+                            <FormattedMessage
+                                id='Apis.Details.ApiConsole.generate.test.key.dialog.title'
+                                defaultMessage='Generate test key'
+                            />
+                        </DialogTitle>
+                        <DialogContent sx={{ pt: 3 }}>
+                            <Box component='span' sx={labelSx}>Consumer secret</Box>
+                            <TextField
+                                autoFocus
+                                fullWidth
+                                margin='none'
+                                variant='outlined'
+                                name='consumerSecret'
+                                onChange={handleChanges}
+                                type={showSecret ? 'text' : 'password'}
+                                value={consumerSecret || ''}
+                                id='consumerSecretInput'
+                                sx={fieldSx}
+                                InputProps={{
+                                    autoComplete: 'new-password',
+                                    endAdornment: (
+                                        <InputAdornment position='end'>
+                                            <IconButton
+                                                edge='end'
+                                                aria-label='toggle consumer secret visibility'
+                                                onClick={() => setShowSecret(!showSecret)}
+                                                size='large'
+                                                sx={{ color: muted }}
+                                            >
+                                                {showSecret ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </DialogContent>
+                        <DialogActions sx={{ borderTop: `1px solid ${border}`, px: 3, py: 2, gap: 1 }}>
+                            <Button
+                                onClick={() => { setSecretDialogOpen(false); setConsumerSecret(''); setShowSecret(false); }}
+                                sx={{
+                                    fontFamily: pop,
+                                    color: muted,
+                                    border: `1px solid ${border}`,
+                                    borderRadius: '8px',
+                                    px: 3,
+                                    '&:hover': { borderColor: 'rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.04)' },
+                                }}
                             >
                                 <FormattedMessage
-                                    id='api.console.security.type.heading'
-                                    defaultMessage='Security Type'
+                                    id='Apis.Details.ApiConsole.generate.test.key.dialog.cancel'
+                                    defaultMessage='Cancel'
                                 />
-                            </Typography>
-                            <FormControl variant='standard' component='fieldset'>
-                                <RadioGroup
-                                    name='securityScheme'
-                                    value={securitySchemeType}
-                                    onChange={handleChanges}
-                                    aria-labelledby='security-type'
-                                    row
-                                >
-                                    <FormControlLabel
-                                        value='OAUTH'
-                                        disabled={!isOAuthEnabled}
-                                        control={<Radio />}
-                                        label={(
-                                            <FormattedMessage
-                                                id='Apis.Details.ApiConsole.security.scheme.oauth'
-                                                defaultMessage='OAuth'
-                                            />
-                                        )}
-                                    />
-                                    <FormControlLabel
-                                        value='API-KEY'
-                                        disabled={!isApiKeyEnabled}
-                                        control={<Radio />}
-                                        id='api-key-select-radio-button'
-                                        label={(
-                                            <FormattedMessage
-                                                id='Apis.Details.ApiConsole.security.scheme.apikey'
-                                                defaultMessage='API Key'
-                                            />
-                                        )}
-                                    />
-                                    <FormControlLabel
-                                        value='BASIC'
-                                        disabled={!isBasicAuthEnabled}
-                                        control={<Radio />}
-                                        label={(
-                                            <FormattedMessage
-                                                id='Apis.Details.ApiConsole.security.scheme.basic'
-                                                defaultMessage='Basic'
-                                            />
-                                        )}
-                                    />
-                                </RadioGroup>
-                            </FormControl>
-                        </>
-                    )}
-                </Box>
-            </Grid>
-
-            <Grid xs={12} md={12} item>
-                <Box display='block'>
-                    {user && subscriptions
-                        && ((isSubValidationDisabled && allApplications !== null)
-                        || (subscriptions.length > 0 && !isSubValidationDisabled))
-                        && securitySchemeType !== 'BASIC' && securitySchemeType !== 'TEST'
-                        && (!api.advertiseInfo || !api.advertiseInfo.advertised)
-                        && (api.gatewayVendor === 'wso2' || !api.gatewayVendor)
-                        && (
-                            <SelectAppPanel
-                                subscriptions={subscriptions}
-                                allApplications={allApplications}
-                                handleChanges={handleChanges}
-                                selectedApplication={selectedApplication}
-                                selectedKeyManager={selectedKeyManager}
-                                selectedKeyType={selectedKeyType}
-                                keyManagers={keyManagers}
-                            />
-                        )}
-                    {subscriptions && subscriptions.length === 0 && securitySchemeType !== 'TEST'
-                    && securitySchemeType !== 'BASIC' && (api.gatewayVendor === 'wso2' || !api.gatewayVendor)
-                        && (!api.advertiseInfo || !api.advertiseInfo.advertised)
-                        && !isSubValidationDisabled && !isPlatformGateway ? (
-                            <Grid x={8} md={6} className={classes.tokenType} item>
-                                <Box mb={1} alignItems='center'>
-                                    <Typography variant='body1'>
-                                        <Box display='flex'>
-                                            <WarningIcon className={classes.warningIcon} />
-                                            <div>
-                                                <FormattedMessage
-                                                    id='Apis.Details.ApiConsole.ApiConsole.subscribe.to.application'
-                                                    defaultMessage='Please subscribe to an application'
-                                                />
-                                            </div>
-                                        </Box>
-                                    </Typography>
-                                </Box>
-                            </Grid>
-                        ) : (
-                            (!ksGenerated && securitySchemeType === 'OAUTH') && (!api.advertiseInfo
-                                || !api.advertiseInfo.advertised) && (api.gatewayVendor === 'wso2' || !api.gatewayVendor)
-                                && !isPlatformGateway && (
-                                <Grid x={8} md={6} className={classes.tokenType} item>
-                                    <Box mb={1} alignItems='center'>
-                                        <Typography variant='body1'>
-                                            <Box display='flex'>
-                                                <WarningIcon className={classes.warningIcon} />
-                                                <div>
-                                                    <FormattedMessage
-                                                        id='Apis.Details.ApiConsole.ApiConsole.keys.not.generated'
-                                                        defaultMessage={'Consumer key and secret not generated for the selected'
-                                                                + ' application on the {what} environment. '}
-                                                        values={{ what: selectedKeyType }}
-                                                    />
-                                                </div>
-                                            </Box>
-                                        </Typography>
-                                    </Box>
-                                </Grid>
-                            )
-                        )}
-                    {/* Consumer Secret Dialog - Opens when GET TEST KEY is clicked (multiple secrets mode) */}
-                    {isConsumerSecretRequired && (
-                        <Dialog
-                            open={secretDialogOpen}
-                            onClose={() => { setSecretDialogOpen(false); setConsumerSecret(''); setShowSecret(false); }}
-                            fullWidth
-                            maxWidth='sm'
-                        >
-                            <DialogTitle>
-                                <FormattedMessage
-                                    id='Apis.Details.ApiConsole.generate.test.key.dialog.title'
-                                    defaultMessage='Generate test key'
-                                />
-                            </DialogTitle>
-                            <DialogContent>
-                                <TextField
-                                    autoFocus
-                                    fullWidth
-                                    margin='normal'
-                                    variant='outlined'
-                                    label={(
-                                        <FormattedMessage
-                                            id='Apis.Details.ApiConsole.consumer.secret.text.field'
-                                            defaultMessage='Consumer secret'
-                                        />
-                                    )}
-                                    name='consumerSecret'
-                                    onChange={handleChanges}
-                                    type={showSecret ? 'text' : 'password'}
-                                    value={consumerSecret || ''}
-                                    id='consumerSecretInput'
-                                    helperText={(
-                                        <FormattedMessage
-                                            id='Apis.Details.TryOutConsole.consumerSecret.required.helper'
-                                            defaultMessage='Enter the consumer secret for the selected application to generate a test key.'
-                                        />
-                                    )}
-                                    InputProps={{
-                                        autoComplete: 'new-password',
-                                        endAdornment: (
-                                            <InputAdornment position='end'>
-                                                <IconButton
-                                                    edge='end'
-                                                    aria-label='toggle consumer secret visibility'
-                                                    onClick={() => setShowSecret(!showSecret)}
-                                                    size='large'
-                                                >
-                                                    {showSecret ? <VisibilityOff /> : <Visibility />}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={() => {
+                            </Button>
+                            <Button
+                                variant='contained'
+                                onClick={() => {
+                                    const secretValue = consumerSecret;
                                     setSecretDialogOpen(false);
                                     setConsumerSecret('');
                                     setShowSecret(false);
+                                    generateAccessToken(secretValue);
                                 }}
-                                >
-                                    <FormattedMessage
-                                        id='Apis.Details.ApiConsole.generate.test.key.dialog.cancel'
-                                        defaultMessage='Cancel'
+                                disabled={!consumerSecret?.trim() || isUpdating}
+                                sx={{
+                                    fontFamily: pop,
+                                    background: ORANGE,
+                                    color: '#fff',
+                                    borderRadius: '8px',
+                                    px: 3,
+                                    '&:hover': { background: '#E65500' },
+                                    '&:disabled': { background: 'rgba(255,95,0,0.3)', color: 'rgba(255,255,255,0.4)' },
+                                }}
+                            >
+                                <FormattedMessage
+                                    id='Apis.Details.ApiConsole.generate.test.key.dialog.generate'
+                                    defaultMessage='Generate'
+                                />
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                )}
+
+                {/* ── Main token / auth area ── */}
+                {isWso2Gateway && isWso2Vendor ? (
+                    <Box>
+                        {/* Basic auth: username + password */}
+                        {securitySchemeType === 'BASIC' && (
+                            <Box sx={{ mb: 3 }}>
+                                <Box sx={{ mb: 3 }}>
+                                    <Box component='span' sx={labelSx}>Username</Box>
+                                    <TextField
+                                        variant='outlined'
+                                        id='username'
+                                        name='username'
+                                        onChange={handleChanges}
+                                        value={username || ''}
+                                        fullWidth
+                                        margin='none'
+                                        sx={fieldSx}
                                     />
-                                </Button>
-                                <Button
-                                    variant='contained'
-                                    onClick={() => {
-                                        const secretValue = consumerSecret;
-                                        setSecretDialogOpen(false);
-                                        setConsumerSecret('');
-                                        setShowSecret(false);
-                                        generateAccessToken(secretValue);
-                                    }}
-                                    disabled={!consumerSecret?.trim() || isUpdating}
-                                >
-                                    <FormattedMessage
-                                        id='Apis.Details.ApiConsole.generate.test.key.dialog.generate'
-                                        defaultMessage='Generate'
+                                </Box>
+                                <Box>
+                                    <Box component='span' sx={labelSx}>Password</Box>
+                                    <TextField
+                                        variant='outlined'
+                                        id='input-password'
+                                        name='password'
+                                        onChange={handleChanges}
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={password || ''}
+                                        fullWidth
+                                        margin='none'
+                                        sx={fieldSx}
+                                        InputProps={{
+                                            autoComplete: 'new-password',
+                                            endAdornment: (
+                                                <InputAdornment position='end'>
+                                                    <IconButton
+                                                        edge='end'
+                                                        aria-label='toggle password visibility'
+                                                        onClick={() => setShowPassword(!showPassword)}
+                                                        size='large'
+                                                        sx={{ color: muted }}
+                                                    >
+                                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
-                    )}
-                    {((!api.advertiseInfo || !api.advertiseInfo.advertised) 
-                        && (api.gatewayVendor === 'wso2' || !api.gatewayVendor)) ? (
-                        <Box display='block' justifyContent='center'>
-                            <Grid x={8} md={6} className={classes.tokenType} item>
-                                {securitySchemeType === 'BASIC' && (
-                                    <>
-                                        <Grid x={12} md={12} item>
-                                            <TextField
-                                                margin='normal'
-                                                variant='outlined'
-                                                id='username'
-                                                label={(
-                                                    <FormattedMessage
-                                                        id='username'
-                                                        defaultMessage='Username'
-                                                    />
-                                                )}
-                                                name='username'
-                                                onChange={handleChanges}
-                                                value={username || ''}
-                                                fullWidth
-                                            />
-                                            <TextField
-                                                margin='normal'
-                                                variant='outlined'
-                                                id='input-password'
-                                                label={(
-                                                    <FormattedMessage
-                                                        id='password'
-                                                        defaultMessage='Password'
-                                                    />
-                                                )}
-                                                name='password'
-                                                onChange={handleChanges}
-                                                type={showPassword ? 'text' : 'password'}
-                                                value={password || ''}
-                                                fullWidth
-                                                InputProps={{
-                                                    autoComplete: 'new-password',
-                                                    endAdornment: (
-                                                        <InputAdornment position='end'>
-                                                            <IconButton
-                                                                edge='end'
-                                                                aria-label='toggle password visibility'
-                                                                onClick={() => setShowPassword(!showPassword)}
-                                                                size='large'
-                                                            >
-                                                                {showPassword ? <Visibility /> : <VisibilityOff />}
-                                                            </IconButton>
-                                                        </InputAdornment>
-                                                    ),
-                                                }}
-                                            />
-                                        </Grid>
-                                    </>
-                                )}
-                                {securitySchemeType !== 'BASIC' && securitySchemeType !== 'TEST'
-                                    && selectedSchemeEnabled && (
+                                </Box>
+                            </Box>
+                        )}
+
+                        {/* Access Token row + GET TEST KEY */}
+                        {securitySchemeType !== 'BASIC' && securitySchemeType !== 'TEST' && selectedSchemeEnabled && (
+                            <Box sx={{ mb: 3 }}>
+                                <Box component='span' sx={labelSx}>Access Token</Box>
+                                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                                     <TextField
                                         fullWidth
-                                        margin='normal'
                                         variant='outlined'
-                                        label={(
-                                            <FormattedMessage
-                                                id='access.token'
-                                                defaultMessage='Access Token'
-                                            />
-                                        )}
                                         name='accessToken'
                                         onChange={handleChanges}
                                         type={showToken ? 'text' : 'password'}
                                         value={tokenValue || ''}
-                                        helperText={(
-                                            <FormattedMessage
-                                                id='enter.access.token'
-                                                defaultMessage='Enter access Token'
-                                            />
-                                        )}
                                         id='accessTokenInput'
+                                        margin='none'
+                                        sx={fieldSx}
                                         InputProps={{
                                             autoComplete: 'new-password',
                                             endAdornment: (
@@ -1012,241 +908,225 @@ function TryOutController(props) {
                                                         aria-label='Toggle token visibility'
                                                         onClick={handleClickShowToken}
                                                         size='large'
+                                                        sx={{ color: muted }}
                                                     >
-                                                        {showToken ? <Icon>visibility_off</Icon>
-                                                            : <Icon>visibility</Icon>}
+                                                        {showToken ? <Icon>visibility_off</Icon> : <Icon>visibility</Icon>}
                                                     </IconButton>
                                                 </InputAdornment>
                                             ),
                                             startAdornment: (
                                                 <InputAdornment
-                                                    style={{
-                                                        minWidth: (authHeader.length * 7),
-                                                    }}
                                                     position='start'
+                                                    sx={{ minWidth: authHeader.length * 7, color: muted, fontFamily: pop, fontSize: 13 }}
                                                 >
                                                     {`${authorizationHeader}: ${prefix}`}
                                                 </InputAdornment>
                                             ),
                                         }}
                                     />
-                                )}
-                                {securitySchemeType !== 'BASIC' && securitySchemeType !== 'TEST'
-                                && securitySchemeType !== 'API-KEY'
-                                && selectedKMObject && selectedSchemeEnabled && (
-                                    <>
+                                    {securitySchemeType !== 'API-KEY' && selectedKMObject && (
                                         <Button
-                                            onClick={securitySchemeType === 'API-KEY' ? generateApiKey
-                                                : (!ksGenerated && securitySchemeType === 'OAUTH'
+                                            onClick={
+                                                !ksGenerated && securitySchemeType === 'OAUTH'
                                                     ? () => Alert.warning('No consumer key/secret found for this application. Please go to My Applications and generate keys first.')
                                                     : (isConsumerSecretRequired
-                                                        ? () => setSecretDialogOpen(true) : generateAccessToken))}
-                                            variant='contained'
-                                            color='grey'
-                                            className={classes.genKeyButton}
+                                                        ? () => setSecretDialogOpen(true)
+                                                        : generateAccessToken)
+                                            }
                                             disabled={!user
                                                 || (subscriptions && subscriptions.length === 0 && !isSubValidationDisabled)
                                                 || isUpdating}
                                             id='gen-test-key'
+                                            sx={{
+                                                fontFamily: pop,
+                                                fontWeight: 600,
+                                                fontSize: 13,
+                                                whiteSpace: 'nowrap',
+                                                minWidth: 140,
+                                                height: 48,
+                                                borderRadius: '8px',
+                                                background: ORANGE,
+                                                color: '#fff',
+                                                border: 'none',
+                                                letterSpacing: '0.04em',
+                                                flexShrink: 0,
+                                                boxShadow: '0 4px 14px rgba(255,95,0,0.35)',
+                                                '&:hover': { background: '#E65500', boxShadow: '0 4px 18px rgba(255,95,0,0.45)' },
+                                                '&:disabled': { background: 'rgba(255,95,0,0.35)', color: 'rgba(255,255,255,0.5)', boxShadow: 'none' },
+                                            }}
                                         >
                                             {isUpdating && (
-                                                <CircularProgress size={15} />
+                                                <CircularProgress size={14} sx={{ color: '#fff', mr: 1 }} />
                                             )}
-                                            <FormattedMessage
-                                                id='Apis.Details.ApiConsole.generate.test.key'
-                                                defaultMessage='GET TEST KEY'
-                                            />
+                                            Get Test Key
                                         </Button>
-                                        <Tooltip
-                                            placement='right'
-                                            interactive
-                                            title={(
+                                    )}
+                                    {securitySchemeType === 'API-KEY' && (
+                                        <Button
+                                            onClick={generateApiKey}
+                                            disabled={!user
+                                                || (subscriptions && subscriptions.length === 0 && !isSubValidationDisabled)
+                                                || isUpdating}
+                                            id='gen-api-key'
+                                            sx={{
+                                                fontFamily: pop,
+                                                fontWeight: 600,
+                                                fontSize: 13,
+                                                whiteSpace: 'nowrap',
+                                                minWidth: 140,
+                                                height: 48,
+                                                borderRadius: '8px',
+                                                background: ORANGE,
+                                                color: '#fff',
+                                                border: 'none',
+                                                letterSpacing: '0.04em',
+                                                flexShrink: 0,
+                                                boxShadow: '0 4px 14px rgba(255,95,0,0.35)',
+                                                '&:hover': { background: '#E65500', boxShadow: '0 4px 18px rgba(255,95,0,0.45)' },
+                                                '&:disabled': { background: 'rgba(255,95,0,0.35)', color: 'rgba(255,255,255,0.5)', boxShadow: 'none' },
+                                            }}
+                                        >
+                                            {isUpdating && (
+                                                <CircularProgress size={14} sx={{ color: '#fff', mr: 1 }} />
+                                            )}
+                                            Get API Key
+                                        </Button>
+                                    )}
+                                </Box>
+                            </Box>
+                        )}
+
+                        {/* Gateway section */}
+                        {environments && environments.length > 0 && (
+                            <Box sx={{ mb: 3 }}>
+                                <Box component='span' sx={{ ...labelSx, fontSize: 15, fontWeight: 600, color: textColor, mb: '12px' }}>
+                                    Gateway
+                                </Box>
+                                <Box sx={{
+                                    background: panelBg,
+                                    border: `1px solid ${border}`,
+                                    borderRadius: '8px',
+                                    padding: '16px',
+                                    maxWidth: 340,
+                                }}>
+                                    <Box component='span' sx={{ ...labelSx, mb: '8px' }}>Environment</Box>
+                                <TextField
+                                    fullWidth
+                                    select
+                                    id='environment'
+                                    value={selectedEnvironment || (environments && environments[0].name)}
+                                    name='selectedEnvironment'
+                                    onChange={handleChanges}
+                                    margin='none'
+                                    variant='outlined'
+                                    sx={fieldSx}
+                                    SelectProps={{ MenuProps: darkMenuProps }}
+                                >
+                                    {environments.map((env) => (
+                                        <MenuItem value={env.name} key={env.name} sx={menuItemSx}>
+                                            {env.displayName}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+
+                                {/* GraphQL extra URLs */}
+                                {api && api.type === 'GRAPHQL' && (
+                                    <Box sx={{ mt: 2 }}>
+                                        <Box
+                                            component='a'
+                                            onClick={() => setShowMoreGWUrls(!showMoreGWUrls)}
+                                            onKeyDown={() => setShowMoreGWUrls(!showMoreGWUrls)}
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                color: ORANGE,
+                                                fontFamily: pop,
+                                                fontSize: 13,
+                                                cursor: 'pointer',
+                                                textDecoration: 'none',
+                                                mb: 2,
+                                            }}
+                                        >
+                                            {!showMoreGWUrls ? (
                                                 <>
                                                     <FormattedMessage
-                                                        id='Apis.Details.TryOutConsole.access.token.tooltip'
-                                                        defaultMessage='You can use your existing access token or generate a new test key.'
+                                                        id={'Apis.Details.ApiConsole.SelectAppPanel.environment.show.more'}
+                                                        defaultMessage='Show More'
                                                     />
-                                                    {isConsumerSecretRequired && (
-                                                        <div style={{ marginTop: 4, fontWeight: 500 }}>
-                                                            <FormattedMessage
-                                                                id='Apis.Details.TryOutConsole.consumer.secret.dialog.hint'
-                                                                defaultMessage='You will be prompted for the consumer secret.'
-                                                            />
-                                                        </div>
-                                                    )}
+                                                    <ExpandMoreIcon sx={{ fontSize: 18, ml: 0.5 }} />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <FormattedMessage
+                                                        id={'Apis.Details.ApiConsole.SelectAppPanel.environment.show.less'}
+                                                        defaultMessage='Show Less'
+                                                    />
+                                                    <ExpandLessIcon sx={{ fontSize: 18, ml: 0.5 }} />
                                                 </>
                                             )}
-                                        >
-                                            <Box m={1} mt={2}>
-                                                <IconButton
-                                                    aria-label='Use existing access token or generate a new test key'
-                                                    size='large'
-                                                >
-                                                    <HelpOutline />
-                                                </IconButton>
-                                            </Box>
-                                        </Tooltip>
-                                    </>
-                                )}
-                            </Grid>
-                        </Box>
-                    ) : (
-                        <AdvertiseDetailsPanel
-                            classes={classes}
-                            advAuthHeader={advAuthHeader}
-                            advAuthHeaderValue={advAuthHeaderValue}
-                            handleChanges={handleChanges}
-                            selectedEndpoint={selectedEndpoint}
-                            api={api}
-                        />
-                    )}
-                    {(!api.advertiseInfo || !api.advertiseInfo.advertised) 
-                        && (api.gatewayVendor === 'wso2' || !api.gatewayVendor) && (
-                        <Box display='flex' justifyContent='center' className={classes.gatewayEnvironment}>
-                            <Grid xs={12} md={6} item>
-                                {(environments && environments.length > 0) && (
-                                    <>
-                                        <Typography
-                                            variant='h5'
-                                            component='h3'
-                                            color='textPrimary'
-                                            className={classes.categoryHeading}
-                                        >
-                                            <FormattedMessage
-                                                id='api.console.gateway.heading'
-                                                defaultMessage='Gateway'
-                                            />
-                                        </Typography>
-                                        <TextField
-                                            fullWidth
-                                            select
-                                            id='environment'
-                                            label={(
-                                                <FormattedMessage
-                                                    defaultMessage='Environment'
-                                                    id='Apis.Details.ApiConsole.environment'
-                                                />
-                                            )}
-                                            value={selectedEnvironment || (environments && environments[0].name)}
-                                            name='selectedEnvironment'
-                                            onChange={handleChanges}
-                                            helperText={(
-                                                <FormattedMessage
-                                                    defaultMessage='Please select an environment'
-                                                    id='Apis.Details.ApiConsole.SelectAppPanel.environment'
-                                                />
-                                            )}
-                                            margin='normal'
-                                            variant='outlined'
-                                        >
-                                            {environments && environments.length > 0 && (
-                                                <MenuItem value='' disabled className={classes.menuItem}>
-                                                    <em>
-                                                        <FormattedMessage
-                                                            id='api.gateways'
-                                                            defaultMessage='API Gateways'
-                                                        />
-                                                    </em>
-                                                </MenuItem>
-                                            )}
-                                            {environments && (
-                                                environments.map((env) => (
-                                                    <MenuItem
-                                                        value={env.name}
-                                                        key={env.name}
-                                                        className={classes.menuItem}
-                                                    >
-                                                        {env.displayName}
-                                                    </MenuItem>
-                                                )))}
-                                        </TextField>
-                                        {api && api.type === 'GRAPHQL' && (
-                                            <>
-                                                <Typography className={classes.verticalSpace} variant='body1'>
-                                                    <a
-                                                        className={classes.link + ' ' + classes.loadMoreLink}
-                                                        onClick={() => setShowMoreGWUrls(!showMoreGWUrls)}
-                                                        onKeyDown={() => setShowMoreGWUrls(!showMoreGWUrls)}
-                                                    >
-                                                        {!showMoreGWUrls ? (
-                                                            <>
-                                                                <FormattedMessage
-                                                                    id={'Apis.Details.ApiConsole.SelectAppPanel'
-                                                                    + '.environment.show.more'}
-                                                                    defaultMessage='Show More'
-                                                                />
-                                                                <ExpandMoreIcon />
-
-                                                            </>
-                                                        ) : (
-                                                            <>
-                                                                <FormattedMessage
-                                                                    id={'Apis.Details.ApiConsole.SelectAppPanel'
-                                                                    + '.environment.show.less'}
-                                                                    defaultMessage='Show Less'
-                                                                />
-                                                                <ExpandLessIcon />
-                                                            </>
-                                                        )}
-                                                    </a>
-                                                </Typography>
-                                                {showMoreGWUrls && (
-                                                    <>
+                                        </Box>
+                                        {showMoreGWUrls && (
+                                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                                                <Box>
+                                                    <Box component='span' sx={labelSx}>Gateway URLs</Box>
+                                                    <TextField
+                                                        value={URLs && URLs.https}
+                                                        name='selectedHTTPURL'
+                                                        fullWidth
+                                                        margin='none'
+                                                        variant='outlined'
+                                                        InputProps={URLs && URLs.https}
+                                                        sx={fieldSx}
+                                                    />
+                                                </Box>
+                                                {URLs && URLs.wss && (
+                                                    <Box>
+                                                        <Box component='span' sx={labelSx}>Subscription Gateway URLs</Box>
                                                         <TextField
-                                                            label={(
-                                                                <FormattedMessage
-                                                                    defaultMessage='Gateway URLs'
-                                                                    id={'Apis.Details.ApiConsole.SelectAppPanel'
-                                                                    + '.environment.show.more.http.URLs'}
-                                                                />
-                                                            )}
-                                                            value={URLs && URLs.https}
-                                                            name='selectedHTTPURL'
+                                                            value={URLs && URLs.wss}
+                                                            name='selectedWSURL'
                                                             fullWidth
-                                                            margin='normal'
+                                                            margin='none'
                                                             variant='outlined'
-                                                            InputProps={URLs && URLs.https}
+                                                            InputProps={URLs && URLs.wss}
+                                                            sx={fieldSx}
                                                         />
-                                                        {URLs && URLs.wss
-                                                        && (
-                                                            <TextField
-                                                                label={(
-                                                                    <FormattedMessage
-                                                                        defaultMessage='Subscription Gateway URLs'
-                                                                        id={'Apis.Details.ApiConsole.SelectAppPanel'
-                                                                        + '.environment.show.more.subscription.URLs'}
-                                                                    />
-                                                                )}
-                                                                value={URLs && URLs.wss}
-                                                                name='selectedWSURL'
-                                                                fullWidth
-                                                                margin='normal'
-                                                                variant='outlined'
-                                                                InputProps={URLs && URLs.wss}
-                                                            />
-                                                        )}
-                                                    </>
+                                                    </Box>
                                                 )}
-                                            </>
+                                            </Box>
                                         )}
-                                    </>
+                                    </Box>
                                 )}
-                            </Grid>
-                        </Box>
-                    )}
-                </Box>
-            </Grid>
+                                </Box>
+                            </Box>
+                        )}
+                    </Box>
+                ) : (
+                    <AdvertiseDetailsPanel
+                        classes={classes}
+                        advAuthHeader={advAuthHeader}
+                        advAuthHeaderValue={advAuthHeaderValue}
+                        handleChanges={handleChanges}
+                        selectedEndpoint={selectedEndpoint}
+                        api={api}
+                    />
+                )}
+            </Box>
         </Root>
     );
 }
 
 TryOutController.propTypes = {
     classes: PropTypes.shape({
-        paper: PropTypes.string.isRequired,
-        grid: PropTypes.string.isRequired,
-        inputAdornmentStart: PropTypes.string.isRequired,
-        centerItems: PropTypes.string.isRequired,
-    }).isRequired,
+        paper: PropTypes.string,
+        grid: PropTypes.string,
+        inputAdornmentStart: PropTypes.string,
+        centerItems: PropTypes.string,
+    }),
+};
+
+TryOutController.defaultProps = {
+    classes: {},
 };
 
 export default (TryOutController);

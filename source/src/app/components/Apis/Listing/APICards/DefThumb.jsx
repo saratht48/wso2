@@ -83,6 +83,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
         cursor: 'pointer',
         fontWeight: 600,
         lineHeight: '1.3',
+        color: '#111827',
     },
     [`& .${classes.info}`]: {
         display: 'flex',
