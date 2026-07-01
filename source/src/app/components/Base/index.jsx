@@ -64,6 +64,7 @@ const classes = {
     listIconRoot: `${PREFIX}-listIconRoot`,
     listItemRoot: `${PREFIX}-listItemRoot`,
     logoutLink: `${PREFIX}-logoutLink`,
+    userName: `${PREFIX}-userName`,
 };
 
 const Root = styled('div')(({ theme }) => {
@@ -196,6 +197,26 @@ const Root = styled('div')(({ theme }) => {
         [`& .${classes.logoutLink}`]: {
             color: theme.palette.getContrastText(theme.palette.background.paper),
         },
+
+//         [`& .${classes.userName}`]: {
+//   color: '#FFFFFF',
+// },
+
+// '.loop-light-mode &': {
+//   [`& .${classes.userName}`]: {
+//     color: '#111827',
+//   },
+// },
+
+[`& .${classes.userName}`]: {
+    color: '#FFFFFF',
+},
+
+'[data-loop-theme="light"] &': {
+    [`& .${classes.userName}`]: {
+        color: '#111827',
+    },
+},
     };
 });
 
@@ -492,31 +513,7 @@ class LayoutLegacy extends React.Component {
                                 </IconButton>
 
                                 <Hidden smDown>
-                                    {/* ✅ Bell icon — opens SearchModal popup */}
-                                    {/* <Box
-                                        // color='inherit'
-                                        // className={classes.userLink}
-                                        aria-label='notifications'
-                                        size='large'
-                                        onClick={this.openModal}
-                                        style={{
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            marginLeft: 16,
-                                            border:  '1px solid #FFFFFF14',
-                                            padding: '8px',
-                                            marginRight: '20px',
-                                            borderRadius: '10px',
-                                            color:"rgba(0, 0, 0, 0.87)",
-                                            background:'rgba(0, 0, 0, 0.87)' ,
-                                        }}
-                                    >
-                                    
-                                        <img className='loop-themeicon-dark' src={`${app.context}/site/public/images/remainder_icon.png`} alt=' light mode' style={{ height: 28, width: 28 }} />
-                                        <img className='loop-themeicon-light' src={`${app.context}/site/public/images/light_remainder.png`} alt=' dark mode' style={{ height: 28, width: 36 }} />
-                                        
-                                    </Box> */}
+                                   
                                      <IconButton
                                     color='inherit'
                                     className={classes.userLink}
@@ -545,10 +542,25 @@ class LayoutLegacy extends React.Component {
                                                     {userInitials}
                                                 </Avatar>
                                                 <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.15, textTransform: 'none', maxWidth: '200px' }}>
-                                                    <span style={{ fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '160px', color: '#FF5F00' }}>
+                                                    {/* <span style={{ fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '160px', color: 'var(--loop-username-color)',}}>
+                                                        {username}
+                                                    </span> */}
+                                                    <span
+                                                        className={classes.userName}
+                                                        // style={{
+                                                        //     fontSize: 13,
+                                                        //     fontWeight: 600,
+                                                        //     overflow: 'hidden',
+                                                        //     textOverflow: 'ellipsis',
+                                                        //     whiteSpace: 'nowrap',
+                                                        //     maxWidth: '160px',
+                                                        //     // color: theme.palette.mode === 'dark' ? '#FFFFFF' : '#111827',
+                                                        //     // color: 'var(--loop-username-color)',
+                                                        // }}
+                                                    >
                                                         {username}
                                                     </span>
-                                                    <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>{user && user.isAdmin() ? 'Admin' : 'Dev'}</span>
+                                                <span style={{ fontSize: 11, color: '#FF5F00', fontWeight: 500 }}>{user && user.isAdmin() ? 'Admin' : 'Dev'}</span>
                                                 </span>
                                                 <Icon className={classes.icons} style={{ marginLeft: 6 }}>keyboard_arrow_down</Icon>
                                             </Button>

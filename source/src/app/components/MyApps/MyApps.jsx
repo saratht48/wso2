@@ -365,7 +365,7 @@ function AppCard({ app, onEdit, onDelete }) {
               </Box>
             <Box sx={{
         width: '100%',
-        height: '2px',
+        height: '1px',
         backgroundColor: '#E5E7EB',
         opacity: 0.5,
         transform: 'scaleY(0.5)',
