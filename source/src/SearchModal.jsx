@@ -222,7 +222,7 @@ export default function SearchModal({ onClose }) {
                     {!query.trim() && (
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', py: { xs: 6, sm: 5 }, px: 3, gap: 3 }}>
                             <SearchIcon sx={{ color: P.dim, fontSize: 40 }} />
-                            <Box sx={{ color: P.muted, fontSize: '13px', fontFamily: 'Poppins, sans-serif' }}>
+                            <Box sx={{ color: P.muted, fontSize: '14px', fontFamily: 'Poppins, sans-serif' }}>
                                 Search across all documentation
                             </Box>
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center' }}>
