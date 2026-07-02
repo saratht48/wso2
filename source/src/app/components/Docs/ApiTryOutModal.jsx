@@ -177,7 +177,7 @@ function ApiTryOutModal({ api, open, onClose }) {
 
             {/* Real stock engines, themed to EXACT Figma colors (functionality unchanged) */}
             <Box sx={{
-                m: '18px 24px', background: C.modalBg, p: 0, maxHeight: '64vh', overflowY: 'auto', overflowX: 'hidden',
+                m: '18px 24px', background: C.modalBg, p: '0 2px', maxHeight: '64vh', overflowY: 'auto', overflowX: 'hidden',
                 color: C.text, fontFamily: C.pop,
                 // ---- TryOutController (MUI) — Generate Token tab (exact Figma 5144-10284) ----
                 '& .MuiPaper-root': { background: 'transparent', backgroundImage: 'none', boxShadow: 'none', color: C.text },
@@ -241,7 +241,7 @@ function ApiTryOutModal({ api, open, onClose }) {
                 '& .swagger-ui .scheme-container, & .swagger-ui section.models': { background: 'transparent', boxShadow: 'none', border: 'none', padding: 0, margin: '0 0 16px' },
                 '& .swagger-ui .servers > label select, & .swagger-ui .scheme-container .schemes > label select': { background: C.ctrlBg, color: C.text, border: `1px solid ${C.border}`, borderRadius: '4px' },
                 // panel (opblock) — bg #080808 / border #1F2937 / r8
-                '& .swagger-ui .opblock': { background: C.panelBg, border: `1px solid ${C.border}`, borderRadius: '8px', boxShadow: 'none', margin: 0 },
+                '& .swagger-ui .opblock': { background: C.panelBg, border: `1px solid ${C.border}`, borderRadius: '8px', boxShadow: 'none', margin: '0 0 8px' },
                 '& .swagger-ui .opblock .opblock-section-header': { background: 'transparent', boxShadow: 'none', borderColor: C.border },
                 // POST summary bar — bg #113516 / border #4C8E43 ; badge #25A86C
                 '& .swagger-ui .opblock.opblock-post': { background: C.panelBg, borderColor: C.border },
@@ -326,6 +326,11 @@ function ApiTryOutModal({ api, open, onClose }) {
                 // ---- Authorize button at top ----
                 '& .swagger-ui .btn.authorize': { color: `${ORANGE} !important`, borderColor: `${ORANGE} !important`, background: 'transparent !important' },
                 '& .swagger-ui .btn.authorize svg': { fill: `${ORANGE} !important` },
+                // hide lock icon — CustomPadLock renders an IconButton with aria-label="Security"
+                '& button[aria-label="Security"]': { display: 'none !important' },
+                // also hide native swagger-ui auth buttons as fallback
+                '& .swagger-ui .authorization__btn': { display: 'none !important' },
+                '& .swagger-ui .opblock-summary > button:not(.opblock-summary-control)': { display: 'none !important' },
 
                 // ---- Servers section ----
                 '& .swagger-ui .servers > label': { color: `${C.muted} !important`, fontFamily: `${C.pop} !important`, fontSize: '12px !important', display: 'flex !important', flexDirection: 'column !important', gap: '4px !important' },
@@ -348,6 +353,22 @@ function ApiTryOutModal({ api, open, onClose }) {
                 // ---- copy to clipboard ----
                 '& .swagger-ui .copy-to-clipboard': { background: `${C.border} !important` },
                 '& .swagger-ui .copy-to-clipboard button': { background: 'transparent !important', border: 'none !important' },
+
+                // ---- all response body / curl text → #E5E7EB ----
+                '& .swagger-ui .microlight': { color: '#E5E7EB !important' },
+                '& .swagger-ui .microlight span': { color: '#E5E7EB !important' },
+                '& .swagger-ui .highlight-code pre': { color: '#E5E7EB !important' },
+
+                // ---- error response description → #FF453A ----
+                '& .swagger-ui .responses-table .response[data-code^="4"] .response-col_description': { color: '#FF453A !important' },
+                '& .swagger-ui .responses-table .response[data-code^="4"] .response-col_description .microlight': { color: '#FF453A !important' },
+                '& .swagger-ui .responses-table .response[data-code^="4"] .response-col_description .microlight span': { color: '#FF453A !important' },
+                '& .swagger-ui .responses-table .response[data-code^="5"] .response-col_description': { color: '#FF453A !important' },
+                '& .swagger-ui .responses-table .response[data-code^="5"] .response-col_description .microlight': { color: '#FF453A !important' },
+                '& .swagger-ui .responses-table .response[data-code^="5"] .response-col_description .microlight span': { color: '#FF453A !important' },
+                // also colour the 4xx/5xx status badge text
+                '& .swagger-ui .responses-table .response[data-code^="4"] .response-col_status': { color: '#FF453A !important' },
+                '& .swagger-ui .responses-table .response[data-code^="5"] .response-col_status': { color: '#FF453A !important' },
             }}
             >
                 <Box sx={{ display: tab === 'token' ? 'block' : 'none' }}>
