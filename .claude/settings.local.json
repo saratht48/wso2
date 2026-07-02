@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__figma__get_screenshot",
+      "Read(//c/2026-wso2/wso2am-4.7.0/wso2am-4.7.0/repository/deployment/server/webapps/accountrecoveryendpoint/css/**)"
+    ],
+    "additionalDirectories": [
+      "c:\\2026-wso2\\wso2am-4.7.0\\wso2am-4.7.0\\repository\\deployment\\server\\webapps\\accountrecoveryendpoint\\css"
+    ]
+  }
+}
