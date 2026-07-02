@@ -167,7 +167,7 @@ function KeyEnv({
                         onClick={onGenerate}
                         disabled={busy}
                         startIcon={<Icon sx={{ fontSize: 16 }}>add</Icon>}
-                        sx={{ color: C.orange, border: `1px solid ${C.orange}`, borderRadius: '8px', textTransform: 'none', fontFamily: POP, fontWeight: 600, fontSize: 12, px: 1.5, transition: 'none' }}
+                        sx={{ color: C.orange, border: `1px solid ${C.orange}`, borderRadius: '8px', textTransform: 'none', fontFamily: POP, fontWeight: 600, fontSize: 12, px: 1.5, transition: 'none', '&.Mui-disabled': { color: C.orange, borderColor: C.orange, opacity: 0.6 } }}
                     >
                         Generate Keys
                     </Button>
@@ -184,7 +184,7 @@ function KeyEnv({
                             onClick={onRevoke}
                             disabled={busy}
                             startIcon={<img src={revokeIcon} alt="revokeIcon" width={14} height={14}/>}
-                            sx={{ color: C.red, border: `1px solid ${C.red}`, borderRadius: '8px', textTransform: 'none', fontFamily: POP, fontWeight: 600, fontSize: 13, px: 2 }}
+                            sx={{ color: C.red, border: `1px solid ${C.red}`, borderRadius: '8px', textTransform: 'none', fontFamily: POP, fontWeight: 600, fontSize: 13, px: 2, '&.Mui-disabled': { color: C.red, borderColor: C.red, opacity: 0.6 } }}
                         >
                             Revoke Keys
                         </Button>
