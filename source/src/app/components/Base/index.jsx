@@ -491,11 +491,13 @@ class LayoutLegacy extends React.Component {
                                         aria-label='search'
                                         size='large'
                                         onClick={this.openModal}
+                                       
                                     >
                                         <img
                                             src={`${app.context}/site/public/images/searchButton.svg`}
                                             alt='Search'
-                                            style={{ height: 36, width: 36 }}
+                                            // style={{ height: 36, width: 36 }}
+                                             style={{borderRadius: '11px',border: '1px solid #80808063',height: 36, width: 36}}
                                         />
                                     </IconButton>
                                 )}
@@ -520,6 +522,9 @@ class LayoutLegacy extends React.Component {
                                     aria-label='toggle theme'
                                     size='large'
                                     onClick={this.openModal}
+                                    style={{borderRadius: '6px',
+    border: '1px solid #80808063',
+    padding: '8px', marginLeft:'10px',marginRight:'20px',}}
                                 >
                                     <img className='loop-themeicon-dark' src={`${app.context}/site/public/images/remainder_icon.png`} alt=' light mode' style={{ height: 18, width: 18 }} />
                                     <img className='loop-themeicon-light' src={`${app.context}/site/public/images/light_remainder.png`} alt=' dark mode' style={{ height: 18, width: 18 }} />
