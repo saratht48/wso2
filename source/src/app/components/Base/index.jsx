@@ -515,7 +515,6 @@ class LayoutLegacy extends React.Component {
                                 </IconButton>
 
                                 <Hidden smDown>
-                                   
                                      <IconButton
                                     color='inherit'
                                     className={classes.userLink}
@@ -524,7 +523,7 @@ class LayoutLegacy extends React.Component {
                                     onClick={this.openModal}
                                     style={{borderRadius: '6px',
     border: '1px solid #80808063',
-    padding: '8px', marginLeft:'10px',marginRight:'20px',}}
+    padding: '11px', marginLeft:'10px',marginRight:'20px',}}
                                 >
                                     <img className='loop-themeicon-dark' src={`${app.context}/site/public/images/remainder_icon.png`} alt=' light mode' style={{ height: 18, width: 18 }} />
                                     <img className='loop-themeicon-light' src={`${app.context}/site/public/images/light_remainder.png`} alt=' dark mode' style={{ height: 18, width: 18 }} />
